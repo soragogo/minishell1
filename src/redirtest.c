@@ -1,7 +1,6 @@
 #include "../includes/minishell.h"
 #include "../tokenizer/token.h"
 #include "../tokenizer/parser.h"
-#include "../gnl/get_next_line_bonus.h"
 
 void handle_redirection(t_commandset *commands, t_info *info)
 {
