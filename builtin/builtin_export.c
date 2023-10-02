@@ -1,5 +1,83 @@
 #include "./../includes/minishell.h"
 
+void dup_envlist(t_env **env_head, t_env **tmplist)
+{
+	// t_env *tmp;
+	// t_env *tmp2;
+	// size_t i;
+
+	// i = 0;
+	// tmp = *env_head;
+	// while (tmp)
+	// {
+	// 	// tmp2 = malloc(sizeof(t_env));
+	// 	// if (tmp2 == NULL)
+	// 	// 	printf("malloc error");//error
+	// 	tmplist[i]->name = ft_strdup(tmp->name);
+	// 	tmplist[i]->value = ft_strdup(tmp->value);
+	// 	// tmplist[i]->next = tmp->next;
+	// 	tmp = tmp->next;
+	// 	i++;
+	// }
+	// extern char **environ;
+	char **env;
+	char *name;
+	char *value;
+
+	// *tmplist = NULL;
+	env = create_environ(env_head);
+    while(*env) {
+        name = get_env_name(name, *env);
+		value = get_env_value(value, *env);
+		if (set_env(tmplist, name, value) == -1)
+			printf("error");
+		env++;
+	}
+}
+
+void sort_envlist(t_env **tmplist)
+{
+	//NAMEをaskii順にソート
+	while (*tmplist){
+		if (strcmp((*tmplist)->name, (*tmplist)->next->name) > 0)
+		{
+			//swap
+			char *tmp_name;
+			char *tmp_value;
+
+			tmp_name = (*tmplist)->name;
+			tmp_value = (*tmplist)->value;
+			(*tmplist)->name = (*tmplist)->next->name;
+			(*tmplist)->value = (*tmplist)->next->value;
+			(*tmplist)->next->name = tmp_name;
+			(*tmplist)->next->value = tmp_value;
+			*tmplist = (*tmplist)->next;
+		}
+	}
+}
+
+int display_envlist(t_env **env_head)
+{
+	t_env *tmp;
+	t_env *tmplist;
+	size_t count;
+
+	count = count_env(*env_head);
+	tmplist = malloc(sizeof(t_env) * count);
+	if (tmplist == NULL)
+		printf("malloc error");//error
+	dup_envlist(env_head, &tmplist);
+	sort_envlist(&tmplist);
+	tmp = tmplist;
+	while (tmp)
+	{
+		printf("declare -x %s=%s\n", tmp->name, tmp->value);
+		tmp = tmp->next;
+	}
+	free(tmplist);
+	return (0);
+}
+
 int ft_export(t_env **map, char **commands)
 {
 	char *name;
@@ -9,7 +87,7 @@ int ft_export(t_env **map, char **commands)
 	value = NULL;
 	if (commands[1] == NULL)//引数を取らない場合、一覧表示
 	{
-		ft_env(map);
+		display_envlist(map);
 		return (0);
 	}
 	if (strchr(commands[1], '=') == NULL)//=がない場合、エラー
@@ -26,29 +104,42 @@ int ft_export(t_env **map, char **commands)
 	return (0);
 }
 
+// テスト用のフェイク環境変数リストを作成する関数
+t_env *create_fake_envlist()
+{
+    t_env *env_list = NULL;
 
-// void test_ft_export(t_env **map, char **arg) {
-//     printf("Setting environment variable: %s\n", *arg);
-//     ft_export(map, arg);
-//     printf("Environment variable set.\n\n");
-// }
+    set_env(&env_list, "VAR1", "value1");
+    set_env(&env_list, "VAR2", "value2");
+    set_env(&env_list, "VAR3", "value3");
 
-// int main() {
-//     // テストケースを用意して実行
-//     t_env *map = map_new();
-//     envmap_init(&map);  // mapの初期化は実際の状況に合わせて修正
-    
+    return env_list;
+}
 
-//     // char *test1 = "MY_VARIABLE=value123";
-// 	char *test1[] = {"export", "MY_VARIABLE=value123"};
-// 	ft_env(&map, *test1);
-//     test_ft_export(&map, test1);
+// テスト用のメイン関数
+int main()
+{
+    t_env *env_list = create_fake_envlist(); // フェイク環境変数リストを作成
 
-//     char *test2[] = {"export", "ANOTHER_VARIABLE=hello_world"};
-//     test_ft_export(&map, test2);
-	
-// 	printf("----------------------------------------\n");
-// 	ft_env(&map, *test1);
+    // テスト1: 引数なしで ft_export を呼び出す（一覧表示）
+    char *test1_commands[] = {"export", NULL};
+    printf("Test 1: Display Environment List\n");
+    ft_export(&env_list, test1_commands);
 
-//     return 0;
-// }
+    // テスト2: 環境変数を新しく追加して ft_export を呼び出す
+    char *test2_commands[] = {"export", "NEW_VAR=new_value", NULL};
+    printf("\nTest 2: Add New Environment Variable\n");
+    ft_export(&env_list, test2_commands);
+    ft_export(&env_list, test1_commands); // 一覧を再度表示
+
+    // テスト3: 既存の環境変数を更新して ft_export を呼び出す
+    char *test3_commands[] = {"export", "VAR1=new_value1", NULL};
+    printf("\nTest 3: Update Existing Environment Variable\n");
+    ft_export(&env_list, test3_commands);
+    ft_export(&env_list, test1_commands); // 一覧を再度表示
+
+    // メモリのクリーンアップ
+    // free_env_list(&env_list);
+
+    return 0;
+}
