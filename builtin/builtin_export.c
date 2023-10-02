@@ -115,31 +115,31 @@ t_env *create_fake_envlist()
 
     return env_list;
 }
+// // テスト用のメイン関数
+// int main()
+// {
+//     t_env *env_list = create_fake_envlist(); // フェイク環境変数リストを作成
 
-// テスト用のメイン関数
-int main()
-{
-    t_env *env_list = create_fake_envlist(); // フェイク環境変数リストを作成
+//     // テスト1: 引数なしで ft_export を呼び出す（一覧表示）
+//     char *test1_commands[] = {"export", NULL};
+//     printf("Test 1: Display Environment List\n");
+//     ft_export(&env_list, test1_commands);
 
-    // テスト1: 引数なしで ft_export を呼び出す（一覧表示）
-    char *test1_commands[] = {"export", NULL};
-    printf("Test 1: Display Environment List\n");
-    ft_export(&env_list, test1_commands);
+//     // テスト2: 環境変数を新しく追加して ft_export を呼び出す
+//     char *test2_commands[] = {"export", "NEW_VAR=new_value", NULL};
+//     printf("\nTest 2: Add New Environment Variable\n");
+//     ft_export(&env_list, test2_commands);
+//     ft_export(&env_list, test1_commands); // 一覧を再度表示
 
-    // テスト2: 環境変数を新しく追加して ft_export を呼び出す
-    char *test2_commands[] = {"export", "NEW_VAR=new_value", NULL};
-    printf("\nTest 2: Add New Environment Variable\n");
-    ft_export(&env_list, test2_commands);
-    ft_export(&env_list, test1_commands); // 一覧を再度表示
+//     // テスト3: 既存の環境変数を更新して ft_export を呼び出す
+//     char *test3_commands[] = {"export", "VAR1=new_value1", NULL};
+//     printf("\nTest 3: Update Existing Environment Variable\n");
+//     ft_export(&env_list, test3_commands);
+//     ft_export(&env_list, test1_commands); // 一覧を再度表示
 
-    // テスト3: 既存の環境変数を更新して ft_export を呼び出す
-    char *test3_commands[] = {"export", "VAR1=new_value1", NULL};
-    printf("\nTest 3: Update Existing Environment Variable\n");
-    ft_export(&env_list, test3_commands);
-    ft_export(&env_list, test1_commands); // 一覧を再度表示
+//     // メモリのクリーンアップ
+//     // free_env_list(&env_list);
 
-    // メモリのクリーンアップ
-    // free_env_list(&env_list);
+//     return 0;
+// }
 
-    return 0;
-}
