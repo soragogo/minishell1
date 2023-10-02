@@ -133,35 +133,40 @@ t_env *item_new(t_env *new_env, char *name, char *value)
 	return (new_env);
 }
 
-size_t count_env(t_env *env)
-{
-	size_t i;
+// size_t count_env(t_env *env)
+// {
+// 	size_t i;
 
-	i = 0;
-	if(!env)
-		return (0);
-	while (env->name)
-	{
-		i++;
-		env++;
-	}
-	return (i);
-}
+// 	i = 0;
+// 	if(!(env->name))
+// 		return (0);
+// 	while (env->name)
+// 	{
+// 		i++;
+// 		env++;
+// 	}
+// 	return (i);
+// }
 
 // 後ろに新しいの追加
 void add_new(t_env **map, t_env *new_env)
 {
 	t_env *env;
 	// t_env *prev;
-	size_t i;
+	// size_t i;
 
 	env = *map;
-	i = count_env(env);
-	if (i == 0)
+	if (!env)
 	{
 		*map = new_env;
 		return;
 	}
+	// i = count_env(env);
+	// if (i == 0)
+	// {
+	// 	*map = new_env;
+	// 	return;
+	// }
 	else
 	{
 		while ((env)->next)
