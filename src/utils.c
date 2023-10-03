@@ -21,10 +21,11 @@ char **join(char const *s1, char const *s2, char **environ)
 	return (environ);
 }
 
-void env_join(char *name, char *value, char **environ)
+char  *env_join(char *name, char *value, char **environ)
 {
 	environ = join(name, "=", environ);
 	environ = join(environ[0], value, environ);
+	return (environ[0]);
 }
 
 //KEY=valueの形で環境変数を作成する関数
@@ -36,14 +37,53 @@ char **create_environ(t_env **env_head)
 
     i = 0;
 	tmp = *env_head;
+	environ = (char **)malloc(sizeof(char *) * 1);
 	while (tmp)
 	{
-		env_join(tmp->name, tmp->value, &environ[i]);
+		environ[i] = (char *)malloc(sizeof(char *) * 1);
+		environ[i] = env_join(tmp->name, tmp->value, &environ[i]);
 		i++;
 		tmp = tmp->next;
 	}
-	environ = (char **)malloc(sizeof(char *) * 1);
 	environ[i] = (char *)malloc(sizeof(char *) * 1);
     environ[i] = NULL;
 	return (environ);
 }
+
+/* -------------------------------------------------------------- */
+
+
+
+// // テスト用のフェイク環境変数リストを作成する関数
+// t_env *create_fake_envlist()
+// {
+//     t_env *env_list = NULL;
+
+//     set_env(&env_list, "VAR1", "value1");
+//     set_env(&env_list, "VAR2", "value2");
+//     set_env(&env_list, "VAR3", "value3");
+
+//     return env_list;
+// }
+
+// // テスト用のメイン関数
+// int main()
+// {
+//     t_env *env_list = create_fake_envlist(); // フェイク環境変数リストを作成
+
+//     // テスト: create_environ 関数を呼び出し、環境変数配列を作成
+//     char **environ = create_environ(&env_list);
+
+//     // 作成した環境変数配列の内容を表示
+//     printf("Environment Variables:\n");
+//     for (int i = 0; environ[i] != NULL; i++)
+//     {
+//         printf("%s\n", environ[i]);
+//         free(environ[i]); // メモリの解放
+//     }
+
+//     free(environ); // 環境変数配列全体のメモリを解放
+//     // free_env_list(&env_list); // フェイク環境変数リストのメモリを解放
+
+//     return 0;
+// }

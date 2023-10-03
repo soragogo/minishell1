@@ -13,12 +13,13 @@ void free_before_closing(t_token *tokens, char *command_buf)
 	free(command_buf);
 }
 
-char *ft_readline()
+char *ft_readline(t_env *env_head)
 {
 	char *command_buf;
 	command_buf = readline("minishell> ");
 	if (command_buf)
 		add_history(command_buf);
+	expand_env(&command_buf, env_head);
 	return (command_buf);
 }
 
@@ -33,10 +34,11 @@ int main()
 	
 	envmap_init(&env);//info_initの方がいいか
 	info.map_head = env;
+	info.exit_status_log = 0;
 	while (1)
 	{
 		ft_signals();
-		command_buf = ft_readline();
+		command_buf = ft_readline(env);
 		if (!command_buf)
 			break;
 		if (*command_buf == '\0')
@@ -45,7 +47,7 @@ int main()
 		// tokens = ft_tokenizer(command_buf);
 		commands = ft_parser(command_buf);
 		// commands = create_command_pipeline(tokens);
-		expand_env(commands->command, info.map_head);
+		// expand_env(commands->command, info.map_head);
 		handle_command(commands, &info);
 		/* ------------------ exec_command ---------------------- */
 		// status = is_builtin(tokens, &info);//builtinだったら実行

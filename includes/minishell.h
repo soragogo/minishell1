@@ -67,6 +67,7 @@ void	env_unset(t_env **env_head, char *delete_env_key);
 char	*map_get(t_env **env_head, char *name);
 void	free_map(t_env **map);
 char **create_environ(t_env **env_head);
+size_t count_env(t_env *env);
 
 
 	/* builtin command */
@@ -92,7 +93,8 @@ void append(t_redirect *node);
 int is_builtin(t_commandset *command);
 int exec_builtin(t_commandset *commands, t_info *info);
 char **join(char const *s1, char const *s2, char **environ);
-void env_join(char *name, char *value, char **environ);
+// void env_join(char *name, char *value, char **environ);
+char  *env_join(char *name, char *value, char **environ);
 char *fetch_path(char *file, t_env **map);
 int handle_command(t_commandset *commands, t_info *info);
 void expand_env(char **command, t_env *env_head);

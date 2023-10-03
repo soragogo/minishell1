@@ -5,7 +5,6 @@ char *get_env_name(char *ret, char *env)
 {
 	size_t i;
 	size_t j;
-	// char *ret;
 
 	i = 0;
 	j = 0;
@@ -28,7 +27,6 @@ char *get_env_value(char *ret, char *env) //""で囲まれてた時とかの処�
 {
 	size_t i;
 	size_t j;
-	// char *ret;
 
 	i = 0;
 	j = 0;
@@ -63,13 +61,12 @@ void	envmap_init(t_env **map)
 	char *name;
 	char *value;
 
-	*map = map_new();
+	*map = NULL;
     while(*env) {
         name = get_env_name(name, *env);
 		value = get_env_value(value, *env);
 		if (set_env(map, name, value) == -1)
 			printf("error");
-		// printf("name: %s\nvalue: %s\n",name ,value);
 		env++;
 	}
 }
@@ -109,12 +106,8 @@ int	set_env(t_env **env_head, char *name, char *value)//値がNULLの場合？
 			env_unset(env_head, env->name);
 			break;
 		}
-		// else if(ft_strcmp(name, env->name) == -1)
-		// 	break ;
 		env = env->next;
 	}
-	// if (env)//すでにあったら一回消す
-	// 	env_unset(env_head, env->name);
 	new = item_new(new, name, value);
 	add_new(env_head, new);
 	return (0);
@@ -138,7 +131,7 @@ size_t count_env(t_env *env)
 	size_t i;
 
 	i = 0;
-	if(!env)
+	if(!(env->name))
 		return (0);
 	while (env->name)
 	{
@@ -152,12 +145,9 @@ size_t count_env(t_env *env)
 void add_new(t_env **map, t_env *new_env)
 {
 	t_env *env;
-	// t_env *prev;
-	size_t i;
 
 	env = *map;
-	i = count_env(env);
-	if (i == 0)
+	if (!env)
 	{
 		*map = new_env;
 		return;
@@ -166,17 +156,10 @@ void add_new(t_env **map, t_env *new_env)
 	{
 		while ((env)->next)
 		{
-			// prev = env;
 			env = (env)->next;
 		}
-		// prev->next = *map;
 		(env)->next = new_env;
 	}
-	// while (i >= 1)
-	// {
-	// 	env++;
-	// 	i--;
-	// }
 	env->next = new_env;
 }
 
@@ -223,10 +206,8 @@ void free_map(t_env **map)
 {
 	t_env *env;
 	t_env *tmp;
-	// t_env *head;
 
 	env = *map;
-	// head = *map;
 	while (env && env->next)
 	{
 		tmp = env->next;
@@ -242,7 +223,7 @@ void free_map(t_env **map)
 // // テスト用の main 関数
 // int main() {
 //     t_env *map = NULL;
-// 	map = map_new();
+// 	// map = map_new();
 //     envmap_init(&map);
 // 	t_env *map2 = map;
 	

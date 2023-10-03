@@ -1,6 +1,7 @@
 #include "../includes/minishell.h"
 #include "../tokenizer/token.h"
 #include "../tokenizer/parser.h"
+#include "../gnl/get_next_line_bonus.h"
 
 void handle_redirection(t_commandset *commands, t_info *info)
 {
@@ -80,14 +81,16 @@ int heredoc(const char *delimiter, t_env *env_head)
 {	//pipeの読み込み側fdを返す
 	int pipefd[2];
 	char *line;
-	char **buf;
-	int i;
+	int count;
+	int fd;
 
-	i = 0;
+	count = 0;
 	pipe(pipefd);
-	printf("%s\n", delimiter);
+	fd = open("tmp", O_CREAT | O_RDWR | O_TRUNC | O_APPEND, 0644);
+	
 	while(1){
 		line = readline("> ");
+		expand_env(&line, env_head);
 		if (line == NULL)
 			break ;
 		if (strcmp(line, delimiter) == 0)
@@ -97,29 +100,30 @@ int heredoc(const char *delimiter, t_env *env_head)
 		}
 		write(pipefd[1], line, strlen(line));
 		write(pipefd[1], "\n", 1);
-		i++;
 		free(line);
+		count++;
 	}
-	// printf("i: %d\n", i);
-	// buf = malloc(sizeof(char *) * (i + 1));
-	// //pipefd[1]の中身をbufにコピー
-	// int j;
-	// j = 0;
-	// while (j < i)
-	// {
-	// 	buf[j] = get_next_line(pipefd[0]);
-	// 	j++;
-	// }
-	// buf[j] = NULL;
-	// expand_env(buf, env_head);
-	// i = 0;
-	// while (buf[i])
-	// {
-	// 	printf("buf[%d]: %s\n", i, buf[i]);
-	// 	write(pipefd[1], buf[i], strlen(buf[i]));
-	// 	write(pipefd[1], "\n", 1);
-	// 	i++;
-	// }
 	close(pipefd[1]);
+	read(pipefd[0], line, 100);
+	write(1, line, 100);
 	return (pipefd[0]);
 }
+
+
+
+
+/* --------------------------------------------------------------- */
+
+// int main() {
+//     t_env *env_head = NULL; // 環境変数リストを初期化または設定
+//     t_info info; // 任意の情報構造体を初期化または設定
+
+//     // ヒアドキュメントをテストするために、デリミタとして"END"を使用
+//     const char *delimiter = "END";
+
+//     int heredoc_fd = heredoc(delimiter, env_head);
+
+//     close(heredoc_fd); // ファイルディスクリプタをクローズ
+
+//     return 0;
+// }
