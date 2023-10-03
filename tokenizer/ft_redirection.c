@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:37 by ekamada           #+#    #+#             */
-/*   Updated: 2023/09/27 21:28:09 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/03 20:50:52 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_c
 			}
 			j++;
 		}
-		commandsets[i].node[k].filename = NULL;
+		// commandsets[i].node[k].filename = NULL;
 		k = 0;
 		if (tokens[j].type == PIPE && tokens[j + 1].arg)
 			j++;
