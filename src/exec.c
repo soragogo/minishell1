@@ -121,10 +121,14 @@ int exec_command(t_commandset *commands, t_info *info){
 	return (status);
 }
 
-void wait_command(t_commandset *commands){
+void wait_command(t_commandset *commands, t_info *info){
 	int status;
 	if (waitpid(commands->pid, &status, 0) < 0)
 		printf("waitpid error\n");
+	if (WIFEXITED(status)){
+		info->exit_status_log = WEXITSTATUS(status);
+		printf("exit_status_log:%d\n", info->exit_status_log);
+	}
 }
 
 
@@ -137,13 +141,14 @@ int handle_command(t_commandset *commands, t_info *info)
 	if (commands[1].node == NULL && is_builtin(commands) != -1)//fork()いらない
 	{
 		status = exec_builtin(commands, info);
+		info->exit_status_log = status;
 	}
 	else//fork()必要
 	{
 		while (commands != NULL)
 		{
 			status = exec_command(commands, info);
-			wait_command(commands);
+			wait_command(commands, info);
 			commands = commands->next;
 		}
 	}

@@ -1,7 +1,6 @@
 #include "../includes/minishell.h"
 #include "../tokenizer/token.h"
 #include "../tokenizer/parser.h"
-#include "../gnl/get_next_line_bonus.h"
 
 void handle_redirection(t_commandset *commands, t_info *info)
 {
@@ -82,11 +81,9 @@ int heredoc(const char *delimiter, t_env *env_head)
 	int pipefd[2];
 	char *line;
 	int count;
-	int fd;
 
 	count = 0;
 	pipe(pipefd);
-	fd = open("tmp", O_CREAT | O_RDWR | O_TRUNC | O_APPEND, 0644);
 	
 	while(1){
 		line = readline("> ");
@@ -104,8 +101,6 @@ int heredoc(const char *delimiter, t_env *env_head)
 		count++;
 	}
 	close(pipefd[1]);
-	read(pipefd[0], line, 100);
-	write(1, line, 100);
 	return (pipefd[0]);
 }
 
