@@ -77,41 +77,6 @@ void undo_redirect(t_commandset *commands)
 	close(commands->node->newfd);
 }
 
-void copy_buf(char **buf, int fd);
-void convert_heredoc(int fd, int pipefd, t_env *env_head, int count)
-{
-	char *line;
-	char **buf;
-	int i;
-
-	i = 0;
-	buf = malloc(sizeof(char *) * (count + 1));
-	while (i < count)
-	{
-		buf[i] = malloc(sizeof(char) * 100);
-		buf[i] = get_next_line(fd);
-		i++;
-	}
-	buf[i] = NULL;
-	expand_env(buf, env_head);
-	close(fd);
-	copy_buf(buf, pipefd);
-}
-
-void copy_buf(char **buf, int fd)
-{
-	int i;
-
-	i = 0;
-	while (buf[i])
-	{
-		write(fd, buf[i], strlen(buf[i]));
-		write(fd, "\n", 1);
-		i++;
-	}
-}
-
-
 int heredoc(const char *delimiter, t_env *env_head)
 {	//pipeの読み込み側fdを返す
 	int pipefd[2];
@@ -121,37 +86,23 @@ int heredoc(const char *delimiter, t_env *env_head)
 
 	count = 0;
 	pipe(pipefd);
-	// printf("%s\n", delimiter);
-	delimiter = "END";//
 	fd = open("tmp", O_CREAT | O_RDWR | O_TRUNC | O_APPEND, 0644);
-	char *line2[3];
-	line2[0] = "dfghj";
-	line2[1] = "dfghj2";
-	line2[2] = "END";
-	int i = 0;
 	
 	while(1){
-		// line = readline("> ");
-		line = line2[i];
-		i++;
+		line = readline("> ");
+		expand_env(&line, env_head);
 		if (line == NULL)
 			break ;
 		if (strcmp(line, delimiter) == 0)
 		{
-			// free(line);
+			free(line);
 			break ;
 		}
-		// write(pipefd[1], line, strlen(line));
-		// write(pipefd[1], "\n", 1);
-		write(fd, line, strlen(line));
-		write(fd, "\n", 1);
-		// read(fd, line, 100);
-		// write(1, line, 100);
-		// free(line);
+		write(pipefd[1], line, strlen(line));
+		write(pipefd[1], "\n", 1);
+		free(line);
 		count++;
 	}
-	convert_heredoc(fd, pipefd[1], env_head, count);
-	// copy_file_contents(pipefd[1], fd);
 	close(pipefd[1]);
 	read(pipefd[0], line, 100);
 	write(1, line, 100);
@@ -163,16 +114,16 @@ int heredoc(const char *delimiter, t_env *env_head)
 
 /* --------------------------------------------------------------- */
 
-int main() {
-    t_env *env_head = NULL; // 環境変数リストを初期化または設定
-    t_info info; // 任意の情報構造体を初期化または設定
+// int main() {
+//     t_env *env_head = NULL; // 環境変数リストを初期化または設定
+//     t_info info; // 任意の情報構造体を初期化または設定
 
-    // ヒアドキュメントをテストするために、デリミタとして"END"を使用
-    const char *delimiter = "END";
+//     // ヒアドキュメントをテストするために、デリミタとして"END"を使用
+//     const char *delimiter = "END";
 
-    int heredoc_fd = heredoc(delimiter, env_head);
+//     int heredoc_fd = heredoc(delimiter, env_head);
 
-    close(heredoc_fd); // ファイルディスクリプタをクローズ
+//     close(heredoc_fd); // ファイルディスクリプタをクローズ
 
-    return 0;
-}
+//     return 0;
+// }

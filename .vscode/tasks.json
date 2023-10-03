@@ -13,7 +13,7 @@
                 "../libft/*.c",
                 "../src/utils.c",
                 "../gnl/*.c",
-                "../src/expand_env.c",
+                // "../src/expand_env.c",
                 "-lreadline",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
