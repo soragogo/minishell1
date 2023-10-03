@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 14:48:21 by mayyamad          #+#    #+#             */
-/*   Updated: 2023/06/10 02:37:11 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:14:58 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen_gnl(const char *str)
 {
 	size_t	i;
 
@@ -27,7 +27,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	*ft_memcpy_gnl(void *dst, const void *src, size_t n)
 {
 	unsigned char		*d;
 	const unsigned char	*s;
@@ -46,7 +46,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin_gnl(char const *s1, char const *s2)
 {
 	char		*s;
 	size_t		len1;
@@ -55,20 +55,20 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (s1 == NULL)
 		len1 = 0;
 	else
-		len1 = ft_strlen(s1);
+		len1 = ft_strlen_gnl(s1);
 	if (s2 == NULL)
 		return (NULL);
-	len2 = ft_strlen(s2);
+	len2 = ft_strlen_gnl(s2);
 	s = (char *)malloc(len1 + len2 + 1);
 	if (s == NULL)
 		return (NULL);
-	ft_memcpy(s, s1, len1);
-	ft_memcpy(s + len1, s2, len2 + 1);
+	ft_memcpy_gnl(s, s1, len1);
+	ft_memcpy_gnl(s + len1, s2, len2 + 1);
 	free((void *)s1);
 	return (s);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr_gnl(const char *s, int c)
 {
 	const unsigned char	*p;
 
@@ -84,7 +84,7 @@ char	*ft_strchr(const char *s, int c)
 	return ((char *)p);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcpy_gnl(char *dst, const char *src, size_t dstsize)
 {
 	size_t	srclen;
 	size_t	i;

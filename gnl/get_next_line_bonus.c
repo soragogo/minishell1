@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 02:40:41 by mayyamad          #+#    #+#             */
-/*   Updated: 2023/06/13 12:11:24 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:13:15 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*ft_read_all(int fd, char *line)
 	char	*buf;
 
 	read_byte = 1;
-	while (!(ft_strchr(line, '\n')) && read_byte != 0)
+	while (!(ft_strchr_gnl(line, '\n')) && read_byte != 0)
 	{
 		buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
 		if (buf == NULL)
@@ -30,7 +30,7 @@ static char	*ft_read_all(int fd, char *line)
 			return (line);
 		}
 		buf[read_byte] = '\0';
-		line = ft_strjoin(line, buf);
+		line = ft_strjoin_gnl(line, buf);
 		free(buf);
 	}
 	return (line);
@@ -53,7 +53,7 @@ char	*ft_get_line(char *buf, char *ret)
 	ret = malloc((len + 1) * sizeof(char));
 	if (!ret)
 		return (NULL);
-	ft_strlcpy(ret, buf, len + 1);
+	ft_strlcpy_gnl(ret, buf, len + 1);
 	return (ret);
 }
 
@@ -63,14 +63,14 @@ int	get_next_line_second(char **save, char **line)
 	char	*p;
 
 	buf = NULL;
-	buf = ft_strjoin(buf, *save + 1);
+	buf = ft_strjoin_gnl(buf, *save + 1);
 	*line = ft_get_line(buf, *line);
-	p = ft_strchr(buf, '\n');
+	p = ft_strchr_gnl(buf, '\n');
 	free (*save);
 	*save = NULL;
 	if (p)
 	{
-		*save = ft_strjoin(*save, p);
+		*save = ft_strjoin_gnl(*save, p);
 		free(buf);
 		return (1);
 	}
@@ -97,9 +97,41 @@ char	*get_next_line(int fd)
 	if (!buf)
 		return (NULL);
 	line = ft_get_line(buf, line);
-	p = ft_strchr(buf, '\n');
+	p = ft_strchr_gnl(buf, '\n');
 	if (p)
-		save[fd] = ft_strjoin(save[fd], p);
+		save[fd] = ft_strjoin_gnl(save[fd], p);
 	free(buf);
 	return (line);
 }
+
+// #include "get_next_line_bonus.h"
+// #include <fcntl.h>
+// #include <stdio.h>
+
+// int main(int argc, char **argv)
+// {
+//     int fd;
+//     char *line;
+
+//     if (argc != 2)
+//     {
+//         printf("Usage: %s <filename>\n", argv[0]);
+//         return (1);
+//     }
+
+//     fd = open(argv[1], O_RDONLY);
+//     if (fd == -1)
+//     {
+//         perror("Error opening file");
+//         return (1);
+//     }
+
+//     while ((line = get_next_line(fd)) != NULL)
+//     {
+//         printf("Line read: %s\n", line);
+//         free(line);
+//     }
+
+//     close(fd);
+//     return (0);
+// }

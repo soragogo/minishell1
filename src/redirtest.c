@@ -1,6 +1,7 @@
 #include "../includes/minishell.h"
 #include "../tokenizer/token.h"
 #include "../tokenizer/parser.h"
+#include "../gnl/get_next_line_bonus.h"
 
 void handle_redirection(t_commandset *commands, t_info *info)
 {
@@ -76,7 +77,8 @@ void undo_redirect(t_commandset *commands)
 	close(commands->node->newfd);
 }
 
-void convert_heredoc(int fd, t_env *env_head, int count)
+void copy_buf(char **buf, int fd);
+void convert_heredoc(int fd, int pipefd, t_env *env_head, int count)
 {
 	char *line;
 	char **buf;
@@ -84,17 +86,22 @@ void convert_heredoc(int fd, t_env *env_head, int count)
 
 	i = 0;
 	buf = malloc(sizeof(char *) * (count + 1));
-	while (1)
+	while (i < count)
 	{
-		line = get_next_line(fd);
-		if (line == NULL)
-			break ;
-		buf[i] = line;
-		free(line);
+		buf[i] = malloc(sizeof(char) * 100);
+		buf[i] = get_next_line(fd);
 		i++;
 	}
 	buf[i] = NULL;
 	expand_env(buf, env_head);
+	close(fd);
+	copy_buf(buf, pipefd);
+}
+
+void copy_buf(char **buf, int fd)
+{
+	int i;
+
 	i = 0;
 	while (buf[i])
 	{
@@ -102,25 +109,8 @@ void convert_heredoc(int fd, t_env *env_head, int count)
 		write(fd, "\n", 1);
 		i++;
 	}
-	free(buf);
-	close(fd);
 }
 
-void copy_file_contents(int pipefd, int fd)
-{
-	char *line;
-
-	while (1)
-	{
-		line = get_next_line(pipefd);
-		if (line == NULL)
-			break ;
-		write(fd, line, strlen(line));
-		write(fd, "\n", 1);
-		free(line);
-	}
-	close(pipefd);
-}
 
 int heredoc(const char *delimiter, t_env *env_head)
 {	//pipeの読み込み側fdを返す
@@ -132,46 +122,39 @@ int heredoc(const char *delimiter, t_env *env_head)
 	count = 0;
 	pipe(pipefd);
 	// printf("%s\n", delimiter);
-	fd = open("tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	delimiter = "END";//
+	fd = open("tmp", O_CREAT | O_RDWR | O_TRUNC | O_APPEND, 0644);
+	char *line2[3];
+	line2[0] = "dfghj";
+	line2[1] = "dfghj2";
+	line2[2] = "END";
+	int i = 0;
+	
 	while(1){
-		line = readline("> ");
+		// line = readline("> ");
+		line = line2[i];
+		i++;
 		if (line == NULL)
 			break ;
 		if (strcmp(line, delimiter) == 0)
 		{
-			free(line);
+			// free(line);
 			break ;
 		}
 		// write(pipefd[1], line, strlen(line));
 		// write(pipefd[1], "\n", 1);
 		write(fd, line, strlen(line));
 		write(fd, "\n", 1);
-		free(line);
+		// read(fd, line, 100);
+		// write(1, line, 100);
+		// free(line);
 		count++;
 	}
-	convert_heredoc(fd, env_head, count);
-	copy_file_contents(pipefd[1], fd);
-	// printf("i: %d\n", i);
-	// buf = malloc(sizeof(char *) * (i + 1));
-	// //pipefd[1]の中身をbufにコピー
-	// int j;
-	// j = 0;
-	// while (j < i)
-	// {
-	// 	buf[j] = get_next_line(pipefd[0]);
-	// 	j++;
-	// }
-	// buf[j] = NULL;
-	// expand_env(buf, env_head);
-	// i = 0;
-	// while (buf[i])
-	// {
-	// 	printf("buf[%d]: %s\n", i, buf[i]);
-	// 	write(pipefd[1], buf[i], strlen(buf[i]));
-	// 	write(pipefd[1], "\n", 1);
-	// 	i++;
-	// }
+	convert_heredoc(fd, pipefd[1], env_head, count);
+	// copy_file_contents(pipefd[1], fd);
 	close(pipefd[1]);
+	read(pipefd[0], line, 100);
+	write(1, line, 100);
 	return (pipefd[0]);
 }
 
@@ -188,17 +171,6 @@ int main() {
     const char *delimiter = "END";
 
     int heredoc_fd = heredoc(delimiter, env_head);
-
-    // ヒアドキュメントから読み取った内容を標準出力に出力することもできます
-    // この例では、コンソールに表示しますが、実際のアプリケーションでは適切な操作を行ってください
-    char *line;
-    while (1) {
-        line = get_next_line(heredoc_fd);
-        if (line == NULL)
-            break;
-        printf("%s\n", line); // ヒアドキュメントの内容を表示
-        free(line);
-    }
 
     close(heredoc_fd); // ファイルディスクリプタをクローズ
 
