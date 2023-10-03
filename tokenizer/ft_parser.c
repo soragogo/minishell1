@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/03 21:21:48 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/07 15:28:53 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,21 @@ t_commandset *create_command_pipeline(t_token *tokens, int num_of_commands)
 	return commandsets;
 }
 
-int count_command(t_token *tokens)
+int count_command(t_token *tokens, int current_cmd)
 {
 	int i = 0;
 	int count = 0;
 
+	while (current_cmd > 0)
+	{
+		while (tokens[i].arg && tokens[i].type != PIPE)
+			i++;
+		if (tokens[i].type == PIPE && tokens[i + 1].arg)
+		{
+			current_cmd--;
+			i++;
+		}
+	}
 	while (tokens[i].arg != NULL && tokens[i].type != PIPE)
 	{
 		if (tokens[i].type == COMMAND || tokens[i].type == COMMAND_OPTION || tokens[i].type == UNCATEGORIZED)
@@ -112,7 +122,7 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 	int count = 0;
 	while (i < num_of_commands)
 	{
-		count = count_command(tokens);
+		count = count_command(tokens, i);
 		commandsets[i].command = ft_calloc(count + 1, sizeof(char *));
 
 		while (tokens[j].arg != NULL && tokens[j].type != PIPE)

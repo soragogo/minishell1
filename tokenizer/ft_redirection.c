@@ -6,15 +6,10 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:37 by ekamada           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/10/03 21:19:47 by emukamada        ###   ########.fr       */
-=======
-/*   Updated: 2023/10/03 20:50:52 by emukamada        ###   ########.fr       */
->>>>>>> ae4c1a4 (filenameに謎にNULL入れてたの消した)
+/*   Updated: 2023/10/07 15:28:41 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "token.h"
 #include "parser.h"
 #include <stdbool.h>
 #include <libc.h>
@@ -29,8 +24,10 @@ int count_redirection(t_token *tokens, int current_pipe)
 		while (tokens[i].arg && tokens[i].type != PIPE)
 			i++;
 		if (tokens[i].type == PIPE)
+		{
 			i++;
-		current_pipe--;
+			current_pipe--;
+		}
 	}
 	while (tokens[i].arg != NULL && tokens[i].type != PIPE)
 	{
