@@ -34,6 +34,7 @@ int main()
 	
 	envmap_init(&env);//info_initの方がいいか
 	info.map_head = env;
+	info.exit_status_log = 0;
 	while (1)
 	{
 		ft_signals();
