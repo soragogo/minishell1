@@ -2,11 +2,11 @@
 
 // void fatal_error(const char *msg) __attribute__((noreturn));
 
-void fatal_error(char *msg)
-{
-	printf("%s\n", msg);
-	exit(1);
-}
+// void fatal_error(char *msg)
+// {
+// 	printf("%s\n", msg);
+// 	exit(1);
+// }
 
 int ft_system(t_token *tokens, int *status)
 {
