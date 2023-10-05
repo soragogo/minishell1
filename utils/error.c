@@ -12,9 +12,13 @@ void fatal_error(char *msg)
 void error_message(char *command, char *arg, char *msg)
 {
     ft_putstr_fd("minishell: ", STDERR_FILENO);
-    ft_putstr_fd(command, STDERR_FILENO);
-    ft_putstr_fd(": ", STDERR_FILENO);
-    if (arg){
+    if (command)
+    {
+        ft_putstr_fd(command, STDERR_FILENO);
+        ft_putstr_fd(": ", STDERR_FILENO);
+    }
+    if (arg)
+    {
         ft_putstr_fd(arg, STDERR_FILENO);
         ft_putstr_fd(": ", STDERR_FILENO);
     }

@@ -32,7 +32,7 @@ int main()
 	t_info info;
 	t_commandset *commands;
 	
-	envmap_init(&env);//info_initの方がいいか
+	envmap_init(&env);
 	info.map_head = env;
 	info.exit_status_log = 0;
 	while (1)

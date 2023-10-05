@@ -67,8 +67,7 @@ void	envmap_init(t_env **map)
     while(*env) {
         name = get_env_name(name, *env);
 		value = get_env_value(value, *env);
-		if (set_env(map, name, value) == -1)
-			printf("error");
+		set_env(map, name, value);
 		env++;
 	}
 }
