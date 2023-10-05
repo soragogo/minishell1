@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenizer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:44 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/06 13:51:53 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/07 15:22:15 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 
 int is_dilimeter(char c)
 {
-	if (c == '|' || c == '<' || c == '>')
-		return 1;
-	return 0;
+    return (c == '|' || c == '<' || c == '>') ? 1 : 0;
 }
 
 char *find_end_of_quote(char *command)
@@ -106,13 +104,14 @@ t_token *ft_tokenizer(char *command)
 	int num_of_tokens;
 	t_token *tokens;
 
-		num_of_tokens = count_tokens(command);
-		tokens = (t_token *)ft_calloc(num_of_tokens + 1, sizeof(t_token));
-		if (!tokens)
-			return (NULL);
-		split_into_tokens(tokens, command, num_of_tokens);
-		return (tokens);
-	}
+	num_of_tokens = count_tokens(command);
+	tokens = (t_token *)ft_calloc(num_of_tokens + 1, sizeof(t_token));
+	if (!tokens)
+		return (NULL);
+	split_into_tokens(tokens, command, num_of_tokens);
+	return (tokens);
+}
+
 
 // #include <libc.h>
 // int main()

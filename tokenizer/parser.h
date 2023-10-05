@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:34 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/06 13:16:29 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/07 15:22:13 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,15 @@ typedef struct s_commandset
 
 void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_commands);
 void test_commandsets(t_commandset *commandsets, int num_of_commands);
+int count_commandset(t_token *tokens);
+void categorize_tokens(t_token *tokens);
+t_commandset *create_command_pipeline(t_token *tokens, int num_of_commands);
+int count_command(t_token *tokens);
+void import_command(t_token *tokens, t_commandset *commandsets, int num_of_commands);
+void free_parser(t_commandset *commandsets);
+t_commandset *ft_parser(char *buff);
+int count_redirection(t_token *tokens, int current_pipe);
+void connect_redirections(t_redirect *node, int count);
+void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_commands);
 
 #endif
