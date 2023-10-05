@@ -38,6 +38,8 @@ void expand_env(char **command, t_env *env_head)
         i++;
     if (command[0][i] == '$' && command[0][i + 1] != '\0')
     {
+        if (command[0][i + 1] == '?')
+            return ;
         before_env = ft_substr(command[0], 0, i);
         if (command[0][i + 1] == '(' || command[0][i + 1] == '{')
         {

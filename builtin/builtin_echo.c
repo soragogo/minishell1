@@ -14,24 +14,24 @@ int ft_echo(char **command, int status)
 
 	i = 1;
 	n_option = 0;
-	if (command[i] && strncmp(command[i], "-n", 2) == 0 && strlen(command[i]) == 2)
+	if (command[i] && ft_strncmp(command[i], "-n", 3) == 0)// && strlen(command[i]) == 2)
 	{
 		n_option = 1;
 		i++;
 	}
 	while (command[i])
 	{
-		if (command[i] && strncmp(command[i], "$?", 2) == 0)
-			ft_putnbr_fd(status, 1);
+		if (command[i] && ft_strncmp(command[i], "$?", 2) == 0)
+			ft_putnbr_fd(status, STDOUT_FILENO);
 		else
-			ft_putstr(command[i], 1);
+			ft_putstr(command[i], STDOUT_FILENO);
 		i++;
 		if (command[i])
-			write(1, " ", 1);
+			write(1, " ", STDOUT_FILENO);
 	}
 	if (n_option == 0)
-		write(1, "\n", 1);
-	return (0);
+		write(1, "\n", STDOUT_FILENO);
+	return (EXIT_SUCCESS);
 }
 
 // #include <stdio.h>
