@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:44 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/05 13:51:09 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/05 14:10:46 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,44 +68,44 @@ int count_tokens(char *command)
 	return (count);
 }
 
-void split_into_tokens(t_token * tokens, char *command, int num_of_tokens)
-	{
-		char *start;
-		char *end;
-		int i;
-
-	i = 0;
-	start = command;
-	while (*start == ' ')
-		start++;
-	end = find_end_of_arg(command);
-	while (i < num_of_tokens)
-	{
-		tokens[i].arg = ft_calloc(end - start + 2, sizeof(char));
-		tokens[i].is_freed = 0;
-		strlcpy(tokens[i].arg, start, end - start + 2);
-		start = end + 1;
-		while (*start == ' ')
-			start++;
-		if (*start)
-			end = find_end_of_arg(start);
-		i++;
-	}
-	tokens[i].arg = NULL;
+static char *skip_spaces(char *str)
+{
+    while (*str && *str == ' ')
+        str++;
+    return str;
 }
+
+void split_into_tokens(t_token *tokens, char *command, int num_of_tokens)
+{
+    char *start;
+    char *end;
+    int i;
+
+    start = skip_spaces(command);
+    for (i = 0; i < num_of_tokens; i++)
+    {
+        end = find_end_of_arg(start);
+        tokens[i].arg = ft_calloc(end - start + 2, sizeof(char));
+        tokens[i].is_freed = 0;
+        strlcpy(tokens[i].arg, start, end - start + 2);
+        start = skip_spaces(end + 1);
+    }
+    tokens[i].arg = NULL;
+}
+
 
 t_token *ft_tokenizer(char *command)
 {
 	int num_of_tokens;
 	t_token *tokens;
 
-		num_of_tokens = count_tokens(command);
-		tokens = (t_token *)ft_calloc(num_of_tokens + 1, sizeof(t_token));
-		if (!tokens)
-			return (NULL);
-		split_into_tokens(tokens, command, num_of_tokens);
-		return (tokens);
-	}
+	num_of_tokens = count_tokens(command);
+	tokens = (t_token *)ft_calloc(num_of_tokens + 1, sizeof(t_token));
+	if (!tokens)
+		return (NULL);
+	split_into_tokens(tokens, command, num_of_tokens);
+	return (tokens);
+}
 
 // #include <libc.h>
 // int main()
