@@ -12,7 +12,7 @@ void handler(int signum)
 		if (signum == SIGINT)
 		{
 			rl_on_new_line();
-			printf("\n");
+			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_redisplay();
 		}
 }
