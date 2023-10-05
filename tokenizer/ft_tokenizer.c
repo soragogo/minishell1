@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenizer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:44 by ekamada           #+#    #+#             */
-/*   Updated: 2023/09/27 20:12:31 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/05 13:51:09 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,47 +16,40 @@
 
 int is_dilimeter(char c)
 {
-	if (c == '|' || c == '<' || c == '>')
-		return 1;
-	return 0;
+	return (c == '|' || c == '<' || c == '>') ? 1 : 0;
 }
 
 char *find_end_of_quote(char *command)
 {
-	char *tmp = command;
-	char c = *command;
+    char quote_char;
 
-	tmp++;
-	while (*tmp && *tmp != c)
-		tmp++;
-	tmp++;
-	return (tmp);
+	quote_char = *command;
+	command++;
+    while (*command && *command != quote_char)
+        command++;
+    if (*command)
+        command++;
+    return command;
 }
 
 char *find_end_of_arg(char *command)
 {
-	char *tmp = command;
-	if (is_dilimeter(*tmp) == 1)
-	{
-		if (*tmp == '<' && *(tmp + 1) == '<')
-			tmp++;
-		else if (*tmp == '>' && *(tmp + 1) == '>')
-			tmp++;
-		return tmp;
-	}
-	else
-	{
-		while (is_dilimeter(*command) == 0 && *command != ' ' && *command)
-		{
-			if (*command == '\'' || *command == '\"')
-				command = find_end_of_quote(command);
-			else if (*command)
-				command++;
-		}
-		command--;
-		return (command);
-	}
+    if (is_dilimeter(*command))
+    {
+        if ((*command == '<' && *(command + 1) == '<') || (*command == '>' && *(command + 1) == '>'))
+            command++;
+        return (command);
+    }
+    while (*command && !is_dilimeter(*command) && *command != ' ')
+    {
+        if (*command == '\'' || *command == '\"')
+            command = find_end_of_quote(command);
+        else
+            command++;
+    }
+    return (command - 1);
 }
+
 
 int count_tokens(char *command)
 {
