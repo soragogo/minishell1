@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:44 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/05 14:11:17 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/05 16:20:23 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 #include "parser.h"
 #include <stdbool.h>
 
-int is_dilimeter(char c)
-{
-	return (c == '|' || c == '<' || c == '>') ? 1 : 0;
-}
 
 char *find_end_of_quote(char *command)
 {
@@ -68,12 +64,7 @@ int count_tokens(char *command)
 	return (count);
 }
 
-static char *skip_spaces(char *str)
-{
-    while (*str && *str == ' ')
-        str++;
-    return str;
-}
+
 
 void split_into_tokens(t_token *tokens, char *command, int num_of_tokens)
 {
