@@ -100,7 +100,7 @@ int handle_command(t_commandset *commands, t_info *info);
 void expand_env(char **command, t_env *env_head);
 
 	/* error */
-void error_message(char *command, char *file, char *msg);
-void fatal_error(char *command);
+void error_message(char *command, char *arg, char *msg);
+void fatal_error(char *msg);
 
 #endif

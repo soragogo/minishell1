@@ -12,7 +12,7 @@ char *get_env_name(char *ret, char *env)
 		i++;
 	ret = malloc(sizeof(char) * i + 1);
 	if (ret == NULL)
-		printf("malloc error");//error
+		fatal_error("malloc error");
 	while (j < i)
 	{
 		ret[j] = env[j];
@@ -32,7 +32,9 @@ char *get_env_value(char *ret, char *env) //""で囲まれてた時とかの処�
 	j = 0;
 	while (env[i] != '=' && env[i] != '\0')
 		i++;
-	ret = malloc(sizeof(char) * strlen(&env[i + 1]) + 1); // strlen書き換え
+	ret = malloc(sizeof(char) * ft_strlen(&env[i + 1]) + 1);
+	if (ret == NULL)
+		fatal_error("malloc error");
 	while (env[i + j + 1] != '\0')
 	{
 		ret[j] = env[i + j + 1];
@@ -47,9 +49,9 @@ t_env	*map_new(void)
 {
 	t_env	*map;
 
-	map = calloc(1, sizeof(*map));
+	map = ft_calloc(1, sizeof(*map));
 	if (map == NULL)
-		printf("calloc error");//error
+		fatal_error("malloc error");
 	return (map);
 }
 
@@ -128,17 +130,17 @@ t_env *item_new(t_env *new_env, char *name, char *value)
 
 size_t count_env(t_env *env)
 {
-	size_t i;
+	size_t count;
 
-	i = 0;
+	count = 0;
 	if(!(env->name))
 		return (0);
 	while (env->name)
 	{
-		i++;
+		count++;
 		env++;
 	}
-	return (i);
+	return (count);
 }
 
 // 後ろに新しいの追加

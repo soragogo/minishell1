@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:11:31 by ekamada           #+#    #+#             */
-/*   Updated: 2023/06/04 17:42:48 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/05 17:15:32 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*ft_calloc(size_t count, size_t size)
 //    ptr = (int *)ft_calloc((size_t)SIZE_MAX / 10 + (size_t)1, 10);
 //    if(ptr == NULL) {
 //       printf("メモリが確保できません\n");
-//       exit(EXIT_FAILURE);
+//       exit(1);
 //    }
 //    printf("%lu", SIZE_MAX);
 //    p = ptr;

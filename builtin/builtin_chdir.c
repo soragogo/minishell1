@@ -43,16 +43,16 @@ int ft_chdir(char **commands, t_env **env)
 	home = getenv("HOME");
 	if (!home){
 		error_message("cd", NULL, "HOME not set");
-		return (EXIT_FAILURE);
+		return (1);
 	}
 	dir_path = map_get(env, "PWD");
 	if (!dir_path){
 		error_message("cd", NULL, "PWD not set");
-		return (EXIT_FAILURE);
+		return (1);
 	}
 	old_pwd = calloc(sizeof(char) * PATH_MAX, 1);
 	if (!old_pwd){
-		fatal_error("cd");
+		fatal_error("calloc error");
 	}
 	strlcpy(old_pwd, dir_path, PATH_MAX);
 	if (commands[1] == NULL)//引数がない場合
@@ -68,7 +68,7 @@ int ft_chdir(char **commands, t_env **env)
 		dir_path = map_get(env, "OLDPWD");
 		if (!dir_path){
 			error_message("cd", NULL, "OLDPWD not set");
-			return (EXIT_FAILURE);
+			return (1);
 		}
 		// printf("%s\n", dir_path);
 	}
@@ -85,7 +85,7 @@ int ft_chdir(char **commands, t_env **env)
 	{
 		set_env(env, "PWD", old_pwd);
 		error_message("cd", commands[1], strerror(errno));
-		return (EXIT_FAILURE);
+		return (1);
 	}
 	// printf("OLDPWD: %s\n\n", old_pwd);
 	// int ret = chdir(dir_path);
@@ -93,7 +93,7 @@ int ft_chdir(char **commands, t_env **env)
 	if(set_env(env, "OLDPWD", old_pwd) == -1 || set_env(env, "PWD", dir_path) == -1)
 	{
 		free(old_pwd);
-		return (EXIT_FAILURE);
+		return (1);
 	}
 	// printf("OLDPWD: %s\n\n", map_get(env, "OLDPWD"));
 	// printf("PWD: %s\n", map_get(env, "PWD"));
@@ -101,5 +101,5 @@ int ft_chdir(char **commands, t_env **env)
 	// chdir(dir_path);
 	ft_pwd();//確認用
 	free(old_pwd);
-	return (EXIT_SUCCESS);
+	return (0);
 }

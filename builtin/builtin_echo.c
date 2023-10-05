@@ -31,7 +31,7 @@ int ft_echo(char **command, int status)
 	}
 	if (n_option == 0)
 		write(1, "\n", STDOUT_FILENO);
-	return (EXIT_SUCCESS);
+	return (0);
 }
 
 // #include <stdio.h>
