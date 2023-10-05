@@ -1,6 +1,6 @@
-#include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "includes/minishell.h"
+#include "tokenizer/token.h"
+#include "tokenizer/parser.h"
 
 void free_before_closing(t_token *tokens, char *command_buf)
 {
