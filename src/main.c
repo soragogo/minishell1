@@ -48,8 +48,8 @@ int main()
 		commands = ft_parser(command_buf);
 		// commands = create_command_pipeline(tokens);
 		// expand_env(commands->command, info.map_head);
-		handle_command(commands, &info);
-		// printf("exit_status_log:%d\n", info.exit_status_log);
+		info.exit_status_log = handle_command(commands, &info);
+		printf("exit_status_log:%d\n", info.exit_status_log);
 		/* ------------------ exec_command ---------------------- */
 		// status = is_builtin(tokens, &info);//builtinだったら実行
 		// if (status == -1)

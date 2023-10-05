@@ -73,7 +73,7 @@ void handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command)
 void create_pipe(t_commandset *command, int new_pipe[2]){
 	if (command->next){
 		if (pipe(new_pipe) < 0)
-			printf("pipe error");
+			fatal_error("pipe error");
 	}
 }
 
@@ -105,7 +105,7 @@ int exec_command(t_commandset *commands, t_info *info){
 			status = execve(path, commands->command, my_environ);
 			if (status == -1)
 			{
-				printf("minishell: %s: command not found\n", *commands->command);
+				error_message(*commands->command, NULL, "command not found");
 				exit(127);
 			}
 		}
@@ -121,14 +121,14 @@ int exec_command(t_commandset *commands, t_info *info){
 	return (status);
 }
 
-void wait_command(t_commandset *commands, t_info *info){
+int wait_command(t_commandset *commands, t_info *info){
 	int status;
 	if (waitpid(commands->pid, &status, 0) < 0)
-		printf("waitpid error\n");
+		fatal_error("waitpid error");
 	if (WIFEXITED(status)){
-		info->exit_status_log = WEXITSTATUS(status);
-		printf("exit_status_log:%d\n", info->exit_status_log);
+		status = WEXITSTATUS(status);
 	}
+	return (status);
 }
 
 
@@ -141,14 +141,13 @@ int handle_command(t_commandset *commands, t_info *info)
 	if (commands[1].node == NULL && is_builtin(commands) != -1)//fork()いらない
 	{
 		status = exec_builtin(commands, info);
-		info->exit_status_log = status;
 	}
 	else//fork()必要
 	{
 		while (commands != NULL)
 		{
-			status = exec_command(commands, info);
-			wait_command(commands, info);
+			exec_command(commands, info);
+			status = wait_command(commands, info);
 			commands = commands->next;
 		}
 	}
