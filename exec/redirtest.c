@@ -67,13 +67,22 @@ void do_redirect(t_redirect *node)
 	do_redirect(node->next);
 }
 
-void undo_redirect(t_commandset *commands)
+// void undo_redirect(t_commandset *commands)
+// {
+// 	if (commands->node == NULL)
+// 		return ;
+// 	undo_redirect(commands->next);
+// 	dup2(commands->node->stashfd, commands->node->oldfd);//一時保存したSTDOUT_FILENOを復元
+// 	close(commands->node->newfd);
+// }
+
+void undo_redirect(t_redirect *node)
 {
-	if (commands->node->filename == NULL)
+	if (node == NULL)
 		return ;
-	undo_redirect(commands->next);
-	dup2(commands->node->stashfd, commands->node->oldfd);//一時保存したSTDOUT_FILENOを復元
-	close(commands->node->newfd);
+	undo_redirect(node->next);
+	dup2(node->stashfd, node->oldfd);//一時保存したSTDOUT_FILENOを復元
+	close(node->newfd);
 }
 
 int heredoc(const char *delimiter, t_env *env_head)
