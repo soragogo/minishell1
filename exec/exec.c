@@ -20,10 +20,15 @@ int is_builtin(t_commandset *command){
 int exec_builtin(t_commandset *commands, t_info *info)
 {
 	int status;
+	int dupinfd;
+	int dupoutfd;
 
 	status = 0;
 	//後でredirectの処理を書く
-
+	dupinfd = dup(STDIN_FILENO);
+	dupoutfd = dup(STDOUT_FILENO);
+	printf("1\n");
+	handle_redirection(commands, info);
 	if (strcmp(*commands[0].command, "echo") == 0)
 		status = ft_echo(commands->command, info->exit_status_log);
 	else if (strcmp(*commands[0].command, "cd") == 0)
@@ -40,6 +45,9 @@ int exec_builtin(t_commandset *commands, t_info *info)
 		status = ft_exit(commands->command, info);
 	else
 		return (-1);
+	undo_redirect(commands->node);
+	dup2(dupinfd, STDIN_FILENO);
+	dup2(dupoutfd, STDOUT_FILENO);
 	return (status);
 }
 
@@ -97,6 +105,7 @@ int exec_command(t_commandset *commands, t_info *info){
 		{
 			// write(1, "builtin\n", 8);
 			status = exec_builtin(commands, info);
+			
 		}
 		else
 		{
@@ -156,10 +165,12 @@ int handle_command(t_commandset *commands, t_info *info)
 	//pipeなし
 	if (commands[1].node == NULL && is_builtin(commands) != -1)//fork()いらない
 	{
+		printf("builtin\n");
 		status = exec_builtin(commands, info);
 	}
 	else//fork()必要
 	{
+		printf("not builtin\n");
 		while (commands != NULL)
 		{
 			exec_command(commands, info);
