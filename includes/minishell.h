@@ -101,6 +101,7 @@ char  *env_join(char *name, char *value, char **environ);
 char *fetch_path(char *file, t_env **map);
 int handle_command(t_commandset *commands, t_info *info);
 void expand_env(char **command, t_env *env_head);
+int ft_strcmp(char *s1, char *s2);
 
 	/* error */
 void error_message(char *command, char *arg, char *msg);

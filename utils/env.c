@@ -176,7 +176,7 @@ void env_unset(t_env **env_head, char *delete_env_key)
 		return;
 	while (env && env->name)
 	{
-		if (strcmp(delete_env_key, env->name) == 0)
+		if (ft_strcmp(delete_env_key, env->name) == 0)
 			break;
 		prev = env;
 		env = env->next;
@@ -196,7 +196,7 @@ char *map_get(t_env **env_head, char *name)
 	env = *env_head;
 	while (env && env->name)
 	{
-		if (strcmp(name, env->name) == 0)
+		if (ft_strcmp(name, env->name) == 0)
 			return (env->value);
 		env = env->next;
 	}
