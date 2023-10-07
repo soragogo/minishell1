@@ -16,13 +16,14 @@ function run_test() {
 }
 
 # コンパイル
-cd ../tester/
-cc exec/*.c tokenizer/*.c builtin/*.c libft/*.c -lreadline
-
+cd ../
+# cc exec/*.c tokenizer/*.c builtin/*.c libft/*.c -lreadline
+cc exec/*.c tokenizer/*.c builtin/*.c libft/*.c utils/*.c main.c -lreadline
 # テストケースの実行
 
 run_test "echo hello" "hello"
 run_test "ls" "$(ls)"
+run_test "       ls" "$(ls)"
 run_test "ls -l | grep -v \"c\"" "$(ls -l | grep -v "c")"
 
 # ... 他のテストケースを追加 ...
