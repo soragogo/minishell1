@@ -16,8 +16,8 @@ function run_test() {
 }
 
 # コンパイル
-cd ../src/
-cc *.c ../tokenizer/*.c ../builtin/*.c ../libft/*.c -lreadline
+cd ../tester/
+cc exec/*.c tokenizer/*.c builtin/*.c libft/*.c -lreadline
 
 # テストケースの実行
 
