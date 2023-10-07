@@ -9,7 +9,7 @@ int ft_pwd()//char *command_buf
 	envp = getcwd(NULL, 0);
 	if (!envp)
 	{
-		printf("error: getcwd");
+		error_message("pwd", NULL, strerror(errno));
 		return (1);
 	}//ここはあとで
 	// printf("%s\n", envp);

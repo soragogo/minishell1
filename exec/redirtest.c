@@ -1,29 +1,60 @@
 #include "../includes/minishell.h"
 #include "../tokenizer/token.h"
 #include "../tokenizer/parser.h"
-#include "../gnl/get_next_line_bonus.h"
+
+// void redirect(t_commandset *commands, t_info *info)
+// {
+// 	while (commands->node){
+// 		handle_redirection(commands, info);
+// 		commands->node = commands->node->next;
+// 	}
+// }
 
 void handle_redirection(t_commandset *commands, t_info *info)
 {
-	if (commands->node->filename == NULL)
-		return ;
-	if (commands->node->type == REDIRECT_OUT)
-	{
-		redirect_out(commands->node);
-	}
-	else if (commands->node->type == REDIRECT_IN)
-	{
-		redirect_in(commands->node);
-	}
-	else if (commands->node->type == APPEND_OUT)
-	{
-		append(commands->node);
-	}
-	else if (commands->node->type == HERE_DOCUMENT)
-	{
-		here_document(commands, info);
+	t_redirect *tmp_node;
+
+	tmp_node = commands->node;
+	while (tmp_node){
+		if (tmp_node->filename == NULL)
+			return ;
+		if (tmp_node->type == REDIRECT_OUT)
+		{
+			redirect_out(tmp_node);
+		}
+		else if (tmp_node->type == REDIRECT_IN)
+		{
+			redirect_in(tmp_node);
+		}
+		else if (tmp_node->type == APPEND_OUT)
+		{
+			append(tmp_node);
+		}
+		else if (tmp_node->type == HERE_DOCUMENT)
+		{
+			here_document(tmp_node, info);
+		}
+		tmp_node = tmp_node->next;
 	}
 }
+// if (commands->node->filename == NULL)
+// 			return ;
+// 		if (commands->node->type == REDIRECT_OUT)
+// 		{
+// 			redirect_out(commands->node);
+// 		}
+// 		else if (commands->node->type == REDIRECT_IN)
+// 		{
+// 			redirect_in(commands->node);
+// 		}
+// 		else if (commands->node->type == APPEND_OUT)
+// 		{
+// 			append(commands->node);
+// 		}
+// 		else if (commands->node->type == HERE_DOCUMENT)
+// 		{
+// 			here_document(commands->node, info);
+// 		}
 
 void append(t_redirect *node)
 {
@@ -49,13 +80,13 @@ void redirect_in(t_redirect *node)
 	// printf("\nfd:%d\n", node->newfd);
 }
 
-void here_document(t_commandset *command, t_info *info)
+void here_document(t_redirect *node, t_info *info)
 {
 	// int fd;
 
-	command->node->oldfd = STDIN_FILENO;
-	command->node->newfd = heredoc(command->node->filename, info->map_head);
-	do_redirect(command->node);
+	node->oldfd = STDIN_FILENO;
+	node->newfd = heredoc(node->filename, info->map_head);
+	do_redirect(node);
 	// printf("\nfd:%d\n", command->node->newfd);
 }
 
@@ -65,16 +96,17 @@ void do_redirect(t_redirect *node)
 		return ;
 	node->stashfd = dup(node->oldfd);//STDOUT_FILENOを一時保存
 	dup2(node->newfd, node->oldfd);//bのfdをSTDOUT_FILENOにコピー
-	do_redirect(node->next);
+	// do_redirect(node->next);
 }
 
-void undo_redirect(t_commandset *commands)
+void undo_redirect(t_redirect *node)
 {
-	if (commands->node->filename == NULL)
+	if (node == NULL)
 		return ;
-	undo_redirect(commands->next);
-	dup2(commands->node->stashfd, commands->node->oldfd);//一時保存したSTDOUT_FILENOを復元
-	close(commands->node->newfd);
+	undo_redirect(node->next);
+	dup2(node->stashfd, node->oldfd);//一時保存したSTDOUT_FILENOを復元
+	close(node->stashfd);
+	close(node->newfd);
 }
 
 int heredoc(const char *delimiter, t_env *env_head)
@@ -82,11 +114,9 @@ int heredoc(const char *delimiter, t_env *env_head)
 	int pipefd[2];
 	char *line;
 	int count;
-	int fd;
 
 	count = 0;
 	pipe(pipefd);
-	fd = open("tmp", O_CREAT | O_RDWR | O_TRUNC | O_APPEND, 0644);
 	
 	while(1){
 		line = readline("> ");
@@ -104,8 +134,6 @@ int heredoc(const char *delimiter, t_env *env_head)
 		count++;
 	}
 	close(pipefd[1]);
-	read(pipefd[0], line, 100);
-	write(1, line, 100);
 	return (pipefd[0]);
 }
 

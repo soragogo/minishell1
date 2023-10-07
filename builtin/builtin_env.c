@@ -1,6 +1,5 @@
 #include "./../includes/minishell.h"
 
-//arg消そう
 int ft_env(t_env **env_head)
 {
 	t_env *tmp;
@@ -8,7 +7,12 @@ int ft_env(t_env **env_head)
 	tmp = *env_head;
 	while (tmp)
 	{
-		printf("%s=%s\n", tmp->name, tmp->value);
+		if(tmp->value)
+		{
+			ft_putstr_fd(tmp->name, STDOUT_FILENO);
+			ft_putstr_fd("=", STDOUT_FILENO);
+			ft_putendl_fd(tmp->value, STDOUT_FILENO);
+		}
 		tmp = tmp->next;
 	}
 	return (0);

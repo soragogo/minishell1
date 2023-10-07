@@ -1,60 +1,60 @@
 #include "./../includes/minishell.h"
 
-void dup_envlist(t_env **env_head, t_env **tmplist)
-{
-	// t_env *tmp;
-	// t_env *tmp2;
-	// size_t i;
+// void dup_envlist(t_env **env_head, t_env **tmplist)
+// {
+// 	// t_env *tmp;
+// 	// t_env *tmp2;
+// 	// size_t i;
 
-	// i = 0;
-	// tmp = *env_head;
-	// while (tmp)
-	// {
-	// 	// tmp2 = malloc(sizeof(t_env));
-	// 	// if (tmp2 == NULL)
-	// 	// 	printf("malloc error");//error
-	// 	tmplist[i]->name = ft_strdup(tmp->name);
-	// 	tmplist[i]->value = ft_strdup(tmp->value);
-	// 	// tmplist[i]->next = tmp->next;
-	// 	tmp = tmp->next;
-	// 	i++;
-	// }
-	// extern char **environ;
-	char **env;
-	char *name;
-	char *value;
+// 	// i = 0;
+// 	// tmp = *env_head;
+// 	// while (tmp)
+// 	// {
+// 	// 	// tmp2 = malloc(sizeof(t_env));
+// 	// 	// if (tmp2 == NULL)
+// 	// 	// 	printf("malloc error");//error
+// 	// 	tmplist[i]->name = ft_strdup(tmp->name);
+// 	// 	tmplist[i]->value = ft_strdup(tmp->value);
+// 	// 	// tmplist[i]->next = tmp->next;
+// 	// 	tmp = tmp->next;
+// 	// 	i++;
+// 	// }
+// 	// extern char **environ;
+// 	char **env;
+// 	char *name;
+// 	char *value;
 
-	// *tmplist = NULL;
-	env = create_environ(env_head);
-    while(*env) {
-        name = get_env_name(name, *env);
-		value = get_env_value(value, *env);
-		if (set_env(tmplist, name, value) == -1)
-			printf("error");
-		env++;
-	}
-}
+// 	// *tmplist = NULL;
+// 	env = create_environ(env_head);
+//     while(*env) {
+//         name = get_env_name(name, *env);
+// 		value = get_env_value(value, *env);
+// 		if (set_env(tmplist, name, value) == -1)
+// 			printf("error");
+// 		env++;
+// 	}
+// }
 
-void sort_envlist(t_env **tmplist)
-{
-	//NAMEをaskii順にソート
-	while (*tmplist){
-		if (strcmp((*tmplist)->name, (*tmplist)->next->name) > 0)
-		{
-			//swap
-			char *tmp_name;
-			char *tmp_value;
+// void sort_envlist(t_env **tmplist)
+// {
+// 	//NAMEをaskii順にソート
+// 	while (*tmplist){
+// 		if (strcmp((*tmplist)->name, (*tmplist)->next->name) > 0)
+// 		{
+// 			//swap
+// 			char *tmp_name;
+// 			char *tmp_value;
 
-			tmp_name = (*tmplist)->name;
-			tmp_value = (*tmplist)->value;
-			(*tmplist)->name = (*tmplist)->next->name;
-			(*tmplist)->value = (*tmplist)->next->value;
-			(*tmplist)->next->name = tmp_name;
-			(*tmplist)->next->value = tmp_value;
-			*tmplist = (*tmplist)->next;
-		}
-	}
-}
+// 			tmp_name = (*tmplist)->name;
+// 			tmp_value = (*tmplist)->value;
+// 			(*tmplist)->name = (*tmplist)->next->name;
+// 			(*tmplist)->value = (*tmplist)->next->value;
+// 			(*tmplist)->next->name = tmp_name;
+// 			(*tmplist)->next->value = tmp_value;
+// 			*tmplist = (*tmplist)->next;
+// 		}
+// 	}
+// }
 
 int display_envlist(t_env **env_head)
 {
@@ -62,19 +62,31 @@ int display_envlist(t_env **env_head)
 	t_env *tmplist;
 	size_t count;
 
-	count = count_env(*env_head);
-	tmplist = malloc(sizeof(t_env) * count);
-	if (tmplist == NULL)
-		printf("malloc error");//error
-	dup_envlist(env_head, &tmplist);
-	sort_envlist(&tmplist);
-	tmp = tmplist;
+	// count = count_env(*env_head);
+	// if (count == 0)
+	// 	return (0);
+	// tmplist = malloc(sizeof(t_env) * count);
+	// if (!tmplist)
+	// 	fatal_error("malloc error");//error
+	// dup_envlist(env_head, &tmplist);
+	// sort_envlist(&tmplist);
+	// tmp = tmplist;
+	tmp = *env_head;
 	while (tmp)
 	{
-		printf("declare -x %s=%s\n", tmp->name, tmp->value);
-		tmp = tmp->next;
+		if (tmp->name){
+			ft_putstr_fd("declare -x ", STDOUT_FILENO);
+			ft_putstr_fd(tmp->name, STDOUT_FILENO);
+			if (tmp->value)
+			{
+				ft_putstr_fd("=\"", STDOUT_FILENO);
+				ft_putstr_fd(tmp->value, STDOUT_FILENO);
+				ft_putendl_fd("\"", STDOUT_FILENO);
+			}
+			tmp = tmp->next;
+		}
 	}
-	free(tmplist);
+	// free(tmplist);
 	return (0);
 }
 
@@ -90,7 +102,7 @@ int ft_export(t_env **map, char **commands)
 		display_envlist(map);
 		return (0);
 	}
-	if (strchr(commands[1], '=') == NULL)//=がない場合、エラー
+	if (ft_strchr(commands[1], '=') == NULL)//=がない場合、エラー
 	{
 		return (0);
 	}
@@ -98,23 +110,23 @@ int ft_export(t_env **map, char **commands)
 	value = get_env_value(value, commands[1]);
 	if(set_env(map, name, value) == -1)//環境変数をセット
 	{
-		printf("error");
-		return (-1);
+		error_message("export", NULL, "not a valid identifier");
+		return (1);
 	}
 	return (0);
 }
 
-// テスト用のフェイク環境変数リストを作成する関数
-t_env *create_fake_envlist()
-{
-    t_env *env_list = NULL;
+// // テスト用のフェイク環境変数リストを作成する関数
+// t_env *create_fake_envlist()
+// {
+//     t_env *env_list = NULL;
 
-    set_env(&env_list, "VAR1", "value1");
-    set_env(&env_list, "VAR2", "value2");
-    set_env(&env_list, "VAR3", "value3");
+//     set_env(&env_list, "VAR1", "value1");
+//     set_env(&env_list, "VAR2", "value2");
+//     set_env(&env_list, "VAR3", "value3");
 
-    return env_list;
-}
+//     return env_list;
+// }
 // // テスト用のメイン関数
 // int main()
 // {

@@ -1,6 +1,6 @@
-#include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "includes/minishell.h"
+#include "tokenizer/token.h"
+#include "tokenizer/parser.h"
 
 void free_before_closing(t_token *tokens, char *command_buf)
 {
@@ -32,7 +32,7 @@ int main()
 	t_info info;
 	t_commandset *commands;
 	
-	envmap_init(&env);//info_initの方がいいか
+	envmap_init(&env);
 	info.map_head = env;
 	info.exit_status_log = 0;
 	while (1)
@@ -48,7 +48,8 @@ int main()
 		commands = ft_parser(command_buf);
 		// commands = create_command_pipeline(tokens);
 		// expand_env(commands->command, info.map_head);
-		handle_command(commands, &info);
+		info.exit_status_log = handle_command(commands, &info);
+		printf("exit_status_log:%d\n", info.exit_status_log);
 		/* ------------------ exec_command ---------------------- */
 		// status = is_builtin(tokens, &info);//builtinだったら実行
 		// if (status == -1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:34 by ekamada           #+#    #+#             */
-/*   Updated: 2023/09/30 15:34:46 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/10/06 13:16:29 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct s_commandset
 {
 	t_redirect *node;
 	char **command;
+	// int in_fd;
+	// int out_fd;
 	pid_t pid;
 	struct s_commandset *next;
 	struct s_commandset *prev;

@@ -24,14 +24,14 @@ int ft_exit(char **command, t_info *info)
 		status = info->exit_status_log;//前回の終了コード
 	else if (command[2])
 	{
-		printf("exit: too many arguments");
+		error_message("exit", NULL, "too many arguments");
 		return (1);
 	}
 	else
 	{
 		if (is_num(command[1]) == 0)
 		{
-			printf("exit: %s: numeric argument required", command[1]);
+			error_message("exit", command[1], "numeric argument required");
 			exit(255);
 		}
 		else

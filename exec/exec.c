@@ -20,10 +20,15 @@ int is_builtin(t_commandset *command){
 int exec_builtin(t_commandset *commands, t_info *info)
 {
 	int status;
+	int dupinfd;
+	int dupoutfd;
 
 	status = 0;
 	//後でredirectの処理を書く
-
+	dupinfd = dup(STDIN_FILENO);
+	dupoutfd = dup(STDOUT_FILENO);
+	printf("1\n");
+	handle_redirection(commands, info);
 	if (strcmp(*commands[0].command, "echo") == 0)
 		status = ft_echo(commands->command, info->exit_status_log);
 	else if (strcmp(*commands[0].command, "cd") == 0)
@@ -40,6 +45,9 @@ int exec_builtin(t_commandset *commands, t_info *info)
 		status = ft_exit(commands->command, info);
 	else
 		return (-1);
+	undo_redirect(commands->node);
+	dup2(dupinfd, STDIN_FILENO);
+	dup2(dupoutfd, STDOUT_FILENO);
 	return (status);
 }
 
@@ -54,18 +62,18 @@ void handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command)
 {
 	if (command->prev)
 	{
-    //     dprintf(2, "pipe[0] %d ::::: pipe[1] %d\n", left_pipe[0], left_pipe[1]);
+        // dprintf(2, "pipe[0] %d ::::: pipe[1] %d\n", left_pipe[0], left_pipe[1]);
 		//コマンドの入力をパイプから受け取る
-		dup2(left_pipe[0], STDIN_FILENO);
 		close(left_pipe[1]);
+		dup2(left_pipe[0], STDIN_FILENO);
 		close(left_pipe[0]);
 	}
 	if (command->next)
 	{
         // dprintf(2, "pipe[0] %d ::::: pipe[1] %d\n", right_pipe[0], right_pipe[1]);
 		//コマンドの出力先をパイプに変更
-		dup2(right_pipe[1], STDOUT_FILENO);
 		close(right_pipe[0]);
+		dup2(right_pipe[1], STDOUT_FILENO);
 		close(right_pipe[1]);
 	}
 }
@@ -73,7 +81,7 @@ void handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command)
 void create_pipe(t_commandset *command, int new_pipe[2]){
 	if (command->next){
 		if (pipe(new_pipe) < 0)
-			printf("pipe error");
+			fatal_error("pipe error");
 	}
 }
 
@@ -97,55 +105,79 @@ int exec_command(t_commandset *commands, t_info *info){
 		{
 			// write(1, "builtin\n", 8);
 			status = exec_builtin(commands, info);
+			
 		}
 		else
 		{
 			// write(1, "not builtin\n", 12);
+			dprintf(2, "command: %s, inpipe:%d outpipe:%d\n",commands->command[0], old_pipe[0], new_pipe[1]);
 			path = fetch_path(*commands->command, &(info->map_head));
 			status = execve(path, commands->command, my_environ);
 			if (status == -1)
 			{
-				printf("minishell: %s: command not found\n", *commands->command);
+				error_message(*commands->command, NULL, "command not found");
 				exit(127);
 			}
 		}
-		undo_redirect(commands);
 	}
-    if (old_pipe[0] != 0)
-        close(old_pipe[0]);
-    if (old_pipe[1] != 0)
-        close(old_pipe[1]);
-	old_pipe[0] = new_pipe[0];
-	old_pipe[1] = new_pipe[1];
+	
+    // if (old_pipe[0] != 0)
+    //     close(old_pipe[0]);
+    // if (old_pipe[1] != 0)
+    //     close(old_pipe[1]);
+	if (commands->prev){
+		close(old_pipe[0]);
+		close(old_pipe[1]);
+	}
+	if (commands->next){
+		old_pipe[0] = new_pipe[0];
+		old_pipe[1] = new_pipe[1];
+		// close(new_pipe[0]);
+		// close(new_pipe[1]);
+	}
 	commands->pid = pid;
+	printf("pid:%d\n", pid);
 	return (status);
 }
 
-void wait_command(t_commandset *commands){
+int wait_command(t_commandset *commands, t_info *info){
 	int status;
-	if (waitpid(commands->pid, &status, 0) < 0)
-		printf("waitpid error\n");
+	while (commands)
+	{
+		if (waitpid(commands->pid, &status, 0) < 0)
+			fatal_error("waitpid error");
+		if (WIFEXITED(status)){
+			status = WEXITSTATUS(status);
+		}
+		commands = commands->next;
+	}
+	return (status);
 }
 
 
 int handle_command(t_commandset *commands, t_info *info)
 {
+	t_commandset *tmp_head;
 	int status;
 
 	status = 0;
+	tmp_head = commands;
 	//pipeなし
 	if (commands[1].node == NULL && is_builtin(commands) != -1)//fork()いらない
 	{
+		printf("builtin\n");
 		status = exec_builtin(commands, info);
 	}
 	else//fork()必要
 	{
+		printf("not builtin\n");
 		while (commands != NULL)
 		{
-			status = exec_command(commands, info);
-			wait_command(commands);
+			exec_command(commands, info);
+			// undo_redirect(commands->node);
 			commands = commands->next;
 		}
+		status = wait_command(tmp_head, info);
 	}
 	return (status);
 }

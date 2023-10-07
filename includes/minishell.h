@@ -80,12 +80,15 @@ int	ft_env(t_env **env_head);
 int ft_export(t_env **map, char **commands);
 
 	/* redirection */
+void redirect(t_commandset *commands, t_info *info);
 void handle_redirection(t_commandset *commands, t_info *info);
 void redirect_out(t_redirect *node);
 void redirect_in(t_redirect *node);
-void here_document(t_commandset *command, t_info *info);
+// void here_document(t_commandset *command, t_info *info);
+void here_document(t_redirect *node, t_info *info);
 void do_redirect(t_redirect *node);
-void undo_redirect(t_commandset *commands);
+// void undo_redirect(t_commandset *commands);
+void undo_redirect(t_redirect *node);
 int heredoc(const char *delimiter, t_env *env_head);
 void append(t_redirect *node);
 
@@ -99,5 +102,8 @@ char *fetch_path(char *file, t_env **map);
 int handle_command(t_commandset *commands, t_info *info);
 void expand_env(char **command, t_env *env_head);
 
+	/* error */
+void error_message(char *command, char *arg, char *msg);
+void fatal_error(char *msg);
 
 #endif
