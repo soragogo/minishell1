@@ -114,21 +114,22 @@ int heredoc(const char *delimiter, t_env *env_head)
 	int pipefd[2];
 	char *line;
 	int count;
+	size_t d_len;
 
 	count = 0;
 	pipe(pipefd);
-	
+	d_len = ft_strlen(delimiter);
 	while(1){
 		line = readline("> ");
 		expand_env(&line, env_head);
 		if (line == NULL)
 			break ;
-		if (strcmp(line, delimiter) == 0)
+		if (ft_strncmp(line, delimiter, d_len + 1) == 0)
 		{
 			free(line);
 			break ;
 		}
-		write(pipefd[1], line, strlen(line));
+		write(pipefd[1], line, ft_strlen(line));
 		write(pipefd[1], "\n", 1);
 		free(line);
 		count++;

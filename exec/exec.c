@@ -4,12 +4,12 @@
 
 //コマンドがbuiltinかを確かめる関数
 int is_builtin(t_commandset *command){
-	const char *builtin[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
+	char *builtin[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
 	int i = 0;
 
 	while (builtin[i] != NULL)
 	{
-		if (strcmp(*command[0].command, builtin[i]) == 0)
+		if (ft_strcmp(*command[0].command, builtin[i]) == 0)//これで動くんか？
 			return (i);
 		i++;
 	}
@@ -25,29 +25,24 @@ int exec_builtin(t_commandset *commands, t_info *info)
 
 	status = 0;
 	//後でredirectの処理を書く
-	dupinfd = dup(STDIN_FILENO);
-	dupoutfd = dup(STDOUT_FILENO);
-	printf("1\n");
 	handle_redirection(commands, info);
-	if (strcmp(*commands[0].command, "echo") == 0)
+	if (ft_strncmp(*commands[0].command, "echo", 4) == 0)
 		status = ft_echo(commands->command, info->exit_status_log);
-	else if (strcmp(*commands[0].command, "cd") == 0)
+	else if (ft_strncmp(*commands[0].command, "cd", 3) == 0)
 		status = ft_chdir(commands->command, &(info->map_head));
-	else if (strcmp(*commands[0].command, "env") == 0)
+	else if (ft_strncmp(*commands[0].command, "env", 4) == 0)
 		status = ft_env(&(info->map_head));
-	else if (strcmp(*commands[0].command, "pwd") == 0)
+	else if (ft_strncmp(*commands[0].command, "pwd", 4) == 0)
 		status = ft_pwd();
-	else if (strcmp(*commands[0].command, "export") == 0)
+	else if (ft_strncmp(*commands[0].command, "export", 7) == 0)
 		status = ft_export(&info->map_head, commands->command);
-	else if (strcmp(*commands[0].command, "unset") == 0)
+	else if (ft_strncmp(*commands[0].command, "unset", 6) == 0)
 		status = ft_unset(&info->map_head, commands->command);
-	else if (strcmp(*commands[0].command, "exit") == 0)
+	else if (ft_strncmp(*commands[0].command, "exit", 5) == 0)
 		status = ft_exit(commands->command, info);
 	else
 		return (-1);
 	undo_redirect(commands->node);
-	dup2(dupinfd, STDIN_FILENO);
-	dup2(dupoutfd, STDOUT_FILENO);
 	return (status);
 }
 
