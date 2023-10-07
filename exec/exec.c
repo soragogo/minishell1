@@ -25,9 +25,6 @@ int exec_builtin(t_commandset *commands, t_info *info)
 
 	status = 0;
 	//後でredirectの処理を書く
-	dupinfd = dup(STDIN_FILENO);
-	dupoutfd = dup(STDOUT_FILENO);
-	printf("1\n");
 	handle_redirection(commands, info);
 	if (ft_strncmp(*commands[0].command, "echo", 4) == 0)
 		status = ft_echo(commands->command, info->exit_status_log);
@@ -46,8 +43,6 @@ int exec_builtin(t_commandset *commands, t_info *info)
 	else
 		return (-1);
 	undo_redirect(commands->node);
-	dup2(dupinfd, STDIN_FILENO);
-	dup2(dupoutfd, STDOUT_FILENO);
 	return (status);
 }
 
