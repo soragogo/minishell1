@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/08 13:54:30 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/08 21:34:52 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ int count_command(t_token *tokens, int current_cmd)
 	int count = 0;
 	while (current_cmd > 0)
 	{
-			puts(":)");
-
 		while (tokens[i].arg && tokens[i].type != PIPE)
 			i++;
 		if (tokens[i].type == PIPE)

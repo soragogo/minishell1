@@ -3,6 +3,34 @@
 #include <stdbool.h>
 #include <libc.h>
 
+int redirect_error(t_token *tokens)
+{
+	int i = 0;
+	int type;
+	char *redirect[] = {">", "<", ">>", "<<"};
+
+	while (tokens[i].arg)
+	{
+		if (tokens[i].type >= 2 && tokens[i].type <= 5)
+		{
+			if (!tokens[i+1].arg || tokens[i + 1].type >= 2 && tokens[i + 1].type <= 5)
+			{
+				if (!tokens[i+1].arg)
+					printf("minishell: syntax error near unexpected token `newline'\n");
+				else
+				{
+					type = tokens[i + 1].type;
+					printf("minishell: syntax error near unexpected token `%s'\n", redirect[type - 2]);
+				}
+				return 1;
+			}
+
+		}
+		i++;
+	}
+	return 0;
+}
+
 int quote_error(t_token *tokens)
 {
 	int i = 0;
@@ -61,6 +89,8 @@ int syntax_error(t_token *tokens)
 	if (pipe_error(tokens))
 		return 1;
 	if (quote_error(tokens))
+		return 1;
+	if (redirect_error(tokens))
 		return 1;
 	return 0;
 }
