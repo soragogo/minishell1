@@ -100,7 +100,6 @@ int exec_command(t_commandset *commands, t_info *info){
 		{
 			// write(1, "builtin\n", 8);
 			status = exec_builtin(commands, info);
-			
 		}
 		else
 		{
@@ -169,7 +168,9 @@ int handle_command(t_commandset *commands, t_info *info)
 		while (commands != NULL)
 		{
 			exec_command(commands, info);
-			// undo_redirect(commands->node);
+			if (commands->node)
+				puts(":)");
+			undo_redirect(commands->node);
 			commands = commands->next;
 		}
 		status = wait_command(tmp_head, info);

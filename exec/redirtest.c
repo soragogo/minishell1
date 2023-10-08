@@ -105,6 +105,8 @@ void undo_redirect(t_redirect *node)
 		return ;
 	undo_redirect(node->next);
 	dup2(node->stashfd, node->oldfd);//一時保存したSTDOUT_FILENOを復元
+	// if (node->prev == NULL)
+	// 	return ;
 	close(node->stashfd);
 	close(node->newfd);
 }

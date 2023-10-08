@@ -22,6 +22,16 @@ int remove_brackets(char **command, char bracket, int start, char **tmp)
     return (start + i);
 }
 
+static int	skip_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
+		i++;
+	return (i);
+}
+
 void expand_env(char **command, t_env *env_head)
 {
     int i;
@@ -33,7 +43,9 @@ void expand_env(char **command, t_env *env_head)
     i = 0;
     j = 0;
     if (command[0] == NULL)
-        return;
+        return ;
+    i = skip_space(command[0]);
+    command[0] = &command[0][i];
     while (command[0][i] != '$' && command[0][i] != '\0')
         i++;
     if (command[0][i] == '$' && command[0][i + 1] != '\0')

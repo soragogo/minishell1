@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:37 by ekamada           #+#    #+#             */
-/*   Updated: 2023/09/27 21:28:09 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/07 16:57:45 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_c
 	while (i < num_of_commands)
 	{
 		count = count_redirection(tokens, i);
+		if (count == 0)
+        {
+            commandsets[i].node = NULL;
+            return ;
+        }
 		commandsets[i].node = ft_calloc(count, sizeof(t_redirect));
 		connect_redirections(commandsets[i].node, count);
 		while (tokens[j].arg != NULL && tokens[j].type != PIPE)
