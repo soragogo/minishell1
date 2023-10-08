@@ -9,7 +9,7 @@ int is_builtin(t_commandset *command){
 
 	while (builtin[i] != NULL)
 	{
-		if (ft_strcmp(*command[0].command, builtin[i]) == 0)//これで動くんか？
+		if (ft_strcmp(*command[0].command, builtin[i]) == 0)
 			return (i);
 		i++;
 	}
@@ -104,7 +104,7 @@ int exec_command(t_commandset *commands, t_info *info){
 		else
 		{
 			// write(1, "not builtin\n", 12);
-			dprintf(2, "command: %s, inpipe:%d outpipe:%d\n",commands->command[0], old_pipe[0], new_pipe[1]);
+			// dprintf(2, "command: %s, inpipe:%d outpipe:%d\n",commands->command[0], old_pipe[0], new_pipe[1]);
 			path = fetch_path(*commands->command, &(info->map_head));
 			status = execve(path, commands->command, my_environ);
 			if (status == -1)
@@ -138,6 +138,7 @@ int wait_command(t_commandset *commands, t_info *info){
 	int status;
 	while (commands)
 	{
+		printf("pid:%d\n", commands->pid);
 		if (waitpid(commands->pid, &status, 0) < 0)
 			fatal_error("waitpid error");
 		if (WIFEXITED(status)){
@@ -168,9 +169,9 @@ int handle_command(t_commandset *commands, t_info *info)
 		while (commands != NULL)
 		{
 			exec_command(commands, info);
-			if (commands->node)
-				puts(":)");
-			undo_redirect(commands->node);
+			// undo_redirect(commands->node);
+			// if (commands->node)
+			// 	puts(":)");
 			commands = commands->next;
 		}
 		status = wait_command(tmp_head, info);
