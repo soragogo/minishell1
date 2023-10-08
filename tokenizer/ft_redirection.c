@@ -72,7 +72,7 @@ void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_c
 			if (tokens[j].type >= REDIRECT_OUT && tokens[j].type <= HERE_DOCUMENT && tokens[j + 1].type == FILE_NAME)
 			{
 				commandsets[i].node[k].type = tokens[j].type;
-				commandsets[i].node[k++].filename = tokens[++j].arg;
+				commandsets[i].node[k++].filename = ft_strdup(tokens[++j].arg);
 			}
 			j++;
 		}

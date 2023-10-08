@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/09 03:40:09 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/09 03:50:52 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 		{
 			if (tokens[j].type == COMMAND || tokens[j].type == COMMAND_OPTION || tokens[j].type == UNCATEGORIZED)
 			{
-				commandsets[i].command[k] = tokens[j].arg;
+				commandsets[i].command[k] = ft_strdup(tokens[j].arg);
 				k++;
 			}
 			j++;
@@ -139,6 +139,22 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 			j++;
 		i++;
 	}
+}
+
+void free_tokens(t_token *tokens)
+{
+	int i;
+	char *tmp;
+
+	i = 0;
+	tmp = tokens[0].arg;
+	while (tmp)
+	{
+		tmp = tokens[i + 1].arg;
+		free(tokens[i].arg);
+		i++;
+	}
+	free(tokens);
 }
 
 void free_commandset(t_commandset *csets)
@@ -190,7 +206,7 @@ t_commandset *ft_parser(char *buff, int *status)
 	if (syntax_error(tokens))
 	{
 		*status = 258;
-		free(tokens);
+		free_tokens(tokens);
 		return (NULL);
 	}
 	else
@@ -201,7 +217,7 @@ t_commandset *ft_parser(char *buff, int *status)
 		import_command(tokens, commandsets, num_of_commands);
 		import_redirection(tokens, commandsets, num_of_commands);
 		// test_commandsets(commandsets, num_of_commands);
-		free(tokens);
+		free_tokens(tokens);
 	}
 	// free_parser(commandsets);
 	return (commandsets);
