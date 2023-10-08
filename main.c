@@ -1,6 +1,7 @@
 #include "includes/minishell.h"
 #include "tokenizer/token.h"
 #include "tokenizer/parser.h"
+#include <stdbool.h>
 
 void free_before_closing(t_token *tokens, char *command_buf)
 {
@@ -23,6 +24,17 @@ char *ft_readline(t_env *env_head)
 	return (command_buf);
 }
 
+bool only_space(char *command)
+{
+	while (*command)
+	{
+		if (*command != ' ' &&  *command != '\t')
+			return false;
+		command++;
+	}
+	return true;
+}
+
 int main()
 {
 	char *command_buf;
@@ -31,7 +43,7 @@ int main()
 	t_env *env;
 	t_info info;
 	t_commandset *commands;
-	
+
 	envmap_init(&env);
 	info.map_head = env;
 	info.exit_status_log = 0;
@@ -41,7 +53,7 @@ int main()
 		command_buf = ft_readline(env);
 		if (!command_buf)
 			break;
-		if (*command_buf == '\0')
+		if (*command_buf == '\0' || only_space(command_buf))
 			continue ;
 		// char command_buf[] = "cd ~";
 		// tokens = ft_tokenizer(command_buf);
