@@ -22,7 +22,7 @@ int remove_brackets(char **command, char bracket, int start, char **tmp)
     return (start + i);
 }
 
-static int	skip_space(char *str)
+int	skip_space(char *str)
 {
 	int	i;
 
