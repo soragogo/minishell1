@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/08 21:34:52 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/09 03:40:09 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,42 +140,43 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 		i++;
 	}
 }
-void free_parser(t_commandset *commandsets)
+
+void free_commandset(t_commandset *csets)
 {
-	t_commandset *tmp_cmdset;
-	t_redirect *redirect;
-	t_redirect *tmp_redirect;
+    char *tmp_cmd;
+    t_redirect *tmp_redir1;
+    t_redirect *tmp_redir2;
+    t_commandset *tmp_cset;
+    int i = 0;
+    int j;
 
-	while (commandsets != NULL)
-	{
-		tmp_cmdset = commandsets;
-		commandsets = tmp_cmdset->next;
+    while((i != 0 && csets[i - 1].next != NULL)|| i == 0)
+    {
+        tmp_cmd = csets[i].command[0];
+        j = 0;
+        while(tmp_cmd)
+        {
+            tmp_cmd = csets[i].command[j + 1];
+            free(csets[i].command[j]);
+            j++;
+        }
+        free(csets[i].command);
 
-		// Free each string in the command array
-		if (tmp_cmdset->command)
-		{
-			char **cmd = tmp_cmdset->command;
-			while (*cmd)
-			{
-				free(*cmd);
-				cmd++;
-			}
-			free(tmp_cmdset->command);
-		}
-
-		// Free redirect nodes
-		redirect = tmp_cmdset->node;
-		while (redirect != NULL)
-		{
-			tmp_redirect = redirect;
-			redirect = tmp_redirect->next;
-			free(tmp_redirect);
-		}
-
-		// Free the current command set node
-		free(tmp_cmdset);
-	}
+        j = 0;
+        tmp_redir1 = csets[i].node;
+        tmp_redir2 = csets[i].node;
+        while (tmp_redir2)
+        {
+            tmp_redir2 = csets[i].node->next;
+            free((char *)csets[i].node->filename);
+            csets[i].node = tmp_redir2;
+        }
+        free(tmp_redir1);
+        i++;
+    }
+    free(csets);
 }
+
 
 
 t_commandset *ft_parser(char *buff, int *status)
