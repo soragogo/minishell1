@@ -57,7 +57,7 @@ int main()
 			continue ;
 		// char command_buf[] = "cd ~";
 		// tokens = ft_tokenizer(command_buf);
-		commands = ft_parser(command_buf);
+		commands = ft_parser(command_buf, &(info.exit_status_log));
 		if (commands == NULL)
 			continue ;
 		// commands = create_command_pipeline(tokens);

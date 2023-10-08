@@ -50,9 +50,12 @@ void ft_signals(void);
 void waitline();
 
 
+
 	/* parser */
 // void ft_parser(char *buff);
-t_commandset *ft_parser(char *buff);
+// t_commandset *ft_parser(char *buff);
+t_commandset *ft_parser(char *buff, int *status);
+
 // t_commandset *create_command_pipeline(t_token *tokens, int num_of_commands);
 
 	/* env function */

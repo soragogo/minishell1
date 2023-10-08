@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <libc.h>
 
+
+
 int pipe_error(t_token *tokens)
 {
 	int flag = 0;

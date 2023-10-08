@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/08 13:22:57 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/08 13:54:30 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void free_parser(t_commandset *commandsets)
 }
 
 
-t_commandset *ft_parser(char *buff)
+t_commandset *ft_parser(char *buff, int *status)
 {
 	t_token *tokens;
 	t_commandset *commandsets;
@@ -190,6 +190,7 @@ t_commandset *ft_parser(char *buff)
 	categorize_tokens(tokens);
 	if (syntax_error(tokens))
 	{
+		*status = 258;
 		free(tokens);
 		return (NULL);
 	}
