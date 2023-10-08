@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:37 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/05 14:27:31 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/08 11:34:14 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,13 @@ void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_c
 	while (i < num_of_commands)
 	{
 		count = count_redirection(tokens, i);
+		if (count == 0)
+		{
+			commandsets[i].node = NULL;
+			i++;
+			// return ;
+			continue ;
+		}
 		commandsets[i].node = ft_calloc(count, sizeof(t_redirect));
 		connect_redirections(commandsets[i].node, count);
 
