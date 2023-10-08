@@ -60,7 +60,9 @@ void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_c
 		if (count == 0)
 		{
 			commandsets[i].node = NULL;
-			return ;
+			i++;
+			// return ;
+			continue ;
 		}
 		commandsets[i].node = ft_calloc(count, sizeof(t_redirect));
 		connect_redirections(commandsets[i].node, count);

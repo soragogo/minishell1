@@ -1,5 +1,4 @@
 
-
 #include "token.h"
 #include "parser.h"
 #include <stdbool.h>

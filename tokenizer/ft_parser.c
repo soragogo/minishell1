@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/08 11:14:14 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/08 11:57:00 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,13 @@ int count_command(t_token *tokens, int current_cmd)
 {
 	int i = 0;
 	int count = 0;
-
 	while (current_cmd > 0)
 	{
+			puts(":)");
+
 		while (tokens[i].arg && tokens[i].type != PIPE)
 			i++;
-		if (tokens[i].type == PIPE && tokens[i + 1].arg)
+		if (tokens[i].type == PIPE)
 		{
 			current_cmd--;
 			i++;
@@ -122,6 +123,10 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 	int count = 0;
 	while (i < num_of_commands)
 	{
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2-fix-memory-leak
 		count = count_command(tokens, i);
 		commandsets[i].command = ft_calloc(count + 1, sizeof(char *));
 
@@ -192,22 +197,22 @@ t_commandset *ft_parser(char *buff)
 	commandsets = create_command_pipeline(tokens, num_of_commands);
 	import_command(tokens, commandsets, num_of_commands);
 	import_redirection(tokens, commandsets, num_of_commands);
-	// test_commandsets(commandsets, num_of_commands);
+	test_commandsets(commandsets, num_of_commands);
 	free(tokens);
 	// free_parser(commandsets);
 	return (commandsets);
 }
 
-// #include "token.h"
-// #include <stdio.h>
-// #include <libc.h>
-// int main()
-// {
-// 	char *buff;
-// 	while (1)
-// 	{
-// 		buff = readline("test here> ");
-// 		ft_parser(buff);
-// 		free(buff);
-// 	}
-// }
+#include "token.h"
+#include <stdio.h>
+#include <libc.h>
+int main()
+{
+	char *buff;
+	while (1)
+	{
+		buff = readline("test here> ");
+		ft_parser(buff);
+		free(buff);
+	}
+}
