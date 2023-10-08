@@ -25,7 +25,7 @@ char *find_end_of_arg(char *command)
             command++;
         return (command);
     }
-    while (*command && !is_dilimeter(*command) && *command != ' ' && *command != '\t'))
+    while (*command && !is_dilimeter(*command) && *command != ' ' && *command != '\t')
     {
         if (*command == '\'' || *command == '\"')
             command = find_end_of_quote(command);
