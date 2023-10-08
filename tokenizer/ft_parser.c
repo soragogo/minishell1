@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/08 12:08:08 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/08 13:22:57 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,13 +188,21 @@ t_commandset *ft_parser(char *buff)
 
 	tokens = ft_tokenizer(buff);
 	categorize_tokens(tokens);
-	num_of_commands = count_commandset(tokens);
-	// printf("num_of_commands: [%d]\n", num_of_commands);
-	commandsets = create_command_pipeline(tokens, num_of_commands);
-	import_command(tokens, commandsets, num_of_commands);
-	import_redirection(tokens, commandsets, num_of_commands);
-	// test_commandsets(commandsets, num_of_commands);
-	free(tokens);
+	if (syntax_error(tokens))
+	{
+		free(tokens);
+		return (NULL);
+	}
+	else
+	{
+		num_of_commands = count_commandset(tokens);
+		// printf("num_of_commands: [%d]\n", num_of_commands);
+		commandsets = create_command_pipeline(tokens, num_of_commands);
+		import_command(tokens, commandsets, num_of_commands);
+		import_redirection(tokens, commandsets, num_of_commands);
+		// test_commandsets(commandsets, num_of_commands);
+		free(tokens);
+	}
 	// free_parser(commandsets);
 	return (commandsets);
 }
