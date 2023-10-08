@@ -25,7 +25,7 @@ char *find_end_of_arg(char *command)
             command++;
         return (command);
     }
-    while (*command && !is_dilimeter(*command) && *command != ' ')
+    while (*command && !is_dilimeter(*command) && *command != ' ' && *command != '\t'))
     {
         if (*command == '\'' || *command == '\"')
             command = find_end_of_quote(command);
@@ -43,7 +43,7 @@ int count_tokens(char *command)
 	count = 0;
 	while (*command)
 	{
-		while (*command == ' ')
+		while (*command == ' ' || *command == '\t')
 			command++;
 		if (*command)
 			count++;

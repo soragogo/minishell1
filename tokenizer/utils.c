@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:44 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/05 16:22:57 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/08 12:17:03 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int is_dilimeter(char c)
 
 char *skip_spaces(char *str)
 {
-    while (*str && *str == ' ')
+    while (*str && (*str == ' ' || *str == '\t'))
         str++;
     return str;
 }
