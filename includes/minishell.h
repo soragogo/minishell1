@@ -96,12 +96,12 @@ void append(t_redirect *node);
 int is_builtin(t_commandset *command);
 int exec_builtin(t_commandset *commands, t_info *info);
 char **join(char const *s1, char const *s2, char **environ);
-// void env_join(char *name, char *value, char **environ);
 char  *env_join(char *name, char *value, char **environ);
 char *fetch_path(char *file, t_env **map);
 int handle_command(t_commandset *commands, t_info *info);
 void expand_env(char **command, t_env *env_head);
 int ft_strcmp(char *s1, char *s2);
+int	skip_space(char *str);
 
 	/* error */
 void error_message(char *command, char *arg, char *msg);
