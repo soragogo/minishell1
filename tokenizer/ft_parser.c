@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/09 03:50:52 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/09 15:43:39 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,13 +147,12 @@ void free_tokens(t_token *tokens)
 	char *tmp;
 
 	i = 0;
-	tmp = tokens[0].arg;
-	while (tmp)
+	while (tokens[i].arg)
 	{
-		tmp = tokens[i + 1].arg;
 		free(tokens[i].arg);
 		i++;
 	}
+
 	free(tokens);
 }
 
