@@ -2,11 +2,6 @@
 #include "../tokenizer/token.h"
 #include "../tokenizer/parser.h"
 
-// ' か　"見つける
-// その後ろにある　'　か　"　を探す
-// ' " を削除する
-// "　なら　環境変数展開"
-
 int remove_quorts(char **command, char bracket, int start)
 {
     int len;
@@ -16,7 +11,7 @@ int remove_quorts(char **command, char bracket, int start)
     len = 0;
     len = ft_strlen(command[0]);
     i = 0;
-    while (command[0][i + 1] != bracket && command[0][i] != '\0')
+    while (command[0][i + 1] != bracket && command[0][i] != '\0')//ここなんで＋１？
         i++;
     if (command[0][i] == '\0')
         return (start + i + 1);
@@ -72,43 +67,35 @@ void expand_quote(char **command, t_env *env_head)
         // command[0] = ft_strdup(tmp);
         command[0] = ft_strdup(before_env);
         free(tmp);
+    }else{
+        expand_env(command, env_head);
     }
 }
 
 
 /* -------------------------------------------------------------------------- */
 
-// int	skip_space(char *str)
+// void fatal_error(char *msg)
 // {
-// 	int	i;
-
-// 	i = 0;
-// 	while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
-// 		i++;
-// 	return (i);
+//     ft_putstr_fd("minishell: ", STDERR_FILENO);
+//     ft_putendl_fd(msg, STDERR_FILENO);
+// 	exit(1);
 // }
 
-void fatal_error(char *msg)
-{
-    ft_putstr_fd("minishell: ", STDERR_FILENO);
-    ft_putendl_fd(msg, STDERR_FILENO);
-	exit(1);
-}
+// int main() {
+//     char *command = NULL; // テスト対象のコマンド文字列
+//     int flag = 0; // シングルクォートフラグ（0: シングルクォート外、1: シングルクォート内）
+//     t_env *env_head = NULL; // 環境変数リストの先頭アドレス
+//     envmap_init(&env_head);
+// 	// info.map_head = env;
+//     printf("%s\n", map_get(&env_head, "HOME"));
 
-int main() {
-    char *command = NULL; // テスト対象のコマンド文字列
-    int flag = 0; // シングルクォートフラグ（0: シングルクォート外、1: シングルクォート内）
-    t_env *env_head = NULL; // 環境変数リストの先頭アドレス
-    envmap_init(&env_head);
-	// info.map_head = env;
-    printf("%s\n", map_get(&env_head, "HOME"));
+//     // テストケース1: シングルクォート外の置換
+//     command = strdup("\"\'$HOME\'\"$HOME \"\'$HOME\'\"$HOME");
+//     expand_quote(&command, env_head);
+//     printf("テストケース1: %s\n", command);
+//     free(command);
+//     command = NULL;
 
-    // テストケース1: シングルクォート外の置換
-    command = strdup("\'asd$HOME\' \"$HOME\" ");
-    expand_quote(&command, env_head);
-    printf("テストケース1: %s\n", command);
-    free(command);
-    command = NULL;
-
-    return 0;
-}
+//     return 0;
+// }

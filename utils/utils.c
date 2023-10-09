@@ -1,5 +1,27 @@
 #include "../includes/minishell.h"
 
+// int	skip_space(char *str)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
+// 		i++;
+// 	return (i);
+// }
+
+void	skip_space(char **str)
+{
+	int	i;
+	char *tmp;
+
+	i = 0;
+	tmp = *str;
+	while ((9 <= tmp[i] && tmp[i] <= 13) || tmp[i] == 32)
+		i++;
+	*str = &tmp[i];
+}
+
 char **join(char const *s1, char const *s2, char **environ)
 {
 	int		i;

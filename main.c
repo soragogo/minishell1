@@ -19,7 +19,9 @@ char *ft_readline(t_env *env_head)//
 	command_buf = readline("minishell> ");
 	if (command_buf){
 		add_history(command_buf);
-		expand_env(&command_buf, env_head);
+		skip_space(&command_buf);
+		expand_quote(&command_buf, env_head);
+		// expand_env(&command_buf, env_head);
 	}
 	return (command_buf);
 }

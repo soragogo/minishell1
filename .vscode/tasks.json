@@ -11,7 +11,7 @@
                 "${file}",
                 "../libft/*.c",
                 "env.c",
-                "expand_env.c",
+                // "expand_env.c",
                 // "-lreadline",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
