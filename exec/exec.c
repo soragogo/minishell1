@@ -100,7 +100,7 @@ int exec_command(t_commandset *commands, t_info *info){
 		{
 			// write(1, "builtin\n", 8);
 			status = exec_builtin(commands, info);
-			
+
 		}
 		else
 		{
@@ -115,7 +115,7 @@ int exec_command(t_commandset *commands, t_info *info){
 			}
 		}
 	}
-	
+
     // if (old_pipe[0] != 0)
     //     close(old_pipe[0]);
     // if (old_pipe[1] != 0)
@@ -187,7 +187,7 @@ int handle_command(t_commandset *commands, t_info *info)
 
 // int main() {
 //     t_commandset commands[3];
-    
+
 //     // コマンド1
 //     commands[0].command = malloc(sizeof(char *) * 3);
 // 	commands[0].command[0] = "exit";
@@ -203,7 +203,7 @@ int handle_command(t_commandset *commands, t_info *info)
 // 	// commands[0].node->type = REDIRECT_OUT;
 // 	// commands[0].node->next = NULL;
 // 	// commands[0].node->prev = NULL;
-    
+
 //     // // コマンド2
 //     // commands[1].command = malloc(sizeof(char *) * 2);
 // 	// commands[1].command[0] = "cat";
