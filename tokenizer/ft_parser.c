@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/01 14:47:22 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:08:09 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,20 @@ t_commandset *create_command_pipeline(t_token *tokens, int num_of_commands)
 	return commandsets;
 }
 
-int count_command(t_token *tokens)
+int count_command(t_token *tokens, int current_cmd)
 {
 	int i = 0;
 	int count = 0;
-
+	while (current_cmd > 0)
+	{
+		while (tokens[i].arg && tokens[i].type != PIPE)
+			i++;
+		if (tokens[i].type == PIPE)
+		{
+			current_cmd--;
+			i++;
+		}
+	}
 	while (tokens[i].arg != NULL && tokens[i].type != PIPE)
 	{
 		if (tokens[i].type == COMMAND || tokens[i].type == COMMAND_OPTION || tokens[i].type == UNCATEGORIZED)
@@ -112,14 +121,14 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 	int count = 0;
 	while (i < num_of_commands)
 	{
-		count = count_command(tokens);
+		count = count_command(tokens, i);
 		commandsets[i].command = ft_calloc(count + 1, sizeof(char *));
 
 		while (tokens[j].arg != NULL && tokens[j].type != PIPE)
 		{
 			if (tokens[j].type == COMMAND || tokens[j].type == COMMAND_OPTION || tokens[j].type == UNCATEGORIZED)
 			{
-				commandsets[i].command[k] = tokens[j].arg;
+				commandsets[i].command[k] = ft_strdup(tokens[j].arg);
 				k++;
 			}
 			j++;
@@ -131,45 +140,61 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 		i++;
 	}
 }
-void free_parser(t_commandset *commandsets)
+
+void free_tokens(t_token *tokens)
 {
-	t_commandset *tmp_cmdset;
-	t_redirect *redirect;
-	t_redirect *tmp_redirect;
+	int i;
+	char *tmp;
 
-	while (commandsets != NULL)
+	i = 0;
+	while (tokens[i].arg)
 	{
-		tmp_cmdset = commandsets;
-		commandsets = tmp_cmdset->next;
-
-		// Free each string in the command array
-		if (tmp_cmdset->command)
-		{
-			char **cmd = tmp_cmdset->command;
-			while (*cmd)
-			{
-				free(*cmd);
-				cmd++;
-			}
-			free(tmp_cmdset->command);
-		}
-
-		// Free redirect nodes
-		redirect = tmp_cmdset->node;
-		while (redirect != NULL)
-		{
-			tmp_redirect = redirect;
-			redirect = tmp_redirect->next;
-			free(tmp_redirect);
-		}
-
-		// Free the current command set node
-		free(tmp_cmdset);
+		free(tokens[i].arg);
+		i++;
 	}
+
+	free(tokens);
+}
+
+void free_commandset(t_commandset *csets)
+{
+    char *tmp_cmd;
+    t_redirect *tmp_redir1;
+    t_redirect *tmp_redir2;
+    t_commandset *tmp_cset;
+    int i = 0;
+    int j;
+
+    while((i != 0 && csets[i - 1].next != NULL)|| i == 0)
+    {
+        tmp_cmd = csets[i].command[0];
+        j = 0;
+        while(tmp_cmd)
+        {
+            tmp_cmd = csets[i].command[j + 1];
+            free(csets[i].command[j]);
+            j++;
+        }
+        free(csets[i].command);
+
+        j = 0;
+        tmp_redir1 = csets[i].node;
+        tmp_redir2 = csets[i].node;
+        while (tmp_redir2)
+        {
+            tmp_redir2 = csets[i].node->next;
+            free((char *)csets[i].node->filename);
+            csets[i].node = tmp_redir2;
+        }
+        free(tmp_redir1);
+        i++;
+    }
+    free(csets);
 }
 
 
-t_commandset *ft_parser(char *buff)
+
+t_commandset *ft_parser(char *buff, int *status)
 {
 	t_token *tokens;
 	t_commandset *commandsets;
@@ -177,13 +202,22 @@ t_commandset *ft_parser(char *buff)
 
 	tokens = ft_tokenizer(buff);
 	categorize_tokens(tokens);
-	num_of_commands = count_commandset(tokens);
-	// printf("num_of_commands: [%d]\n", num_of_commands);
-	commandsets = create_command_pipeline(tokens, num_of_commands);
-	import_command(tokens, commandsets, num_of_commands);
-	import_redirection(tokens, commandsets, num_of_commands);
-	// test_commandsets(commandsets, num_of_commands);
-	free(tokens);
+	if (syntax_error(tokens))
+	{
+		*status = 258;
+		free_tokens(tokens);
+		return (NULL);
+	}
+	else
+	{
+		num_of_commands = count_commandset(tokens);
+		// printf("num_of_commands: [%d]\n", num_of_commands);
+		commandsets = create_command_pipeline(tokens, num_of_commands);
+		import_command(tokens, commandsets, num_of_commands);
+		import_redirection(tokens, commandsets, num_of_commands);
+		// test_commandsets(commandsets, num_of_commands);
+		// free_tokens(tokens);
+	}
 	// free_parser(commandsets);
 	return (commandsets);
 }

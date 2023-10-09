@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:34 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/06 13:16:29 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/09 03:42:11 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ typedef struct s_commandset
 {
 	t_redirect *node;
 	char **command;
-	// int in_fd;
-	// int out_fd;
 	pid_t pid;
 	struct s_commandset *next;
 	struct s_commandset *prev;
@@ -50,5 +48,6 @@ typedef struct s_commandset
 
 void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_commands);
 void test_commandsets(t_commandset *commandsets, int num_of_commands);
-
+int syntax_error(t_token *tokens);
+void free_commandset(t_commandset *csets);
 #endif

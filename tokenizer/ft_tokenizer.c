@@ -1,62 +1,40 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_tokenizer.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 19:38:44 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/06 13:51:53 by mayu             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "token.h"
 #include "parser.h"
 #include <stdbool.h>
 
-int is_dilimeter(char c)
-{
-	if (c == '|' || c == '<' || c == '>')
-		return 1;
-	return 0;
-}
 
 char *find_end_of_quote(char *command)
 {
-	char *tmp = command;
-	char c = *command;
+    char quote_char;
 
-	tmp++;
-	while (*tmp && *tmp != c)
-		tmp++;
-	tmp++;
-	return (tmp);
+	quote_char = *command;
+	command++;
+    while (*command && *command != quote_char)
+        command++;
+    if (*command)
+        command++;
+    return command;
 }
 
 char *find_end_of_arg(char *command)
 {
-	char *tmp = command;
-	if (is_dilimeter(*tmp) == 1)
-	{
-		if (*tmp == '<' && *(tmp + 1) == '<')
-			tmp++;
-		else if (*tmp == '>' && *(tmp + 1) == '>')
-			tmp++;
-		return tmp;
-	}
-	else
-	{
-		while (is_dilimeter(*command) == 0 && *command != ' ' && *command)
-		{
-			if (*command == '\'' || *command == '\"')
-				command = find_end_of_quote(command);
-			else if (*command)
-				command++;
-		}
-		command--;
-		return (command);
-	}
+    if (is_dilimeter(*command))
+    {
+        if ((*command == '<' && *(command + 1) == '<') || (*command == '>' && *(command + 1) == '>'))
+            command++;
+        return (command);
+    }
+    while (*command && !is_dilimeter(*command) && *command != ' ' && *command != '\t')
+    {
+        if (*command == '\'' || *command == '\"')
+            command = find_end_of_quote(command);
+        else
+            command++;
+    }
+    return (command - 1);
 }
+
 
 int count_tokens(char *command)
 {
@@ -65,7 +43,7 @@ int count_tokens(char *command)
 	count = 0;
 	while (*command)
 	{
-		while (*command == ' ')
+		while (*command == ' ' || *command == '\t')
 			command++;
 		if (*command)
 			count++;
@@ -75,44 +53,39 @@ int count_tokens(char *command)
 	return (count);
 }
 
-void split_into_tokens(t_token * tokens, char *command, int num_of_tokens)
-	{
-		char *start;
-		char *end;
-		int i;
 
-	i = 0;
-	start = command;
-	while (*start == ' ')
-		start++;
-	end = find_end_of_arg(command);
-	while (i < num_of_tokens)
-	{
-		tokens[i].arg = ft_calloc(end - start + 2, sizeof(char));
-		tokens[i].is_freed = 0;
-		strlcpy(tokens[i].arg, start, end - start + 2);
-		start = end + 1;
-		while (*start == ' ')
-			start++;
-		if (*start)
-			end = find_end_of_arg(start);
-		i++;
-	}
-	tokens[i].arg = NULL;
+
+void split_into_tokens(t_token *tokens, char *command, int num_of_tokens)
+{
+    char *start;
+    char *end;
+    int i;
+
+    start = skip_spaces(command);
+    for (i = 0; i < num_of_tokens; i++)
+    {
+        end = find_end_of_arg(start);
+        tokens[i].arg = ft_calloc(end - start + 2, sizeof(char));
+        tokens[i].is_freed = 0;
+        strlcpy(tokens[i].arg, start, end - start + 2);
+        start = skip_spaces(end + 1);
+    }
+    tokens[i].arg = NULL;
 }
+
 
 t_token *ft_tokenizer(char *command)
 {
 	int num_of_tokens;
 	t_token *tokens;
 
-		num_of_tokens = count_tokens(command);
-		tokens = (t_token *)ft_calloc(num_of_tokens + 1, sizeof(t_token));
-		if (!tokens)
-			return (NULL);
-		split_into_tokens(tokens, command, num_of_tokens);
-		return (tokens);
-	}
+	num_of_tokens = count_tokens(command);
+	tokens = (t_token *)ft_calloc(num_of_tokens + 1, sizeof(t_token));
+	if (!tokens)
+		return (NULL);
+	split_into_tokens(tokens, command, num_of_tokens);
+	return (tokens);
+}
 
 // #include <libc.h>
 // int main()

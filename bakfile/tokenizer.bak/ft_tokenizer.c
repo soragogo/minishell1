@@ -16,14 +16,14 @@ char *quoted_arg(int *num_of_args, char *command, char quote)
 
 bool is_separator(char c)
 {
-	return (c && c != ' ' && c != '\'' && c != '\"' && c != '|');
+	return (c && c != ' ' && c != '\t' && c != '\'' && c != '\"' && c != '|');
 }
 
 void count_tokens(char *command, int *num_of_args)
 {
 	while (*command)
 	{
-		while (*command == ' ')
+		while (*command == ' '　|| *command == '\t')
 			command++;
 		if (*command == 34 || *command == 39)
 			command = quoted_arg(num_of_args, command, *command);
@@ -34,7 +34,7 @@ void count_tokens(char *command, int *num_of_args)
 		}
 		else
 		{
-			if (*command != ' ' && *command)
+			if (*command != ' ' && *command != '\t' && *command)
 			{
 				*num_of_args += 1;
 				command++;
@@ -114,11 +114,11 @@ char *tokenize_expandable(t_token *tokens, char *command)
 	i = 0;
 	tmp = command;
 	tokens->type = EXPANDABLE;
-	while (tmp[i] && tmp[i] != ' ')
+	while (tmp[i] && tmp[i] != ' ' && tmp[i] != '\t')
 		i++;
 	tokens->arg = malloc(sizeof(char) * (i + 1));
 	i = 0;
-	while (*tmp && *tmp != ' ' && *tmp != '|' && *tmp != '\'' && *tmp != '\"')
+	while (*tmp && *tmp != ' ' && *tmp != '\t' && *tmp != '|' && *tmp != '\'' && *tmp != '\"')
 	{
 		tokens->arg[i] = *tmp;
 		i++;
@@ -137,7 +137,7 @@ void ft_token_split(t_token *tokens, char *command, int num_of_tokens)
 	// printf("num_of_tokens: %d\n", num_of_tokens);
 	while (i < num_of_tokens)
 	{
-		while (*command == ' ')
+		while (*command == ' ' || *tmp == '\t')
 			command++;
 		if (*command == 39)
 			command = tokenize_nonexpandable(&tokens[i], command);
