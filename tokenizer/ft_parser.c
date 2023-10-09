@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/09 15:43:39 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/09 17:08:09 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ t_commandset *ft_parser(char *buff, int *status)
 		import_command(tokens, commandsets, num_of_commands);
 		import_redirection(tokens, commandsets, num_of_commands);
 		// test_commandsets(commandsets, num_of_commands);
-		free_tokens(tokens);
+		// free_tokens(tokens);
 	}
 	// free_parser(commandsets);
 	return (commandsets);
