@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/08 21:34:52 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/09 03:50:52 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 		{
 			if (tokens[j].type == COMMAND || tokens[j].type == COMMAND_OPTION || tokens[j].type == UNCATEGORIZED)
 			{
-				commandsets[i].command[k] = tokens[j].arg;
+				commandsets[i].command[k] = ft_strdup(tokens[j].arg);
 				k++;
 			}
 			j++;
@@ -140,42 +140,59 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 		i++;
 	}
 }
-void free_parser(t_commandset *commandsets)
+
+void free_tokens(t_token *tokens)
 {
-	t_commandset *tmp_cmdset;
-	t_redirect *redirect;
-	t_redirect *tmp_redirect;
+	int i;
+	char *tmp;
 
-	while (commandsets != NULL)
+	i = 0;
+	tmp = tokens[0].arg;
+	while (tmp)
 	{
-		tmp_cmdset = commandsets;
-		commandsets = tmp_cmdset->next;
-
-		// Free each string in the command array
-		if (tmp_cmdset->command)
-		{
-			char **cmd = tmp_cmdset->command;
-			while (*cmd)
-			{
-				free(*cmd);
-				cmd++;
-			}
-			free(tmp_cmdset->command);
-		}
-
-		// Free redirect nodes
-		redirect = tmp_cmdset->node;
-		while (redirect != NULL)
-		{
-			tmp_redirect = redirect;
-			redirect = tmp_redirect->next;
-			free(tmp_redirect);
-		}
-
-		// Free the current command set node
-		free(tmp_cmdset);
+		tmp = tokens[i + 1].arg;
+		free(tokens[i].arg);
+		i++;
 	}
+	free(tokens);
 }
+
+void free_commandset(t_commandset *csets)
+{
+    char *tmp_cmd;
+    t_redirect *tmp_redir1;
+    t_redirect *tmp_redir2;
+    t_commandset *tmp_cset;
+    int i = 0;
+    int j;
+
+    while((i != 0 && csets[i - 1].next != NULL)|| i == 0)
+    {
+        tmp_cmd = csets[i].command[0];
+        j = 0;
+        while(tmp_cmd)
+        {
+            tmp_cmd = csets[i].command[j + 1];
+            free(csets[i].command[j]);
+            j++;
+        }
+        free(csets[i].command);
+
+        j = 0;
+        tmp_redir1 = csets[i].node;
+        tmp_redir2 = csets[i].node;
+        while (tmp_redir2)
+        {
+            tmp_redir2 = csets[i].node->next;
+            free((char *)csets[i].node->filename);
+            csets[i].node = tmp_redir2;
+        }
+        free(tmp_redir1);
+        i++;
+    }
+    free(csets);
+}
+
 
 
 t_commandset *ft_parser(char *buff, int *status)
@@ -189,7 +206,7 @@ t_commandset *ft_parser(char *buff, int *status)
 	if (syntax_error(tokens))
 	{
 		*status = 258;
-		free(tokens);
+		free_tokens(tokens);
 		return (NULL);
 	}
 	else
@@ -200,7 +217,7 @@ t_commandset *ft_parser(char *buff, int *status)
 		import_command(tokens, commandsets, num_of_commands);
 		import_redirection(tokens, commandsets, num_of_commands);
 		// test_commandsets(commandsets, num_of_commands);
-		free(tokens);
+		free_tokens(tokens);
 	}
 	// free_parser(commandsets);
 	return (commandsets);
