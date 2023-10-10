@@ -22,6 +22,8 @@ int remove_brackets(char **command, char bracket, int start, char **tmp)
     return (start + i);
 }
 
+
+
 void expand_env(char **command, t_env *env_head)
 {
     int i;
@@ -33,10 +35,12 @@ void expand_env(char **command, t_env *env_head)
     i = 0;
     j = 0;
     if (command[0] == NULL)
-        return;
+        return ;
+    // i = skip_space(command[0]);
+    command[0] = &command[0][i];
     while (command[0][i] != '$' && command[0][i] != '\0')
         i++;
-    if (command[0][i] == '$' && command[0][i + 1] != '\0')
+    if (command[0][i] == '$' && command[0][i] != '\0')
     {
         if (command[0][i + 1] == '?')
             return ;
@@ -47,9 +51,9 @@ void expand_env(char **command, t_env *env_head)
         }
         else
         {
-            while (command[0][i + j] != '\0' && command[0][i + j] != ' ')
+            while (command[0][i + j] != '\0' && command[0][i + j] != ' ' && command[0][i + j] != '\'' && command[0][i + j] != '\"')//条件見直し
                 j++;
-            tmp = ft_substr(command[0], i + 1, i + j - 1);
+            tmp = ft_substr(command[0], i + 1, j - 1);
             i = i + j;
         }
         env_value = map_get(&env_head, tmp);
@@ -57,7 +61,12 @@ void expand_env(char **command, t_env *env_head)
         {// freeeeeeeee
             before_env = ft_strjoin(before_env, env_value);
             if (command[0][i] != '\0')
-                before_env = ft_strjoin(before_env, &command[0][i + 1]);
+            {
+                tmp = ft_substr(command[0], i, ft_strlen(command[0]));
+                expand_env(&tmp, env_head);
+                before_env = ft_strjoin(before_env, tmp);
+            }
+            // before_env = ft_strjoin(before_env, &command[0][i + 1]);
         }
         command[0] = ft_strdup(before_env);
         free(tmp);
@@ -66,58 +75,27 @@ void expand_env(char **command, t_env *env_head)
 
 /* ------------------------------------------------------------------------ */
 
-// int compare_arrays(char *arr1[], char *arr2[]);
-
-// // expand_env 関数のテストケース
-// void test_expand_env()
+// void fatal_error(char *msg)
 // {
-//     // テスト用の環境変数を設定
-//     t_env *env_head = NULL;
-//     envmap_init(&env_head);
-//     set_env(&env_head, "VAR1", "value1");
-//     set_env(&env_head, "VAR2", "value2");
-
-//     // テスト用のコマンド
-//     char *command1[] = {"asfdsf$VAR1", "kjshda$(VAR1)lkjafs", "${VAR2}", NULL};
-
-//     // コマンドを展開
-//     int j = 0;
-//     while (command1[j] != NULL)
-//     {
-//         expand_env(&command1[j], env_head);
-//         j++;
-//     }
-
-//     // while (*command1 != NULL)
-//     for (int i = 0; i < 3; i++)
-//     {
-//         printf("%s\n", command1[i]);
-//         // command1++;
-//     }
+//     ft_putstr_fd("minishell: ", STDERR_FILENO);
+//     ft_putendl_fd(msg, STDERR_FILENO);
+// 	exit(1);
 // }
 
-// // // // 配列を比較するユーティリティ関数
-// // // int compare_arrays(char *arr1[], char *arr2[])
-// // // {
-// // //     int i = 0;
-// // //     while (arr1[i] != NULL && arr2[i] != NULL)
-// // //     {
-// // //         if (strcmp(arr1[i], arr2[i]) != 0)
-// // //         {
-// // //             return 0; // 配列が異なる要素を持っている場合は 0 を返す
-// // //         }
-// // //         i++;
-// // //     }
-// // //     return arr1[i] == NULL && arr2[i] == NULL; // 配列が同じであれば 1 を返す
-// // // }
+// int main() {
+//     char *command = NULL; // テスト対象のコマンド文字列
+//     int flag = 0; // シングルクォートフラグ（0: シングルクォート外、1: シングルクォート内）
+//     t_env *env_head = NULL; // 環境変数リストの先頭アドレス
+//     envmap_init(&env_head);
+// 	// info.map_head = env;
+//     printf("%s\n", map_get(&env_head, "HOME"));
 
-// // __attribute__((destructor)) static void destructor()
-// // {
-// // 	system("leaks -q minishell");
-// // }
+//     // テストケース1: シングルクォート外の置換
+//     command = strdup("$HOME \'$HOME\'");
+//     expand_env(&command, env_head);
+//     printf("テストケース1: %s\n", command);
+//     free(command);
+//     command = NULL;
 
-// int main()
-// {
-//     test_expand_env(); // expand_env 関数のテストを実行
 //     return 0;
 // }

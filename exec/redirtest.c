@@ -105,6 +105,8 @@ void undo_redirect(t_redirect *node)
 		return ;
 	undo_redirect(node->next);
 	dup2(node->stashfd, node->oldfd);//一時保存したSTDOUT_FILENOを復元
+	// if (node->prev == NULL)
+	// 	return ;
 	close(node->stashfd);
 	close(node->newfd);
 }
@@ -115,21 +117,29 @@ int heredoc(const char *delimiter, t_env *env_head)
 	char *line;
 	int count;
 	size_t d_len;
+	int i;
 
 	count = 0;
 	pipe(pipefd);
 	d_len = ft_strlen(delimiter);
 	while(1){
 		line = readline("> ");
-		expand_env(&line, env_head);
-		if (line == NULL)
-			break ;
-		if (ft_strncmp(line, delimiter, d_len + 1) == 0)
-		{
-			free(line);
-			break ;
+		if (only_space(line) == FALSE){
+			i = skip_space(&line);
+			while(i > 0){
+				write(pipefd[1], " ", 1);
+				i--;	
+			}
+			expand_quote(&line, env_head);
+			if (line == NULL)
+				break ;
+			if (ft_strncmp(line, delimiter, d_len + 1) == 0)
+			{
+				free(line);
+				break ;
+			}
+			write(pipefd[1], line, ft_strlen(line));
 		}
-		write(pipefd[1], line, ft_strlen(line));
 		write(pipefd[1], "\n", 1);
 		free(line);
 		count++;

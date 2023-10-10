@@ -11,6 +11,7 @@
 #include <readline/history.h>
 #include <signal.h>
 #include <limits.h>
+#include <stdbool.h>
 
 #include "../libft/libft.h"
 #include "../tokenizer/token.h"
@@ -54,7 +55,8 @@ void waitline();
 	/* parser */
 // void ft_parser(char *buff);
 // t_commandset *ft_parser(char *buff);
-t_commandset *ft_parser(char *buff, int *status);
+// t_commandset *ft_parser(char *buff, int *status);
+t_commandset *ft_parser(char *buff, int *status, t_env *env_head);
 
 // t_commandset *create_command_pipeline(t_token *tokens, int num_of_commands);
 
@@ -99,12 +101,16 @@ void append(t_redirect *node);
 int is_builtin(t_commandset *command);
 int exec_builtin(t_commandset *commands, t_info *info);
 char **join(char const *s1, char const *s2, char **environ);
-// void env_join(char *name, char *value, char **environ);
 char  *env_join(char *name, char *value, char **environ);
 char *fetch_path(char *file, t_env **map);
 int handle_command(t_commandset *commands, t_info *info);
 void expand_env(char **command, t_env *env_head);
 int ft_strcmp(char *s1, char *s2);
+void expand_quote(char **command, t_env *env_head);
+// int	skip_space(char *str);
+int	skip_space(char **str);
+char *ft_readline(t_env *env_head);
+bool only_space(char *command);
 
 	/* error */
 void error_message(char *command, char *arg, char *msg);
