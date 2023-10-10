@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/10 15:44:37 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/10/10 21:58:22 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,10 +238,11 @@ t_commandset *ft_parser(char *buff, int *status, t_env *env_head)
 // int main()
 // {
 // 	char *buff;
+// 	int status = 0;
 // 	while (1)
 // 	{
 // 		buff = readline("test here> ");
-// 		ft_parser(buff);
+// 		ft_parser(buff, &status);
 // 		free(buff);
 // 	}
 // }

@@ -39,12 +39,17 @@ int quote_error(t_token *tokens)
 	while (tokens[i].arg)
 	{
 		j = 0;
+		printf("tokens[%d]: %s\n", i , tokens[i].arg);
 		if (tokens[i].arg[0] == '\'' || tokens[i].arg[0] == '\"')
 		{
 			quote_char = tokens[i].arg[0];
-			while (tokens[i].arg[j])
+			while (tokens[i].arg[j] != '\0' || tokens[i].arg[j] == '$')
+			{
 				j++;
+				printf("tokens[%d].arg[%d] = %c, \n", i, j, tokens[i].arg[j]);
+			}
 			j--;
+			printf("tokens[%d].arg[%d] = %c, \n", i, j, tokens[i].arg[j]);
 			if (tokens[i].arg[j] != quote_char || j == 0)
 			{
 				printf("minishell: syntax error: unexpected end of file\n");
