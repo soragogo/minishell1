@@ -11,6 +11,7 @@
 #include <readline/history.h>
 #include <signal.h>
 #include <limits.h>
+#include <stdbool.h>
 
 #include "../libft/libft.h"
 #include "../tokenizer/token.h"
@@ -54,7 +55,8 @@ void waitline();
 	/* parser */
 // void ft_parser(char *buff);
 // t_commandset *ft_parser(char *buff);
-t_commandset *ft_parser(char *buff, int *status);
+// t_commandset *ft_parser(char *buff, int *status);
+t_commandset *ft_parser(char *buff, int *status, t_env *env_head);
 
 // t_commandset *create_command_pipeline(t_token *tokens, int num_of_commands);
 
@@ -106,7 +108,9 @@ void expand_env(char **command, t_env *env_head);
 int ft_strcmp(char *s1, char *s2);
 void expand_quote(char **command, t_env *env_head);
 // int	skip_space(char *str);
-void	skip_space(char **str);
+int	skip_space(char **str);
+char *ft_readline(t_env *env_head);
+bool only_space(char *command);
 
 	/* error */
 void error_message(char *command, char *arg, char *msg);

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/09 17:08:09 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/10 15:44:37 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 #include "parser.h"
+#include "../includes/minishell.h"
 #include <stdbool.h>
 #include <libc.h>
 
@@ -194,13 +195,22 @@ void free_commandset(t_commandset *csets)
 
 
 
-t_commandset *ft_parser(char *buff, int *status)
+t_commandset *ft_parser(char *buff, int *status, t_env *env_head)
 {
 	t_token *tokens;
+	t_token *tmp_token;
 	t_commandset *commandsets;
 	int num_of_commands;
+	int i = 0;
 
 	tokens = ft_tokenizer(buff);
+	tmp_token = tokens;
+	tokens = tmp_token;
+	while (tokens[i].arg){
+		skip_space(&(tokens->arg));
+		expand_quote(&(tokens[i].arg), env_head);
+		i++;
+	}
 	categorize_tokens(tokens);
 	if (syntax_error(tokens))
 	{

@@ -10,7 +10,7 @@
 // 	return (i);
 // }
 
-void	skip_space(char **str)
+int	skip_space(char **str)
 {
 	int	i;
 	char *tmp;
@@ -20,6 +20,7 @@ void	skip_space(char **str)
 	while ((9 <= tmp[i] && tmp[i] <= 13) || tmp[i] == 32)
 		i++;
 	*str = &tmp[i];
+	return (i);
 }
 
 char **join(char const *s1, char const *s2, char **environ)

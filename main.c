@@ -8,20 +8,6 @@ void free_before_closing(t_commandset *command, char *command_buf)
     free_commandset(command);
     free(command_buf);
 }
-
-char *ft_readline(t_env *env_head)//
-{
-	char *command_buf;
-	command_buf = readline("minishell> ");
-	if (command_buf){
-		add_history(command_buf);
-		skip_space(&command_buf);
-		expand_quote(&command_buf, env_head);
-		// expand_env(&command_buf, env_head);
-	}
-	return (command_buf);
-}
-
 bool only_space(char *command)
 {
 	while (*command)
@@ -32,6 +18,17 @@ bool only_space(char *command)
 	}
 	return true;
 }
+
+char *ft_readline(t_env *env_head)//
+{
+	char *command_buf;
+	command_buf = readline("minishell> ");
+	if (command_buf){
+		add_history(command_buf);
+	}
+	return (command_buf);
+}
+
 
 int main()
 {
@@ -58,7 +55,7 @@ int main()
 		}
 		// char command_buf[] = "cd ~";
 		// tokens = ft_tokenizer(command_buf);
-		commands = ft_parser(command_buf, &(info.exit_status_log));
+		commands = ft_parser(command_buf, &(info.exit_status_log), env);
 		if (commands == NULL)
 		{
 			free(command_buf);
