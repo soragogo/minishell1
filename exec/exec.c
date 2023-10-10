@@ -130,7 +130,7 @@ int exec_command(t_commandset *commands, t_info *info){
 		// close(new_pipe[1]);
 	}
 	commands->pid = pid;
-	printf("pid:%d\n", pid);
+	// printf("pid:%d\n", pid);
 	return (status);
 }
 
@@ -160,12 +160,12 @@ int handle_command(t_commandset *commands, t_info *info)
 	//pipeなし
 	if (commands[1].node == NULL && is_builtin(commands) != -1)//fork()いらない
 	{
-		printf("builtin\n");
+		// printf("builtin\n");
 		status = exec_builtin(commands, info);
 	}
 	else//fork()必要
 	{
-		printf("not builtin\n");
+		// printf("not builtin\n");
 		while (commands != NULL)
 		{
 			exec_command(commands, info);
