@@ -138,7 +138,7 @@ int wait_command(t_commandset *commands, t_info *info){
 	int status;
 	while (commands)
 	{
-		printf("pid:%d\n", commands->pid);
+		// printf("pid:%d\n", commands->pid);
 		if (waitpid(commands->pid, &status, 0) < 0)
 			fatal_error("waitpid error");
 		if (WIFEXITED(status)){
