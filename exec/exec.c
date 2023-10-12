@@ -95,14 +95,15 @@ int exec_command(t_commandset *commands, t_info *info){
 		return (-1);
 	else if (pid == 0){//子プロセス
 		handle_pipe(old_pipe, new_pipe, commands);
-		handle_redirection(commands, info);
 		if (is_builtin(commands) != -1)
 		{
 			// write(1, "builtin\n", 8);
 			status = exec_builtin(commands, info);
+			exit(status);
 		}
 		else
 		{
+			handle_redirection(commands, info);
 			// write(1, "not builtin\n", 12);
 			// dprintf(2, "command: %s, inpipe:%d outpipe:%d\n",commands->command[0], old_pipe[0], new_pipe[1]);
 			path = fetch_path(*commands->command, &(info->map_head));
@@ -138,7 +139,6 @@ int wait_command(t_commandset *commands, t_info *info){
 	int status;
 	while (commands)
 	{
-		// printf("pid:%d\n", commands->pid);
 		if (waitpid(commands->pid, &status, 0) < 0)
 			fatal_error("waitpid error");
 		if (WIFEXITED(status)){
@@ -154,25 +154,23 @@ int handle_command(t_commandset *commands, t_info *info)
 {
 	t_commandset *tmp_head;
 	int status;
+	int i = 0;
 
 	status = 0;
 	tmp_head = commands;
 	//pipeなし
-	if (commands[1].node == NULL && is_builtin(commands) != -1)//fork()いらない
+	if (!(commands->next) && is_builtin(commands) != -1)//fork()いらない
 	{
-		// printf("builtin\n");
 		status = exec_builtin(commands, info);
 	}
 	else//fork()必要
 	{
-		// printf("not builtin\n");
 		while (commands != NULL)
 		{
 			exec_command(commands, info);
-			// undo_redirect(commands->node);
-			// if (commands->node)
-			// 	puts(":)");
+			// printf("command:%s\n", commands->command[0]);
 			commands = commands->next;
+			// printf("next command:%s\n", commands->command[0]);
 		}
 		status = wait_command(tmp_head, info);
 	}
