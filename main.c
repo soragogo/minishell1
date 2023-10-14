@@ -83,6 +83,7 @@ int main()
 		// 	ft_system(tokens, &status);//builtin以外のコマンドを実行する関数
 		// free_before_closing(tokens, command_buf);
 	}
+	free_map(&env);
 	return (0);
 }
 /*

@@ -108,7 +108,7 @@ int ft_export(t_env **map, char **commands)
 	}
 	name = get_env_name(name, commands[1]);
 	value = get_env_value(value, commands[1]);
-	if(set_env(map, name, value) == -1)//環境変数をセット
+	if(set_env(map, name, value, false) == -1)//環境変数をセット
 	{
 		error_message("export", NULL, "not a valid identifier");
 		return (1);
