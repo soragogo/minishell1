@@ -41,21 +41,30 @@ int quote_error(t_token *tokens)
 {
 	int i = 0;
 	int j;
-	char quote_char;
+	char quote;
+
 	while (tokens[i].arg)
 	{
 		j = 0;
-		if (tokens[i].arg[0] == '\'' || tokens[i].arg[0] == '\"')
+		while(tokens[i].arg[j])
 		{
-			quote_char = tokens[i].arg[0];
-			while (tokens[i].arg[j] != '\0' || tokens[i].arg[j] == '$')
-				j++;
-			j--;
-			if (tokens[i].arg[j] != quote_char || j == 0)
+			if (tokens[i].arg[j] == '\'' || tokens[i].arg[j] == '\"')
 			{
-				write_syntax_error();
-				return 1;
+				quote = tokens[i].arg[j];
+				printf("tokens[%d].arg[%d]: %c\n", i, j, tokens[i].arg[j]);
+				j++;
+				while (tokens[i].arg[j] != '\0' && tokens[i].arg[j] != quote)
+					j++;
+				printf("tokens[%d].arg[%d]: %c\n", i, j, tokens[i].arg[j]);
+				if (tokens[i].arg[j] != quote)
+				{
+					quote = tokens[i].arg[j];
+					write_syntax_error();
+					return 1;
+				}
 			}
+			j++;
+
 		}
 		i++;
 	}
