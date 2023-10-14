@@ -18,10 +18,6 @@ char  *env_join(char *name, char *value, char **environ)
 	char *tmp;
 
 	tmp = NULL;
-	// join(name, "=", &tmp);
-	// printf("tmp = %s\n", tmp);
-	// join(tmp, value, environ);
-	// free(tmp);
 	tmp = ft_strjoin(name, "=");
 	environ[0] = ft_strjoin(tmp, value);
 	free(tmp);
@@ -40,12 +36,10 @@ char **create_environ(t_env **env_head)
 	environ = (char **)malloc(sizeof(char *) * 1);
 	while (tmp)
 	{
-		// environ[i] = (char *)malloc(sizeof(char *) * 1);
 		env_join(tmp->name, tmp->value, &environ[i]);
 		tmp = tmp->next;
 		i++;
 	}
-	printf("%d\n", i);
 	environ[i] = (char *)malloc(sizeof(char *) * 1);
     environ[i] = NULL;
 	return (environ);
@@ -67,6 +61,17 @@ t_env *create_fake_envlist()
     return env_list;
 }
 
+void free_environ(char **environ)
+{
+    int i = 0;
+    while (environ[i])
+    {
+        free(environ[i]);
+        i++;
+    }
+    // free(environ);
+}
+
 // テスト用のメイン関数
 int main()
 {
@@ -78,25 +83,20 @@ int main()
     // 作成した環境変数配列の内容を表示
     printf("Environment Variables:\n");
 	int i = 0;
-	printf("environ[2] = %s\n", environ[2]);
-    while (environ[i])
-    {
-        printf("%s\n", environ[i]);
-        free(environ[i]); // メモリの解放
-		i++;
-    }
+    // while (environ[i])
+    // {
+    //     printf("%s\n", environ[i]);
+    //     free(environ[i]); // メモリの解放
+	// 	i++;
+    // }
+	free_environ(environ);
 	free_map(&env_list);
-	free(environ); // 環境変数配列全体のメモリを解放
-	//
-	// free_env_list(&env_list); // フェイク環境変数リストのメモリを解放
-    // free(environ); // 環境変数配列全体のメモリを解放
-    // free_env_list(&env_list); // フェイク環境変数リストのメモリを解放
-
+	free(environ);
     return 0;
 }
 
 
-// __attribute__((destructor)) static void destructor()
-// {
-// 	system("leaks -q minishell");
-// }
+__attribute__((destructor)) static void destructor()
+{
+	system("leaks -q minishell");
+}
