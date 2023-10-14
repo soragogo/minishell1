@@ -78,19 +78,33 @@ char *expand_env(char *arg, int *i, t_env *env_head)
     char *start;
     char *env_value;
     char *expanded;
+    bool inside_env;
 
     printf("arg [%s]\n", &arg[*i]);
     (*i)++;
     // return (NULL);
     start = &arg[*i];
-    while (arg[*i] && arg[*i] != '\"')
-        (*i)++;
-    env_value = ft_substr(start, 0, &arg[*i] - start);
-    expanded = map_get(&env_head, env_value);
-    printf("env_value [%s]\n", env_value);
-    free(env_value);
-    printf("expanded [%s]\n", expanded);
-    (*i)++;
+    inside_env = false;
+
+
+    while (arg[*i] != '\"')
+    {
+        while (arg[*i] && arg[*i] != '$')
+            (*i)++;
+        if (arg[*i] != '$')
+        {
+            (*i)++;
+            inside_env != inside_env;
+            while (arg[*i] && is_alnum(&arg[*i]))
+                (*i)++;
+            env_value = ft_substr(start, 0, &arg[*i] - start);
+            expanded = map_get(&env_head, env_value);
+            printf("env_value [%s]\n", env_value);
+            free(env_value);
+            printf("expanded [%s]\n", expanded);
+            (*i)++;
+        }
+    }
     return (expanded);
 
 
