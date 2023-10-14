@@ -100,9 +100,59 @@ void deal_single_quote(char *arg, int *i)
     (*i)--;
 }
 
-// void deal_double_quote(char *arg, int *i);
+char *deal_double_quote(char *arg, int *i, t_env *env_head)
+{
+    char *rest;
+    char *expanded;
+    char *tmp;
+    int len;
+    char *joined;
+
+    len = 0;
+    tmp = NULL;
+    rest = NULL;
+    while (arg[(*i)] && arg[(*i)] != '\"')
+        (*i)++;
+    len = &arg[(*i)] - arg;
+    printf("len :[%d]\n", len);
+    tmp = ft_substr(arg, 0, len);
+    if (!tmp)
+        return (NULL);
+    printf("tmp [%s]\n", tmp);
+    expanded = expand_env(arg, i, env_head);
+
+    // (*i)++;
+    // while (arg[(*i)] && arg[(*i)] != '\"')
+    //     (*i)++;
+    // (*i)++;
+    if (arg[(*i)])
+        rest = &arg[(*i)];
+    printf("rest [%s]\n", rest);
+    if (!expanded)
+        joined = ft_strdup(tmp);
+    else {
+        joined = ft_strjoin(tmp, expanded);
+        free(expanded);
+    }
+    printf("joined [%s]\n", joined);
+    free(tmp);
+    if (rest != NULL)
+    {
+        tmp = ft_strdup(joined);
+        printf("tmp [%s]\n", tmp); // => tmp [/Users/emukamada]
+        free(joined);
+        printf("joined: [%s]\n", joined); // => joined: []
+        joined = ft_strjoin(tmp, rest);
+        printf("joined: [%s]\n", joined); // => (ft_strjoin) joined: [s]
+    }
+    printf("joined: [%s]\n", joined); // => joined: [s]
+    // free(arg);
+    return (tmp);
+
+}
 
 char *expand_quote(char *arg, t_env *env_head)
+
 {
     char    quote_char;
     char    *tmp;
@@ -118,8 +168,8 @@ char *expand_quote(char *arg, t_env *env_head)
                 deal_single_quote(arg, &i);
         else if (arg[i] == '\"')
         {
-            return (arg);
-            // deal_double_quote(arg, &i);
+            // return (arg);
+            deal_double_quote(arg, &i, env_head);
         }
         i++;
     }

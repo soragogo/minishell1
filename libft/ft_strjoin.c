@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:39:55 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/09 14:38:03 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/15 01:10:12 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		joined[i++] = *s1++;
 	while (*s2)
 		joined[i++] = *s2++;
-	joined[i] = 0;
 	return (joined);
 }
 
