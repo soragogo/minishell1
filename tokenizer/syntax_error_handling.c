@@ -51,11 +51,9 @@ int quote_error(t_token *tokens)
 			if (tokens[i].arg[j] == '\'' || tokens[i].arg[j] == '\"')
 			{
 				quote = tokens[i].arg[j];
-				printf("tokens[%d].arg[%d]: %c\n", i, j, tokens[i].arg[j]);
 				j++;
 				while (tokens[i].arg[j] != '\0' && tokens[i].arg[j] != quote)
 					j++;
-				printf("tokens[%d].arg[%d]: %c\n", i, j, tokens[i].arg[j]);
 				if (tokens[i].arg[j] != quote)
 				{
 					quote = tokens[i].arg[j];

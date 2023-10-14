@@ -21,56 +21,111 @@ int remove_quorts(char **command, char bracket, int start)
     return (start + i + 2);
 }
 
-void expand_quote(char **command, t_env *env_head)
-{
-    int i;
-    int j;
-    char *tmp;
-    char *before_env;
-    char *env_value;
-    char quort;
+// void expand_quote(char **command, t_env *env_head)
+// {
+//     int i;
+//     int j;
+//     char *tmp;
+//     char *before_env;
+//     char *env_value;
+//     char quort;
 
-    i = 0;
-    j = 1;
-    tmp = NULL;
-    if (command[0] == NULL)
-        return ;
-    // i = skip_space(command[0]);
-    command[0] = &command[0][i];
-    // ' "を探す
-    while (command[0][i] != '\'' && command[0][i] != '\"' && command[0][i] != '\0')
-        i++;
-    if (command[0][i] == '\'')
-        quort = '\'';
-    else if (command[0][i] == '\"')
-        quort = '\"';
-    //後の' "を探す
-    while (command[0][i + j] != quort && command[0][i + j] != '\0')
-        j++;
-    // ' "があったら
-    if (command[0][i + 1] != '\0')
-    {
-        before_env = ft_substr(command[0], 0, i);
-        tmp = ft_substr(command[0], i, j + 1);
-        i = remove_quorts(&tmp, quort, i);
-        if (quort == '\"')
-        {
-            expand_env(&tmp, env_head);
-        }
-        before_env = ft_strjoin(before_env, tmp);
-        if (command[0][i] != '\0'){
-            tmp = ft_substr(command[0], i, ft_strlen(command[0]));
-            expand_quote(&tmp, env_head);
-            before_env = ft_strjoin(before_env, tmp);
-            // tmp = ft_strjoin(tmp, &command[0][i]);
-        }
-        // command[0] = ft_strdup(tmp);
-        command[0] = ft_strdup(before_env);
-        free(tmp);
-    }else{
-        expand_env(command, env_head);
-    }
+//     i = 0;
+//     j = 1;
+//     tmp = NULL;
+//     if (command[0] == NULL)
+//         return ;
+//     // i = skip_space(command[0]);
+//     command[0] = &command[0][i];
+//     // ' "を探す
+//     while (command[0][i] != '\'' && command[0][i] != '\"' && command[0][i] != '\0')
+//         i++;
+//     if (command[0][i] == '\'')
+//         quort = '\'';
+//     else if (command[0][i] == '\"')
+//         quort = '\"';
+//     //後の' "を探す
+//     while (command[0][i + j] != quort && command[0][i + j] != '\0')
+//         j++;
+//     // ' "があったら
+//     if (command[0][i + 1] != '\0')
+//     {
+//         before_env = ft_substr(command[0], 0, i);
+//         tmp = ft_substr(command[0], i, j + 1);
+//         i = remove_quorts(&tmp, quort, i);
+//         if (quort == '\"')
+//         {
+//             expand_env(&tmp, env_head);
+//         }
+//         before_env = ft_strjoin(before_env, tmp);
+//         if (command[0][i] != '\0'){
+//             tmp = ft_substr(command[0], i, ft_strlen(command[0]));
+//             expand_quote(&tmp, env_head);
+//             before_env = ft_strjoin(before_env, tmp);
+//             // tmp = ft_strjoin(tmp, &command[0][i]);
+//         }
+//         // command[0] = ft_strdup(tmp);
+//         command[0] = ft_strdup(before_env);
+//         free(tmp);
+//     }else{
+//         expand_env(command, env_head);
+//     }
+// }
+
+void deal_single_quote(char *arg, int *i)
+{
+    char *start;
+    char *end;
+    char *tmp;
+
+    start = &arg[(*i)];
+    end = &arg[(*i) + 1];
+
+    ft_memmove(start, end, ft_strlen(end));
+    tmp = arg;
+    while (*tmp)
+        tmp++;
+    tmp--;
+    *tmp = '\0';
+    while (arg[(*i)] && arg[(*i)] != '\'')
+        (*i)++;
+    start = &arg[(*i)];
+    end = &arg[(*i) + 1];
+    ft_memmove(start, end, ft_strlen(end));
+    tmp = arg;
+    while (*tmp)
+        tmp++;
+    tmp--;
+    *tmp = '\0';
+    (*i)--;
 }
+
+// void deal_double_quote(char *arg, int *i);
+
+char *expand_quote(char *arg, t_env *env_head)
+{
+    char    quote_char;
+    char    *tmp;
+    int i;
+
+    tmp = arg;
+    i = 0;
+    while (arg[i])
+    {
+        while (arg[i] && arg[i] != '\'' && arg[i] != '\"')
+                i++;
+        if (arg[i] == '\'')
+                deal_single_quote(arg, &i);
+        else if (arg[i] == '\"')
+        {
+            return (arg);
+            // deal_double_quote(arg, &i);
+        }
+        i++;
+    }
+    return (arg);
+}
+
 
 
 /* -------------------------------------------------------------------------- */

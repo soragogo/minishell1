@@ -128,9 +128,9 @@ int heredoc(const char *delimiter, t_env *env_head)
 			i = skip_space(&line);
 			while(i > 0){
 				write(pipefd[1], " ", 1);
-				i--;	
+				i--;
 			}
-			expand_quote(&line, env_head);
+			line = expand_quote(line, env_head);
 			if (line == NULL)
 				break ;
 			if (ft_strncmp(line, delimiter, d_len + 1) == 0)
