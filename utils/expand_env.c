@@ -64,7 +64,6 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     expanded = deal_env(arg, i, env_head, &increment);
     joined = ft_strjoin(tmp, expanded);
     free(tmp);
-    tmp = NULL;
     tmp = ft_strjoin(joined, rest);
     free(rest);
     free(joined);

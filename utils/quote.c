@@ -77,17 +77,11 @@ char *expand_quote(char *arg, t_env *env_head)
         while (arg[i] && arg[i] != '\'' && arg[i] != '\"' && arg[i] != '$')
                 i++;
         if (arg[i] == '\'')
-        {
             deal_single_quote(arg, &i);
-        }
         else if (arg[i] == '\"')
-        {
             arg = deal_double_quote(arg, &i, env_head);
-        }
         else if (arg[i] == '$')
-        {
             arg = deal_raw_env(arg, &i, env_head);
-        }
     }
     return (arg);
 }
