@@ -2,6 +2,9 @@
 #include "../tokenizer/token.h"
 #include "../tokenizer/parser.h"
 
+char *deal_env(char *arg, int *i, t_env *env_head);
+char *deal_raw_env(char *arg, int *i, t_env *env_head);
+
 int remove_quorts(char **command, char bracket, int start)
 {
     int len;
@@ -74,6 +77,7 @@ int remove_quorts(char **command, char bracket, int start)
 
 void deal_single_quote(char *arg, int *i)
 {
+    puts("--------------deal_single_quote---------------");
     char *start;
     char *end;
     char *tmp;
@@ -97,7 +101,8 @@ void deal_single_quote(char *arg, int *i)
         tmp++;
     tmp--;
     *tmp = '\0';
-    (*i)--;
+    // (*i)++;
+    puts("--------------------------------------");
 }
 
 char *deal_double_quote(char *arg, int *i, t_env *env_head)
@@ -107,46 +112,49 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
     char *expanded;
     char *tmp;
     char *joined;
+    int increment;
 
     tmp = NULL;
     rest = NULL;
+    increment = 0;
     while (arg[(*i)] && arg[(*i)] != '\"')
         (*i)++;
     tmp = ft_substr(arg, 0, &arg[(*i)] - arg);
-    if (!tmp)
-        return (NULL);
     printf("tmp [%s]\n", tmp);
-    expanded = expand_env(arg, i, env_head);
-
+    (*i)++;
+    expanded = expand_env(arg, i, env_head, &increment);
+    printf("i: %d\n", *i);
     // (*i)++;
     // while (arg[(*i)] && arg[(*i)] != '\"')
     //     (*i)++;
     // (*i)++;
     // return (NULL);
-    if (arg[(*i)])
+    if (arg[(*i)] != '\0')
         rest = &arg[(*i)];
     printf("rest [%s]\n", rest);
     if (!expanded)
         joined = ft_strdup(tmp);
     else {
         joined = ft_strjoin(tmp, expanded);
-        free(expanded);
+        // free(expanded);
     }
     printf("joined [%s]\n", joined);
-    free(tmp);
+    // free(tmp);
     if (rest != NULL)
     {
         tmp = ft_strdup(joined);
         printf("tmp [%s]\n", tmp); // => tmp [/Users/emukamada]
-        free(joined);
+        // free(joined);
         printf("joined: [%s]\n", joined); // => joined: []
         joined = ft_strjoin(tmp, rest);
         printf("joined: [%s]\n", joined); // => (ft_strjoin) joined: [s]
     }
     printf("joined: [%s]\n", joined); // => joined: [s]
-    // free(arg);
-    return (tmp);
-
+    free(arg);
+    // arg = joined;
+    *i -= 2;
+    *i += increment;
+    return joined;
 }
 
 char *expand_quote(char *arg, t_env *env_head)
@@ -154,22 +162,36 @@ char *expand_quote(char *arg, t_env *env_head)
 {
     char    quote_char;
     char    *tmp;
+    int increment;
     int i;
 
     tmp = arg;
     i = 0;
+    increment = 0;
     while (arg[i])
     {
-        while (arg[i] && arg[i] != '\'' && arg[i] != '\"')
+        while (arg[i] && arg[i] != '\'' && arg[i] != '\"' && arg[i] != '$')
                 i++;
         if (arg[i] == '\'')
-                deal_single_quote(arg, &i);
+        {
+            deal_single_quote(arg, &i);
+            printf("result: [%s]\n", arg);
+            printf("current i position: [%d]\n", i);
+        }
         else if (arg[i] == '\"')
         {
             // return (arg);
-            deal_double_quote(arg, &i, env_head);
+            arg = deal_double_quote(arg, &i, env_head);
+            printf("result: [%s]\n", arg);
+            printf("current i position: [%d]\n", i);
         }
-        i++;
+        else if (arg[i] == '$')
+        {
+            // expand_env(arg, &i, env_head, &increment);
+            arg = deal_raw_env(arg, &i, env_head);
+            printf("result: [%s]\n", arg);
+            printf("current i position: [%d]\n", i);
+        }
     }
     return (arg);
 }

@@ -73,7 +73,76 @@
 //     }
 // }
 
-char *expand_env(char *arg, int *i, t_env *env_head)
+
+
+char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
+{puts("-----deal_env-----");
+    char *start;
+    char *env_value;
+    char *expanded;
+
+    puts("[1]");
+    (*i)++;
+    start = &arg[*i];
+    printf("start: [%s]\n", start);
+    while (arg[*i] && ft_isalnum(arg[*i]))
+        (*i)++;
+    // printf("&arg[%d] - start: [%ld]\n", *i, &arg[*i] - start);
+    env_value = ft_substr(start, 0, &arg[*i] - start);
+    // (*i)++;
+    start = &arg[*i];
+    printf("start: [%s]\n", start);
+
+    expanded = map_get(&env_head, env_value);
+    // if (tmp)
+    // {
+    //     joined = ft_strjoin(tmp, expanded);
+    //     // free(tmp);
+    // }
+    // else
+    //     joined = ft_strdup(expanded);
+    printf("env_value [%s]\n", env_value);
+    // free(env_value);
+    printf("expanded [%s]\n", expanded);
+    *increment += ft_strlen(expanded);
+    *increment -= (ft_strlen(env_value) + 1);
+    puts("----------");
+    return (expanded);
+    // free(expanded);
+}
+
+char *deal_raw_env(char *arg, int *i, t_env *env_head)
+{
+    char *tmp;
+    char *rest;
+    int increment;
+    char *joined;
+
+    increment = 0;
+    tmp = ft_substr(arg, 0, &arg[*i] - arg);
+    // (*i)++;
+    printf("tmp[%s]!!!!!!!!\n", tmp);
+    rest = &arg[*i];
+    rest++;
+    while (*rest && ft_isalnum(*rest))
+        rest++;
+    if (*rest)
+        rest = ft_strdup(rest);
+    printf("rest:[%s]\n",rest);
+
+    char *expanded = deal_env(arg, i, env_head, &increment);
+    printf("expanded: [%s]\n", expanded);
+    joined = ft_strjoin(tmp, expanded);
+    // free(tmp);
+    tmp = (ft_strjoin(joined, rest));
+    printf("tmp: %s\n", tmp);
+
+    *i += increment + 2;
+    // free(arg);
+    return (tmp);
+}
+
+char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
 {
     puts("------------expand_env--------------");
     char *start;
@@ -84,8 +153,8 @@ char *expand_env(char *arg, int *i, t_env *env_head)
     char *joined;
 
     len = 0;
-    printf("arg [%s]\n", &arg[*i]);
-    (*i)++;
+    // printf("arg [%s]\n", &arg[*i]);
+    // (*i)++;
     start = &arg[*i];
     printf("start: [%s]\n", start);
 
@@ -104,28 +173,12 @@ char *expand_env(char *arg, int *i, t_env *env_head)
         // printf("tmp [%s]\n", tmp);
         if (arg[*i] == '$')
         {
-            puts("[1]");
-            (*i)++;
-            start = &arg[*i];
-            while (arg[*i] && ft_isalnum(arg[*i]))
-                (*i)++;
-            printf("&arg[%d] - start: [%ld]\n", *i, &arg[*i] - start);
-            env_value = ft_substr(start, 0, &arg[*i] - start);
-            // (*i)++;
-            start = &arg[*i];
-            expanded = map_get(&env_head, env_value);
-            // if (tmp)
-            // {
-            //     joined = ft_strjoin(tmp, expanded);
-            //     // free(tmp);
-            // }
-            // else
-            //     joined = ft_strdup(expanded);
-            printf("env_value [%s]\n", env_value);
-            free(env_value);
-            printf("expanded [%s]\n", expanded);
-            printf("joined [%s]\n", joined);
-            // free(expanded);
+                expanded = deal_env(arg, i, env_head, increment);
+                start++;
+                while(*start && ft_isalnum(*start))
+                    start++;
+                printf(":) start :%s\n", start);
+                printf("joined [%s]\n", joined);
         }
         else
         {
@@ -147,8 +200,9 @@ char *expand_env(char *arg, int *i, t_env *env_head)
             puts("[4]");
             printf("joined [%s]\n", joined);
             tmp = ft_strdup(joined);
-            free(joined);
+            // free(joined);
             joined = ft_strjoin(tmp,expanded);
+
         }
         printf("joined [%s]\n", joined);
         printf("start [%s]\n", start);
@@ -156,6 +210,7 @@ char *expand_env(char *arg, int *i, t_env *env_head)
         // free(expanded);
     }
     (*i)++;
+    printf("joined [%s]\n", joined);
     puts("-----------------------------");
     return (joined);
 
