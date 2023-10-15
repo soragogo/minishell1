@@ -243,25 +243,25 @@ void free_map(t_env **map)
 // 	t_env *map2 = map;
 
 // 	// マップに環境変数を追加するテスト
-// 	// set_env(&map, "TEST_ENV", "Hello, World!", false);
-// 	// set_env(&map, "TEST_ENV", "Hello, World!2", false);
+// 	set_env(&map, "TEST_ENV", "Hello, World!", false);
+// 	set_env(&map, "TEST_ENV", "Hello, World!2", false);
 // 	printf("TEST_ENV: %s\n", map_get(&map, "TEST_ENV"));
-// 	// set_env(&map, "ANOTHER_ENV", "12345", false);
+// 	set_env(&map, "ANOTHER_ENV", "12345", false);
 
-// 	// // マップから環境変数の値を取得するテスト
-// 	// printf("TEST_ENV: %s\n", map_get(&map, "TEST_ENV"));
-// 	// printf("ANOTHER_ENV: %s\n", map_get(&map, "ANOTHER_ENV"));
+// 	// マップから環境変数の値を取得するテスト
+// 	printf("TEST_ENV: %s\n", map_get(&map, "TEST_ENV"));
+// 	printf("ANOTHER_ENV: %s\n", map_get(&map, "ANOTHER_ENV"));
 
-// 	// // マップから環境変数を削除するテスト
-// 	// env_unset(&map, "ANOTHER_ENV");
+// 	// マップから環境変数を削除するテスト
+// 	env_unset(&map, "ANOTHER_ENV");
 
-// 	// printf("ANOTHER_ENV after unset: %s\n", map_get(&map, "ANOTHER_ENV"));
+// 	printf("ANOTHER_ENV after unset: %s\n", map_get(&map, "ANOTHER_ENV"));
 
-// 	// while (map)
-// 	// {
-// 	// 	printf("name: %s\nvalue: %s\n", map->name, map->value);
-// 	// 	map = map->next;
-// 	// }
+// 	while (map)
+// 	{
+// 		printf("name: %s\nvalue: %s\n", map->name, map->value);
+// 		map = map->next;
+// 	}
 
 // 	free_map(&map2);
 

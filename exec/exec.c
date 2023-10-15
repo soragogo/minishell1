@@ -108,6 +108,7 @@ int exec_command(t_commandset *commands, t_info *info){
 			// dprintf(2, "command: %s, inpipe:%d outpipe:%d\n",commands->command[0], old_pipe[0], new_pipe[1]);
 			path = fetch_path(*commands->command, &(info->map_head));
 			status = execve(path, commands->command, my_environ);
+			free(path);
 			if (status == -1)
 			{
 				error_message(*commands->command, NULL, "command not found");
@@ -227,7 +228,6 @@ int handle_command(t_commandset *commands, t_info *info)
 
 //     // コマンドを実行
 //     t_env *map;
-// 	map = map_new();
 //     envmap_init(&map);
 // 	t_info info;
 // 	info.map_head = map;

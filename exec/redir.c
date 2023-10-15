@@ -140,7 +140,8 @@ int heredoc(const char *delimiter, t_env *env_head)
 				write(pipefd[1], " ", 1);
 				i--;	
 			}
-			expand_quote(&line, env_head);
+			if (flag == 0)
+				expand_quote(&line, env_head);
 			if (ft_strncmp(line, delimiter, d_len + 1) == 0)
 			{
 				free(line);

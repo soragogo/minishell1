@@ -35,7 +35,6 @@ char **create_environ(t_env **env_head)
     i = 0;
 	tmp = *env_head;
 	env_num = count_env(*env_head);
-	printf("env_num: %d\n", env_num);
 	environ = (char **)malloc(sizeof(char *) * env_num + 1);
 	while (tmp)
 	{
@@ -62,45 +61,45 @@ void free_environ(char **environ)
 /* -------------------------------------------------------------- */
 
 
-// テスト用のフェイク環境変数リストを作成する関数
-t_env *create_fake_envlist()
-{
-    t_env *env_list = NULL;
+// // テスト用のフェイク環境変数リストを作成する関数
+// t_env *create_fake_envlist()
+// {
+//     t_env *env_list = NULL;
 
-	envmap_init(&env_list);
-    set_env(&env_list, "VAR1", "value1", false);
-    set_env(&env_list, "VAR2", "value2", false);
-    set_env(&env_list, "VAR3", "value3", false);
+// 	envmap_init(&env_list);
+//     set_env(&env_list, "VAR1", "value1", false);
+//     set_env(&env_list, "VAR2", "value2", false);
+//     set_env(&env_list, "VAR3", "value3", false);
 
-    return env_list;
-}
-
-
-// テスト用のメイン関数
-int main()
-{
-    t_env *env_list = create_fake_envlist(); // フェイク環境変数リストを作成
-
-    // テスト: create_environ 関数を呼び出し、環境変数配列を作成
-    char **environ = create_environ(&env_list);
-
-    // 作成した環境変数配列の内容を表示
-    printf("Environment Variables:\n");
-	int i = 0;
-    // while (environ[i])
-    // {
-    //     printf("%s\n", environ[i]);
-    //     free(environ[i]); // メモリの解放
-	// 	i++;
-    // }
-	free_environ(environ);
-	free_map(&env_list);
-    return 0;
-}
+//     return env_list;
+// }
 
 
+// // テスト用のメイン関数
+// int main()
+// {
+//     t_env *env_list = create_fake_envlist(); // フェイク環境変数リストを作成
 
-__attribute__((destructor)) static void destructor()
-{
-	system("leaks -q minishell");
-}
+//     // テスト: create_environ 関数を呼び出し、環境変数配列を作成
+//     char **environ = create_environ(&env_list);
+
+//     // 作成した環境変数配列の内容を表示
+//     printf("Environment Variables:\n");
+// 	int i = 0;
+//     // while (environ[i])
+//     // {
+//     //     printf("%s\n", environ[i]);
+//     //     free(environ[i]); // メモリの解放
+// 	// 	i++;
+//     // }
+// 	free_environ(environ);
+// 	free_map(&env_list);
+//     return 0;
+// }
+
+
+
+// __attribute__((destructor)) static void destructor()
+// {
+// 	system("leaks -q minishell");
+// }
