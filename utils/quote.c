@@ -155,16 +155,10 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
     {
         tmp = ft_strdup(joined);
     }
-    if (joined)
-    {
-        free(joined);
-        joined = NULL;
-    }
-    if (expanded)
-    {
-        free(expanded);
-        expanded = NULL;
-    }
+    free(joined);
+    free(expanded);
+    joined = NULL;
+    expanded = NULL;
     printf("tmp: [%s]\n", tmp); // => joined: [s]
 
     // arg = joined;
