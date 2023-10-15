@@ -32,6 +32,7 @@ typedef struct s_env
 {
 	char *name;					//環境変数名
 	char *value;				//値
+	bool is_env;				//環境変数かどうか
 	struct s_env *next;
 } t_env;
 
@@ -65,7 +66,8 @@ t_env	*map_new(void);
 char	*get_env_name(char *ret, char *env);
 char	*get_env_value(char *ret, char *env);
 void	envmap_init(t_env **map);
-int		set_env(t_env **env_head, char *name, char *value);
+// int		set_env(t_env **env_head, char *name, char *value);
+int set_env(t_env **env_head, char *name, char *value ,bool is_env);
 t_env	*item_new(t_env *new_env, char *name, char *value);
 void	add_new(t_env **map, t_env *new_env);
 void	env_unset(t_env **env_head, char *delete_env_key);
@@ -100,7 +102,7 @@ void append(t_redirect *node);
 	/* utils */
 int is_builtin(t_commandset *command);
 int exec_builtin(t_commandset *commands, t_info *info);
-char **join(char const *s1, char const *s2, char **environ);
+char **join(char *s1, char *s2, char **environ);
 char  *env_join(char *name, char *value, char **environ);
 char *fetch_path(char *file, t_env **map);
 int handle_command(t_commandset *commands, t_info *info);
@@ -111,6 +113,8 @@ void expand_quote(char **command, t_env *env_head);
 int	skip_space(char **str);
 char *ft_readline(t_env *env_head);
 bool only_space(char *command);
+void free_before_closing(t_commandset *command, char *command_buf);
+void free_environ(char **environ);
 
 	/* error */
 void error_message(char *command, char *arg, char *msg);

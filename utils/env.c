@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-//環境変数から変数名取り出す
+// 環境変数から変数名取り出す
 char *get_env_name(char *ret, char *env)
 {
 	size_t i;
@@ -45,9 +45,9 @@ char *get_env_value(char *ret, char *env) //""で囲まれてた時とかの処�
 }
 
 // 新しいマップデータ構造を作成
-t_env	*map_new(void)
+t_env *map_new(void)
 {
-	t_env	*map;
+	t_env *map;
 
 	map = ft_calloc(1, sizeof(*map));
 	if (map == NULL)
@@ -55,8 +55,8 @@ t_env	*map_new(void)
 	return (map);
 }
 
-//環境変数をマップデータ構造に初期化
-void	envmap_init(t_env **map)
+// 環境変数をマップデータ構造に初期化
+void envmap_init(t_env **map)
 {
 	extern char **environ;
 	char **env = environ;
@@ -64,10 +64,11 @@ void	envmap_init(t_env **map)
 	char *value;
 
 	*map = NULL;
-    while(*env) {
-        name = get_env_name(name, *env);
+	while (*env)
+	{
+		name = get_env_name(name, *env);
 		value = get_env_value(value, *env);
-		set_env(map, name, value);
+		set_env(map, name, value, true);
 		env++;
 	}
 }
@@ -81,7 +82,7 @@ int ft_strcmp(char *s1, char *s2)
 		return (-1);
 	while (s1[i] && s2[i])
 	{
-		if(s1[i] != s2[i])
+		if (s1[i] != s2[i])
 			return (s1[i] - s2[i]);
 		i++;
 	}
@@ -90,8 +91,8 @@ int ft_strcmp(char *s1, char *s2)
 	return (0);
 }
 
-//マップデータ構造に環境変数を追加
-int	set_env(t_env **env_head, char *name, char *value)//値がNULLの場合？
+// マップデータ構造に環境変数を追加
+int set_env(t_env **env_head, char *name, char *value ,bool is_env) // 値がNULLの場合？
 {
 	t_env *env;
 	t_env *new;
@@ -100,9 +101,9 @@ int	set_env(t_env **env_head, char *name, char *value)//値がNULLの場合？
 	env = *env_head;
 	if (name == NULL) // || !is_identifier(name)) //環境変数に設定できない文字ってどれ？
 		return (-1);
-	while (env)//name && env->name
+	while (env) // name && env->name
 	{
-		if(ft_strcmp(name, env->name) == 0)
+		if (ft_strcmp(name, env->name) == 0)
 		{
 			env_unset(env_head, env->name);
 			break;
@@ -110,6 +111,8 @@ int	set_env(t_env **env_head, char *name, char *value)//値がNULLの場合？
 		env = env->next;
 	}
 	new = item_new(new, name, value);
+	if (is_env == true)
+		new->is_env = true;
 	add_new(env_head, new);
 	return (0);
 }
@@ -123,7 +126,7 @@ t_env *item_new(t_env *new_env, char *name, char *value)
 	new_env->name = name;
 	new_env->value = value;
 	new_env->next = NULL;
-
+	new_env->is_env = false;
 	return (new_env);
 }
 
@@ -132,12 +135,12 @@ size_t count_env(t_env *env)
 	size_t count;
 
 	count = 0;
-	if(!(env->name))
+	if (!(env))
 		return (0);
-	while (env->name)
+	while (env)
 	{
 		count++;
-		env++;
+		env = env->next;
 	}
 	return (count);
 }
@@ -212,53 +215,63 @@ void free_map(t_env **map)
 	while (env && env->next)
 	{
 		tmp = env->next;
-		free(env->name);
-		free(env->value);
+		if (env->is_env == true)
+		{
+			free(env->name);
+			free(env->value);
+		}
+		// free(env->name);
+		// free(env->value);
 		free(env);
 		env = tmp;
+	}
+	if (env->is_env == true)
+	{
+		free(env->name);
+		free(env->value);
 	}
 	free(env);
 }
 
 // #include <stdio.h>
 // // テスト用の main 関数
-// int main() {
-//     t_env *map = NULL;
+// int main()
+// {
+// 	t_env *map = NULL;
 // 	// map = map_new();
-//     envmap_init(&map);
+// 	envmap_init(&map);
 // 	t_env *map2 = map;
-	
-//     // マップに環境変数を追加するテスト
-//     set_env(&map, "TEST_ENV", "Hello, World!");
-// 	set_env(&map, "TEST_ENV", "Hello, World!2");
+
+// 	// マップに環境変数を追加するテスト
+// 	set_env(&map, "TEST_ENV", "Hello, World!", false);
+// 	set_env(&map, "TEST_ENV", "Hello, World!2", false);
 // 	printf("TEST_ENV: %s\n", map_get(&map, "TEST_ENV"));
-//     // set_env(&map, "ANOTHER_ENV", "12345");
+// 	set_env(&map, "ANOTHER_ENV", "12345", false);
 
+// 	// マップから環境変数の値を取得するテスト
+// 	printf("TEST_ENV: %s\n", map_get(&map, "TEST_ENV"));
+// 	printf("ANOTHER_ENV: %s\n", map_get(&map, "ANOTHER_ENV"));
 
-//     // // マップから環境変数の値を取得するテスト
-//     // printf("TEST_ENV: %s\n", map_get(&map, "TEST_ENV"));
-//     // printf("ANOTHER_ENV: %s\n", map_get(&map, "ANOTHER_ENV"));
+// 	// マップから環境変数を削除するテスト
+// 	env_unset(&map, "ANOTHER_ENV");
 
-//     // // マップから環境変数を削除するテスト
-//     // env_unset(&map, "ANOTHER_ENV");
+// 	printf("ANOTHER_ENV after unset: %s\n", map_get(&map, "ANOTHER_ENV"));
 
-//     // printf("ANOTHER_ENV after unset: %s\n", map_get(&map, "ANOTHER_ENV"));
+// 	while (map)
+// 	{
+// 		printf("name: %s\nvalue: %s\n", map->name, map->value);
+// 		map = map->next;
+// 	}
 
-// 	// while (map)
-// 	// {
-// 	// 	printf("name: %s\nvalue: %s\n", map->name, map->value);
-// 	// 	map = map->next;
-// 	// }
+// 	free_map(&map2);
 
-// 	// free_map(&map2);
+// 	// メモリの解放
+// 	// ここで実際のコードでは map やその中身の要素を適切に解放する必要があります
 
-//     // メモリの解放
-//     // ここで実際のコードでは map やその中身の要素を適切に解放する必要があります
-
-//     return 0;
+// 	return 0;
 // }
 
 // __attribute__((destructor)) static void destructor()
 // {
-// 	system("leaks -q a.out");
+// 	system("leaks -q minishell");
 // }

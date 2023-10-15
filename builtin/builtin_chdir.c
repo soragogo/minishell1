@@ -83,14 +83,14 @@ int ft_chdir(char **commands, t_env **env)
 	}
 	if (chdir(dir_path) != 0)
 	{
-		set_env(env, "PWD", old_pwd);
+		set_env(env, "PWD", old_pwd, false);
 		error_message("cd", commands[1], strerror(errno));
 		return (1);
 	}
 	// printf("OLDPWD: %s\n\n", old_pwd);
 	// int ret = chdir(dir_path);
 	// printf("ret: %d\n", ret);
-	if(set_env(env, "OLDPWD", old_pwd) == -1 || set_env(env, "PWD", dir_path) == -1)
+	if(set_env(env, "OLDPWD", old_pwd, false) == -1 || set_env(env, "PWD", dir_path, false) == -1)
 	{
 		free(old_pwd);
 		return (1);

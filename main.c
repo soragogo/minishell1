@@ -3,32 +3,6 @@
 #include "tokenizer/parser.h"
 #include <stdbool.h>
 
-void free_before_closing(t_commandset *command, char *command_buf)
-{
-    free_commandset(command);
-    free(command_buf);
-}
-bool only_space(char *command)
-{
-	while (*command)
-	{
-		if (*command != ' ' &&  *command != '\t')
-			return false;
-		command++;
-	}
-	return true;
-}
-
-char *ft_readline(t_env *env_head)//
-{
-	char *command_buf;
-	command_buf = readline("minishell> ");
-	if (command_buf){
-		add_history(command_buf);
-	}
-	return (command_buf);
-}
-
 
 int main()
 {
@@ -83,6 +57,7 @@ int main()
 		// 	ft_system(tokens, &status);//builtin以外のコマンドを実行する関数
 		// free_before_closing(tokens, command_buf);
 	}
+	free_map(&env);
 	return (0);
 }
 /*
