@@ -114,6 +114,7 @@ int	skip_space(char **str);
 char *ft_readline(t_env *env_head);
 bool only_space(char *command);
 void free_before_closing(t_commandset *command, char *command_buf);
+void free_environ(char **environ);
 
 	/* error */
 void error_message(char *command, char *arg, char *msg);

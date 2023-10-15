@@ -132,6 +132,7 @@ int exec_command(t_commandset *commands, t_info *info){
 	}
 	commands->pid = pid;
 	// printf("pid:%d\n", pid);
+	free_environ(my_environ);
 	return (status);
 }
 

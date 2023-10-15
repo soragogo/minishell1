@@ -20,7 +20,9 @@ char  *env_join(char *name, char *value, char **environ)
 	tmp = NULL;
 	tmp = ft_strjoin(name, "=");
 	environ[0] = ft_strjoin(tmp, value);
-	free(tmp);
+	// printf("%p\n", tmp);
+	// printf("%s\n", tmp);
+	free(tmp);//最後だけfreeできないなんで？
 	return (environ[0]);
 }
 
@@ -30,10 +32,13 @@ char **create_environ(t_env **env_head)
 	t_env *tmp;
 	char **environ;
     int i;
+	int env_num;
 
     i = 0;
 	tmp = *env_head;
-	environ = (char **)malloc(sizeof(char *) * 1);
+	env_num = count_env(*env_head);
+	printf("env_num: %d\n", env_num);
+	environ = (char **)malloc(sizeof(char *) * env_num + 1);
 	while (tmp)
 	{
 		env_join(tmp->name, tmp->value, &environ[i]);
@@ -54,7 +59,33 @@ void free_environ(char **environ)
         i++;
     }
     free(environ[i]);
+	free(environ);
 }
+
+// テスト用のメイン関数
+int main()
+{
+    t_env *env_list = create_fake_envlist(); // フェイク環境変数リストを作成
+
+    // テスト: create_environ 関数を呼び出し、環境変数配列を作成
+    char **environ = create_environ(&env_list);
+
+    // 作成した環境変数配列の内容を表示
+    printf("Environment Variables:\n");
+	int i = 0;
+    // while (environ[i])
+    // {
+    //     printf("%s\n", environ[i]);
+    //     free(environ[i]); // メモリの解放
+	// 	i++;
+    // }
+	free_environ(environ);
+	free_map(&env_list);
+	free(environ);
+}
+
+
+
 
 
 /* -------------------------------------------------------------- */
