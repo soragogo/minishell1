@@ -81,6 +81,8 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
     char *env_value;
     char *expanded;
 
+    env_value = NULL;
+    expanded = NULL;
     puts("[1]");
     (*i)++;
     start = &arg[*i];
@@ -94,7 +96,7 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
     printf("start: [%s]\n", start);
 
     expanded = map_get(&env_head, env_value);
-    free(env_value);
+
     // if (tmp)
     // {
     //     joined = ft_strjoin(tmp, expanded);
@@ -106,6 +108,8 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
     printf("expanded [%s]\n", expanded);
     *increment += ft_strlen(expanded);
     *increment -= (ft_strlen(env_value) + 1);
+    if (env_value)
+        free(env_value);
     puts("----------");
     return (expanded);
 }
@@ -116,8 +120,11 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     char *rest;
     int increment;
     char *joined;
+    char *expanded;
 
     increment = 0;
+    tmp = NULL;
+    joined = NULL;
     tmp = ft_substr(arg, 0, &arg[*i] - arg);
     // (*i)++;
     printf("tmp[%s]!!!!!!!!\n", tmp);
@@ -127,15 +134,23 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
         rest++;
     if (*rest)
         rest = ft_strdup(rest);
+    else
+        rest = NULL;
     printf("rest:[%s]\n",rest);
 
-    char *expanded = deal_env(arg, i, env_head, &increment);
+    expanded = deal_env(arg, i, env_head, &increment);
     printf("expanded: [%s]\n", expanded);
     joined = ft_strjoin(tmp, expanded);
     tmp = (ft_strjoin(joined, rest));
     printf("tmp: %s\n", tmp);
 
-    *i += increment + 2;
+    if (joined)
+        free(joined);
+    if(expanded)
+        free(expanded);
+    if(rest)
+        free(rest);
+    // *i += increment + 2;
     return (tmp);
 }
 
@@ -159,6 +174,7 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
         if (arg[*i] == '$')
         {
                 expanded = deal_env(arg, i, env_head, increment);
+                printf("%d increment later\n", *increment);
                 start++;
                 while(*start && ft_isalnum(*start))
                     start++;
