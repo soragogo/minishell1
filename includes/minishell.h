@@ -113,6 +113,7 @@ void expand_quote(char **command, t_env *env_head);
 int	skip_space(char **str);
 char *ft_readline(t_env *env_head);
 bool only_space(char *command);
+void free_before_closing(t_commandset *command, char *command_buf);
 
 	/* error */
 void error_message(char *command, char *arg, char *msg);

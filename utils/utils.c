@@ -45,22 +45,6 @@ char **create_environ(t_env **env_head)
 	return (environ);
 }
 
-/* -------------------------------------------------------------- */
-
-
-
-// テスト用のフェイク環境変数リストを作成する関数
-t_env *create_fake_envlist()
-{
-    t_env *env_list = NULL;
-
-    set_env(&env_list, "VAR1", "value1", false);
-    set_env(&env_list, "VAR2", "value2", false);
-    set_env(&env_list, "VAR3", "value3", false);
-
-    return env_list;
-}
-
 void free_environ(char **environ)
 {
     int i = 0;
@@ -69,34 +53,48 @@ void free_environ(char **environ)
         free(environ[i]);
         i++;
     }
-    // free(environ);
-}
-
-// テスト用のメイン関数
-int main()
-{
-    t_env *env_list = create_fake_envlist(); // フェイク環境変数リストを作成
-
-    // テスト: create_environ 関数を呼び出し、環境変数配列を作成
-    char **environ = create_environ(&env_list);
-
-    // 作成した環境変数配列の内容を表示
-    printf("Environment Variables:\n");
-	int i = 0;
-    // while (environ[i])
-    // {
-    //     printf("%s\n", environ[i]);
-    //     free(environ[i]); // メモリの解放
-	// 	i++;
-    // }
-	free_environ(environ);
-	free_map(&env_list);
-	free(environ);
-    return 0;
+    free(environ[i]);
 }
 
 
-__attribute__((destructor)) static void destructor()
-{
-	system("leaks -q minishell");
-}
+/* -------------------------------------------------------------- */
+
+
+
+// // テスト用のフェイク環境変数リストを作成する関数
+// t_env *create_fake_envlist()
+// {
+//     t_env *env_list = NULL;
+
+//     set_env(&env_list, "VAR1", "value1", false);
+//     set_env(&env_list, "VAR2", "value2", false);
+//     set_env(&env_list, "VAR3", "value3", false);
+
+//     return env_list;
+// }
+
+
+// // テスト用のメイン関数
+// int main()
+// {
+//     t_env *env_list = create_fake_envlist(); // フェイク環境変数リストを作成
+
+//     // テスト: create_environ 関数を呼び出し、環境変数配列を作成
+//     char **environ = create_environ(&env_list);
+
+//     // 作成した環境変数配列の内容を表示
+//     printf("Environment Variables:\n");
+// 	int i = 0;
+//     // while (environ[i])
+//     // {
+//     //     printf("%s\n", environ[i]);
+//     //     free(environ[i]); // メモリの解放
+// 	// 	i++;
+//     // }
+// 	free_environ(environ);
+// 	free_map(&env_list);
+// 	free(environ);
+//     return 0;
+// }
+
+

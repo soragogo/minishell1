@@ -118,12 +118,22 @@ int heredoc(const char *delimiter, t_env *env_head)
 	int count;
 	size_t d_len;
 	int i;
+	int flag;
 
 	count = 0;
 	pipe(pipefd);
 	d_len = ft_strlen(delimiter);
+	if (d_len == 0)
+		flag = 1;
 	while(1){
 		line = readline("> ");
+		if (line == NULL)
+			break ;
+		if (flag == 1 && *line == '\0')
+		{
+			free(line);
+			break ;
+		}
 		if (only_space(line) == FALSE){
 			i = skip_space(&line);
 			while(i > 0){
@@ -131,8 +141,6 @@ int heredoc(const char *delimiter, t_env *env_head)
 				i--;	
 			}
 			expand_quote(&line, env_head);
-			if (line == NULL)
-				break ;
 			if (ft_strncmp(line, delimiter, d_len + 1) == 0)
 			{
 				free(line);
@@ -158,7 +166,7 @@ int heredoc(const char *delimiter, t_env *env_head)
 //     t_info info; // 任意の情報構造体を初期化または設定
 
 //     // ヒアドキュメントをテストするために、デリミタとして"END"を使用
-//     const char *delimiter = "END";
+//     const char *delimiter = "\0";
 
 //     int heredoc_fd = heredoc(delimiter, env_head);
 

@@ -64,6 +64,8 @@ int	ft_echo(char **command, int status)
 	return (0);
 }
 
+/* ------------------------------------------------------------ */
+
 // #include <stdio.h>
 // #include <stdbool.h>
 // #include <string.h>
@@ -85,17 +87,17 @@ int	ft_echo(char **command, int status)
 // }
 
 // int main() {
-//     // テストケースを用意して実行
-//     char *test1[] = {"echo", "Hello,", "world!", NULL};
-//     test_builtin_echo(test1);
+//     // // テストケースを用意して実行
+//     // char *test1[] = {"echo", "Hello,", "world!", NULL};
+//     // test_builtin_echo(test1);
 
-//     char *test2[] = {"echo", "-n", "No", "newline", "here.", NULL};
-//     test_builtin_echo(test2);
+//     // char *test2[] = {"echo", "-n", "No", "newline", "here.", NULL};
+//     // test_builtin_echo(test2);
 
-//     char *test3[] = {"echo", NULL};
-//     test_builtin_echo(test3);
+//     // char *test3[] = {"echo", NULL};
+//     // test_builtin_echo(test3);
 
-// 	char *test4[] = {"echo", "$?", NULL};
+// 	char *test4[] = {"echo", "a$?asd", NULL};
 // 	test_builtin_echo(test4);
 
 //     return 0;

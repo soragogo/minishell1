@@ -75,12 +75,6 @@ void expand_env(char **command, t_env *env_head)
 
 /* ------------------------------------------------------------------------ */
 
-// void fatal_error(char *msg)
-// {
-//     ft_putstr_fd("minishell: ", STDERR_FILENO);
-//     ft_putendl_fd(msg, STDERR_FILENO);
-// 	exit(1);
-// }
 
 // int main() {
 //     char *command = NULL; // テスト対象のコマンド文字列
@@ -91,11 +85,17 @@ void expand_env(char **command, t_env *env_head)
 //     printf("%s\n", map_get(&env_head, "HOME"));
 
 //     // テストケース1: シングルクォート外の置換
-//     command = strdup("$HOME \'$HOME\'");
+//     command = strdup("$?HOME \'$HOME\'");
 //     expand_env(&command, env_head);
 //     printf("テストケース1: %s\n", command);
+//     free_map(&env_head);
 //     free(command);
 //     command = NULL;
 
 //     return 0;
+// }
+
+// __attribute__((destructor)) static void destructor()
+// {
+// 	system("leaks -q minishell");
 // }
