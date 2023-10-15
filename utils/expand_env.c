@@ -1,6 +1,22 @@
 #include "../includes/minishell.h"
 
 
+char *return_end_of_env(char *end)
+{
+    if (ft_isdigit(*end))
+    {
+        while (ft_isdigit(*end))
+            end++;
+    }
+    else
+    {
+        while (*end && (ft_isalnum(*end) || *end == '_'))
+            end++;
+    }
+    return (end);
+}
+
+
 
 char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
 {
@@ -17,9 +33,10 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
         while (ft_isdigit(arg[*i]))
             (*i)++;
     }
-    else{
+    else
+    {
         while (arg[*i] && (ft_isalnum(arg[*i]) || arg[*i] == '_'))
-        (*i)++;
+            (*i)++;
     }
     env_value = ft_substr(start, 0, &arg[*i] - start);
     start = &arg[*i];
@@ -50,16 +67,7 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     tmp = ft_substr(arg, 0, *i);
     rest = &arg[*i + 1];
     rest++;
-    if (ft_isdigit(*rest))
-    {
-        while (ft_isdigit(*rest))
-            rest++;
-    }
-    else
-    {
-        while (*rest && (ft_isalnum(*rest) || *rest == '_'))
-        rest++;
-    }
+    rest = return_end_of_env(rest);
     rest = ft_strdup(rest);
     expanded = deal_env(arg, i, env_head, &increment);
     joined = ft_strjoin(tmp, expanded);
@@ -91,15 +99,7 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
         {
             expanded = deal_env(arg, i, env_head, increment);
             start++;
-            if (ft_isdigit(*start))
-            {
-                while (ft_isdigit(*start))
-                    start++;
-            }
-            else{
-                while (*start && (ft_isalnum(*start) || *start == '_'))
-                start++;
-            }
+            start = return_end_of_env(start);
         }
         else
         {
