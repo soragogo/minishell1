@@ -20,7 +20,9 @@ char  *env_join(char *name, char *value, char **environ)
 	tmp = NULL;
 	tmp = ft_strjoin(name, "=");
 	environ[0] = ft_strjoin(tmp, value);
-	free(tmp);
+	// printf("%p\n", tmp);
+	// printf("%s\n", tmp);
+	free(tmp);//最後だけfreeできないなんで？
 	return (environ[0]);
 }
 
@@ -30,10 +32,13 @@ char **create_environ(t_env **env_head)
 	t_env *tmp;
 	char **environ;
     int i;
+	int env_num;
 
     i = 0;
 	tmp = *env_head;
-	environ = (char **)malloc(sizeof(char *) * 1);
+	env_num = count_env(*env_head);
+	printf("env_num: %d\n", env_num);
+	environ = (char **)malloc(sizeof(char *) * env_num + 1);
 	while (tmp)
 	{
 		env_join(tmp->name, tmp->value, &environ[i]);
@@ -54,9 +59,10 @@ t_env *create_fake_envlist()
 {
     t_env *env_list = NULL;
 
-    set_env(&env_list, "VAR1", "value1", false);
-    set_env(&env_list, "VAR2", "value2", false);
-    set_env(&env_list, "VAR3", "value3", false);
+	envmap_init(&env_list);
+    // set_env(&env_list, "VAR1", "value1", false);
+    // set_env(&env_list, "VAR2", "value2", false);
+    // set_env(&env_list, "VAR3", "value3", false);
 
     return env_list;
 }
@@ -69,7 +75,8 @@ void free_environ(char **environ)
         free(environ[i]);
         i++;
     }
-    // free(environ);
+    free(environ[i]);
+	free(environ);
 }
 
 // テスト用のメイン関数
@@ -91,7 +98,6 @@ int main()
     // }
 	free_environ(environ);
 	free_map(&env_list);
-	free(environ);
     return 0;
 }
 
