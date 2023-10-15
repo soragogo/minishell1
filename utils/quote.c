@@ -102,20 +102,17 @@ void deal_single_quote(char *arg, int *i)
 
 char *deal_double_quote(char *arg, int *i, t_env *env_head)
 {
+    puts("--------------deal_double_quote---------------");
     char *rest;
     char *expanded;
     char *tmp;
-    int len;
     char *joined;
 
-    len = 0;
     tmp = NULL;
     rest = NULL;
     while (arg[(*i)] && arg[(*i)] != '\"')
         (*i)++;
-    len = &arg[(*i)] - arg;
-    printf("len :[%d]\n", len);
-    tmp = ft_substr(arg, 0, len);
+    tmp = ft_substr(arg, 0, &arg[(*i)] - arg);
     if (!tmp)
         return (NULL);
     printf("tmp [%s]\n", tmp);
@@ -125,6 +122,7 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
     // while (arg[(*i)] && arg[(*i)] != '\"')
     //     (*i)++;
     // (*i)++;
+    // return (NULL);
     if (arg[(*i)])
         rest = &arg[(*i)];
     printf("rest [%s]\n", rest);
