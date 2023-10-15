@@ -105,11 +105,14 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
     // else
     //     joined = ft_strdup(expanded);
     printf("env_value [%s]\n", env_value);
+    expanded = map_get(&env_head, env_value);
     printf("expanded [%s]\n", expanded);
     *increment += ft_strlen(expanded);
-    *increment -= (ft_strlen(env_value) + 1);
-    if (env_value)
-        free(env_value);
+    printf("expanded: %s\n", expanded);
+    *increment -= (ft_strlen(env_value));
+    printf("env_value: %s\n", env_value);
+    // if (env_value)
+        // free(env_value);
     puts("----------");
     return (expanded);
 }
@@ -139,6 +142,7 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     printf("rest:[%s]\n",rest);
 
     expanded = deal_env(arg, i, env_head, &increment);
+    increment += 2;
     printf("expanded: [%s]\n", expanded);
     joined = ft_strjoin(tmp, expanded);
     tmp = (ft_strjoin(joined, rest));
