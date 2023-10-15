@@ -20,7 +20,7 @@ int remove_quorts(char **command, char bracket, int start)
         return (start + i + 1);
     tmp = ft_substr(command[0], 1, len - 2);
     ft_strlcpy(command[0], tmp, len - 1);
-    free(tmp);
+    // free(tmp);
     return (start + i + 2);
 }
 
@@ -133,15 +133,15 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
         joined = ft_strdup(tmp);
     else {
         joined = ft_strjoin(tmp, expanded);
-        free(expanded);
+        // free(expanded);
     }
 
     printf("joined [%s]\n", joined);
     *i -= 2;
     *i += increment;
     // free(tmp);
-    if (tmp)
-        free(tmp);
+    // if (tmp)
+    //     free(tmp);
     if (rest != NULL)
     {
         // tmp = ft_strdup(joined);
@@ -154,9 +154,9 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
     {
         tmp = ft_strdup(joined);
     }
-    free(joined);
+    // free(joined);
     printf("tmp: [%s]\n", tmp); // => joined: [s]
-    free(arg);
+
     // arg = joined;
 
     return tmp;
