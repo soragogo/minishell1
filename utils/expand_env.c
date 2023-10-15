@@ -132,7 +132,8 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     joined = NULL;
     rest = NULL;
     expanded = NULL;
-    tmp = ft_substr(arg, 0, &arg[*i] - arg);
+    tmp = ft_substr(arg, 0, *i);
+    printf("tmp:[%s]\n",tmp);
     // (*i)++;
     rest = &arg[*i];
     rest++;
@@ -236,6 +237,11 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
         tmp = ft_strdup(joined);
         // if (joined)
             // free(joined);
+        if (joined)
+        {
+            free(joined);
+            joined = NULL;
+        }
         joined = ft_strjoin(tmp, expanded);
         // if (tmp)
             // free(tmp);
@@ -254,6 +260,11 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
             free(tmp);
             tmp = NULL;
         }
+        // if (joined)
+        // {
+        //     free(joined);
+        //     joined = NULL;
+        // }
         if (expanded)
         {
             free(expanded);

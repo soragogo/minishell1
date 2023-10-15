@@ -197,7 +197,7 @@ char *map_get(t_env **env_head, char *name)
 	while (env && env->name)
 	{
 		if (ft_strcmp(name, env->name) == 0)
-			return (env->value);
+			return (ft_strdup(env->value));
 		env = env->next;
 	}
 	return (NULL);
@@ -227,7 +227,7 @@ void free_map(t_env **map)
 // 	// map = map_new();
 //     envmap_init(&map);
 // 	t_env *map2 = map;
-	
+
 //     // マップに環境変数を追加するテスト
 //     set_env(&map, "TEST_ENV", "Hello, World!");
 // 	set_env(&map, "TEST_ENV", "Hello, World!2");

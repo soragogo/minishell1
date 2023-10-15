@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:39:55 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/15 01:10:12 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/15 20:09:58 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		strslen;
 
 	i = 0;
-	// if (s1 == NULL || s2 == NULL)
-	if (s2 == NULL)
+	if (s1 == NULL && s2 == NULL)
 		return (NULL);
+	if (s2 == NULL)
+		return (ft_strdup(s1));
 	if (s1 == NULL)
 		return (ft_strdup(s2));
 	strslen = ft_strlen(s1) + ft_strlen(s2);
