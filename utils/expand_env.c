@@ -8,6 +8,13 @@ char *return_end_of_env(char *end)
         while (ft_isdigit(*end))
             end++;
     }
+    else if(*end == '{')
+    {
+        while (*end != '}' && *end)
+            end++;
+        if (*end == '}')
+            end++;
+    }
     else
     {
         while (*end && (ft_isalnum(*end) || *end == '_'))
@@ -38,16 +45,14 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
         while (arg[*i] && (ft_isalnum(arg[*i]) || arg[*i] == '_'))
             (*i)++;
     }
-    env_value = ft_substr(start, 0, &arg[*i] - start);
-    start = &arg[*i];
+    if (*start == '{')
+        env_value = ft_substr(start, 1, ft_strchr(start, '}') - start - 1);
+    else
+        env_value = ft_substr(start, 0, &arg[*i] - start);
+    printf("env_value %s\n", env_value);
     expanded = map_get(&env_head, env_value);
-    *increment += ft_strlen(expanded);
-    *increment -= (ft_strlen(env_value)+1);
-    if (env_value)
-    {
-        free(env_value);
-        env_value = NULL;
-    }
+    *increment += ft_strlen(expanded) - (ft_strlen(env_value) + 1);
+    free(env_value);
     return (expanded);
 }
 
@@ -66,10 +71,13 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     expanded = NULL;
     tmp = ft_substr(arg, 0, *i);
     rest = &arg[*i + 1];
-    rest++;
+    printf("rest: %s\n", rest);
     rest = return_end_of_env(rest);
+    printf("rest: %s\n", rest);
     rest = ft_strdup(rest);
+    printf("arg: %s\n", &arg[*i]);
     expanded = deal_env(arg, i, env_head, &increment);
+    printf("expanded: [%s]\n", expanded);
     joined = ft_strjoin(tmp, expanded);
     free(tmp);
     tmp = ft_strjoin(joined, rest);
