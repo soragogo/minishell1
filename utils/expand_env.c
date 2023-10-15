@@ -130,9 +130,10 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     increment = 0;
     tmp = NULL;
     joined = NULL;
+    rest = NULL;
+    expanded = NULL;
     tmp = ft_substr(arg, 0, &arg[*i] - arg);
     // (*i)++;
-    printf("tmp[%s]!!!!!!!!\n", tmp);
     rest = &arg[*i];
     rest++;
     while (*rest && ft_isalnum(*rest))
@@ -171,6 +172,11 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
         free(joined);
         joined = NULL;
     }
+    if(expanded)
+    {
+        free(expanded);
+        expanded = NULL;
+    }
     (*i) += increment;
     printf("%d\n", *i);
     printf("tmp: %s\n", tmp);
@@ -182,6 +188,7 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     // if(rest)
         // free(rest);
     // *i += increment + 2;
+    free(arg);
     return (tmp);
 }
 
