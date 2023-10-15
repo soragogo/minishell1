@@ -87,8 +87,15 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
     (*i)++;
     start = &arg[*i];
     printf("start: [%s]\n", start);
-    while (arg[*i] && ft_isalnum(arg[*i]))
+    if (ft_isdigit(arg[*i]))
+    {
+        while (ft_isdigit(arg[*i]))
+            (*i)++;
+    }
+    else{
+        while (arg[*i] && (ft_isalnum(arg[*i]) || arg[*i] == '_'))
         (*i)++;
+    }
     // printf("&arg[%d] - start: [%ld]\n", *i, &arg[*i] - start);
     env_value = ft_substr(start, 0, &arg[*i] - start);
     // (*i)++;
@@ -137,8 +144,15 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     // (*i)++;
     rest = &arg[*i];
     rest++;
-    while (*rest && ft_isalnum(*rest))
+    if (ft_isdigit(*rest))
+    {
+        while (ft_isdigit(*rest))
+            rest++;
+    }
+    else{
+        while (*rest && (ft_isalnum(*rest) || *rest == '_'))
         rest++;
+    }
     if (*rest)
         rest = ft_strdup(rest);
     else
@@ -216,8 +230,15 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
             expanded = deal_env(arg, i, env_head, increment);
             printf("%d increment later\n", *increment);
             start++;
-            while(*start && ft_isalnum(*start))
+            if (ft_isdigit(*start))
+            {
+                while (ft_isdigit(*start))
+                    start++;
+            }
+            else{
+                while (*start && (ft_isalnum(*start) || *start == '_'))
                 start++;
+            }
             // start++;
             printf(":) start :%s\n", start);
             printf("joined [%s]\n", joined);
