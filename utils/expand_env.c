@@ -94,6 +94,7 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
     printf("start: [%s]\n", start);
 
     expanded = map_get(&env_head, env_value);
+    free(env_value);
     // if (tmp)
     // {
     //     joined = ft_strjoin(tmp, expanded);
@@ -102,13 +103,11 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
     // else
     //     joined = ft_strdup(expanded);
     printf("env_value [%s]\n", env_value);
-    // free(env_value);
     printf("expanded [%s]\n", expanded);
     *increment += ft_strlen(expanded);
     *increment -= (ft_strlen(env_value) + 1);
     puts("----------");
     return (expanded);
-    // free(expanded);
 }
 
 char *deal_raw_env(char *arg, int *i, t_env *env_head)
@@ -133,12 +132,10 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     char *expanded = deal_env(arg, i, env_head, &increment);
     printf("expanded: [%s]\n", expanded);
     joined = ft_strjoin(tmp, expanded);
-    // free(tmp);
     tmp = (ft_strjoin(joined, rest));
     printf("tmp: %s\n", tmp);
 
     *i += increment + 2;
-    // free(arg);
     return (tmp);
 }
 
@@ -148,29 +145,17 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
     char *start;
     char *env_value;
     char *expanded;
-    int len;
     char *tmp;
     char *joined;
 
-    len = 0;
-    // printf("arg [%s]\n", &arg[*i]);
-    // (*i)++;
     start = &arg[*i];
     printf("start: [%s]\n", start);
 
 
     tmp = NULL;
     joined = NULL;
-    // for (int j = 0; j < 3; i++)
     while (arg[*i] != '\"' && arg[*i])
     {
-        // while (arg[*i] && arg[*i] != '$')
-        //     (*i)++;
-        // len = &arg[*i] - start;
-        // printf("len: [%d]\n", len);
-        // if (len != 0)
-        //     tmp = ft_substr(start, 0, len);
-        // printf("tmp [%s]\n", tmp);
         if (arg[*i] == '$')
         {
                 expanded = deal_env(arg, i, env_head, increment);
@@ -189,29 +174,36 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
             expanded = ft_substr(start, 0, &arg[*i] - start);
             printf("expanded [%s]\n", expanded);
         }
-        if (!joined)
-        {
-            puts("[3]");
-            tmp = ft_strdup(joined);
-            // free(joined);
-            joined = ft_strjoin(tmp, expanded);
-        }
-        else{
-            puts("[4]");
-            printf("joined [%s]\n", joined);
-            tmp = ft_strdup(joined);
-            // free(joined);
-            joined = ft_strjoin(tmp,expanded);
+        // if (!joined)
+        // {
+        puts("[3]");
+        tmp = ft_strdup(joined);
+        if (joined)
+            free(joined);
+        joined = ft_strjoin(tmp, expanded);
+        if (tmp)
+            free(tmp);
+        if (expanded)
+            free(expanded);
+        // }
+        // else{
+        //     puts("[4]");
+        //     printf("joined [%s]\n", joined);
+        //     tmp = ft_strdup(joined);
+        //     joined = ft_strjoin(tmp,expanded);
 
-        }
+        // }
         printf("joined [%s]\n", joined);
         printf("start [%s]\n", start);
         printf("arg [%s]\n", &arg[*i]);
-        // free(expanded);
     }
     (*i)++;
     printf("joined [%s]\n", joined);
     puts("-----------------------------");
+    // if (expanded)
+    //     free(expanded);
+    // if(arg)
+    //     free(arg);
     return (joined);
 
 
