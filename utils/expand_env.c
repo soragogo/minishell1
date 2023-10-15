@@ -104,7 +104,6 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
     // }
     // else
     //     joined = ft_strdup(expanded);
-    expanded = map_get(&env_head, env_value);
     *increment += ft_strlen(expanded);
     *increment -= (ft_strlen(env_value)+1);
     printf("ft_strlen(expanded)%zu\n",ft_strlen(expanded));
@@ -112,6 +111,11 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
     printf("expanded: %s\n", expanded);
     printf("env_value: %s\n", env_value);
     puts("----------");
+    if (env_value)
+    {
+        free(env_value);
+        env_value = NULL;
+    }
     return (expanded);
 }
 
@@ -140,22 +144,35 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     printf("rest:[%s]\n",rest);
 
     expanded = deal_env(arg, i, env_head, &increment);
-    increment += 2;
     printf("expanded: [%s]\n", expanded);
     if (!tmp)
         joined = ft_strdup(expanded);
     else
     {
         joined = ft_strjoin(tmp, expanded);
-        free(tmp);
     }
-
+    if (tmp)
+    {
+        free(tmp);
+        tmp = NULL;
+    }
     printf("joined: [%s]\n", joined);
     if (!rest)
         tmp = ft_strdup(joined);
     else
         tmp = ft_strjoin(joined, rest);
-    free(joined);
+    if (rest)
+    {
+        free(rest);
+        rest = NULL;
+    }
+    if(joined)
+    {
+        free(joined);
+        joined = NULL;
+    }
+    (*i) += increment;
+    printf("%d\n", *i);
     printf("tmp: %s\n", tmp);
 
     // if (joined)
@@ -188,14 +205,14 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
     {
         if (arg[*i] == '$')
         {
-                expanded = deal_env(arg, i, env_head, increment);
-                printf("%d increment later\n", *increment);
+            expanded = deal_env(arg, i, env_head, increment);
+            printf("%d increment later\n", *increment);
+            start++;
+            while(*start && ft_isalnum(*start))
                 start++;
-                while(*start && ft_isalnum(*start))
-                    start++;
-                // start++;
-                printf(":) start :%s\n", start);
-                printf("joined [%s]\n", joined);
+            // start++;
+            printf(":) start :%s\n", start);
+            printf("joined [%s]\n", joined);
         }
         else
         {
@@ -225,6 +242,16 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
         //     joined = ft_strjoin(tmp,expanded);
 
         // }
+        if (tmp)
+        {
+            free(tmp);
+            tmp = NULL;
+        }
+        if (expanded)
+        {
+            free(expanded);
+            expanded = NULL;
+        }
         printf("joined [%s]\n", joined);
         printf("start [%s]\n", start);
         printf("arg [%s]\n", &arg[*i]);

@@ -133,15 +133,17 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
         joined = ft_strdup(tmp);
     else {
         joined = ft_strjoin(tmp, expanded);
-        // free(expanded);
+        free(expanded);
     }
-
     printf("joined [%s]\n", joined);
     *i -= 2;
     *i += increment;
     // free(tmp);
-    // if (tmp)
-    //     free(tmp);
+    if (tmp)
+    {
+        free(tmp);
+        tmp = NULL;
+    }
     if (rest != NULL)
     {
         // tmp = ft_strdup(joined);
@@ -154,11 +156,11 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
     {
         tmp = ft_strdup(joined);
     }
-    // free(joined);
+    free(joined);
     printf("tmp: [%s]\n", tmp); // => joined: [s]
 
     // arg = joined;
-
+    free(arg);
     return tmp;
 }
 
