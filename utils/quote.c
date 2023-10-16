@@ -16,9 +16,8 @@ void deal_single_quote(char *arg, int *i)
     end = &arg[(*i) + 1];
     ft_memmove(start, end, ft_strlen(end));
     tmp = arg;
-    while (*tmp)
+    while ((*tmp + 1))
         tmp++;
-    tmp--;
     *tmp = '\0';
     while (arg[(*i)] && arg[(*i)] != '\'')
         (*i)++;
@@ -26,9 +25,8 @@ void deal_single_quote(char *arg, int *i)
     end = &arg[(*i) + 1];
     ft_memmove(start, end, ft_strlen(end));
     tmp = arg;
-    while (*tmp)
+    while ((*tmp + 1))
         tmp++;
-    tmp--;
     *tmp = '\0';
 }
 
@@ -81,7 +79,7 @@ char *expand_quote(char *arg, t_env *env_head, int *status)
             deal_single_quote(arg, &i);
         else if (arg[i] == '\"')
             arg = deal_double_quote(arg, &i, env_head);
-        if (ft_strncmp(&arg[i],"$?", 2) * ft_strncmp(&arg[i],"${?}", 4) == 0)
+        else if (ft_strncmp(&arg[i],"$?", 2) * ft_strncmp(&arg[i],"${?}", 4) == 0)
             arg = deal_status(arg, &i, *status);
         else if (arg[i] == '$')
             arg = deal_raw_env(arg, &i, env_head);

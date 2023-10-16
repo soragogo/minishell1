@@ -71,7 +71,6 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
         env_value = ft_substr(start, 1, ft_strchr(start, '}') - start - 1);
     else
         env_value = ft_substr(start, 0, &arg[*i] - start);
-    printf("env_value %s\n", env_value);
     expanded = map_get(&env_head, env_value);
     *increment += ft_strlen(expanded) - (ft_strlen(env_value) + 1);
     free(env_value);
@@ -93,13 +92,9 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     expanded = NULL;
     tmp = ft_substr(arg, 0, *i);
     rest = &arg[*i + 1];
-    printf("rest: %s\n", rest);
     rest = return_end_of_env(rest);
-    printf("rest: %s\n", rest);
     rest = ft_strdup(rest);
-    printf("arg: %s\n", &arg[*i]);
     expanded = deal_env(arg, i, env_head, &increment);
-    printf("expanded: [%s]\n", expanded);
     joined = ft_strjoin(tmp, expanded);
     free(tmp);
     tmp = ft_strjoin(joined, rest);

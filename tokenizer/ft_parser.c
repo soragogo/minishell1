@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/16 12:23:12 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/16 13:14:50 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,8 +226,8 @@ t_commandset *ft_parser(char *buff, int *status, t_env *env_head)
 		commandsets = create_command_pipeline(tokens, num_of_commands);
 		import_command(tokens, commandsets, num_of_commands);
 		import_redirection(tokens, commandsets, num_of_commands);
-		test_commandsets(commandsets, num_of_commands);
-		free_tokens(tokens);
+		// test_commandsets(commandsets, num_of_commands);
+		// free_tokens(tokens);
 	}
 	// free_parser(commandsets);
 	return (commandsets);
