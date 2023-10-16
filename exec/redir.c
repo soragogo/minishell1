@@ -85,7 +85,7 @@ void here_document(t_redirect *node, t_info *info)
 	// int fd;
 
 	node->oldfd = STDIN_FILENO;
-	node->newfd = heredoc(node->filename, info->map_head);
+	node->newfd = heredoc(node->filename, info);
 	do_redirect(node);
 	// printf("\nfd:%d\n", command->node->newfd);
 }
@@ -111,7 +111,7 @@ void undo_redirect(t_redirect *node)
 	close(node->newfd);
 }
 
-int heredoc(const char *delimiter, t_env *env_head)
+int heredoc(const char *delimiter, t_info *info)
 {	//pipeの読み込み側fdを返す
 	int pipefd[2];
 	char *line;
@@ -119,6 +119,7 @@ int heredoc(const char *delimiter, t_env *env_head)
 	size_t d_len;
 	int i;
 	int flag;
+	t_env *env_head = info->map_head;
 
 	count = 0;
 	pipe(pipefd);
@@ -141,7 +142,7 @@ int heredoc(const char *delimiter, t_env *env_head)
 				i--;	
 			}
 			if (flag == 0)
-				expand_quote(&line, env_head);
+				line = expand_quote(&line, env_head, info->exit_status_log);
 			if (ft_strncmp(line, delimiter, d_len + 1) == 0)
 			{
 				free(line);
