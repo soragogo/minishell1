@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 15:25:11 by ekamada           #+#    #+#             */
-/*   Updated: 2023/06/03 16:14:58 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/16 12:22:08 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*ft_itoa(int n)
 
 	if (n == -2147483648)
 	{
-		ascii = malloc(sizeof(char) * 12);
+		ascii = ft_calloc(12, sizeof(char));
 		if (ascii == NULL)
 			return (NULL);
 		ft_strlcpy(ascii, "-2147483648", 12);

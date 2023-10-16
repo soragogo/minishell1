@@ -3,14 +3,10 @@
 #include <stdbool.h>
 #include <libc.h>
 
-void write_token_error(char *token)
+void write_syntax_error(void)
 {
-	const char *err1 = "minishell: syntax error near unexpected token `";
-	const char *err2 = "'\n";
-
+	const char *err1 = "minishell: syntax error\n";
 	write(STDERR_FILENO,err1,ft_strlen(err1));
-	write(STDERR_FILENO,token,ft_strlen(token));
-	write(STDERR_FILENO,err2,ft_strlen(err2));
 }
 
 int redirect_error(t_token *tokens)
@@ -26,13 +22,11 @@ int redirect_error(t_token *tokens)
 			if (!tokens[i+1].arg || tokens[i + 1].type >= 2 && tokens[i + 1].type <= 5)
 			{
 				if (!tokens[i+1].arg)
-					// printf("minishell: syntax error near unexpected token `newline'\n");
-					write_token_error("newline");
+					write_syntax_error();
 				else
 				{
 					type = tokens[i + 1].type;
-					// printf("minishell: syntax error near unexpected token `%s'\n", redirect[type - 2]);
-					write_token_error(redirect[type-2]);
+					write_syntax_error();
 				}
 				return 1;
 			}
@@ -47,22 +41,28 @@ int quote_error(t_token *tokens)
 {
 	int i = 0;
 	int j;
-	char quote_char;
+	char quote;
+
 	while (tokens[i].arg)
 	{
 		j = 0;
-		if (tokens[i].arg[0] == '\'' || tokens[i].arg[0] == '\"')
+		while(tokens[i].arg[j])
 		{
-			quote_char = tokens[i].arg[0];
-			while (tokens[i].arg[j] != '\0' || tokens[i].arg[j] == '$')
-				j++;
-			j--;
-			if (tokens[i].arg[j] != quote_char || j == 0)
+			if (tokens[i].arg[j] == '\'' || tokens[i].arg[j] == '\"')
 			{
-				// printf("minishell: syntax error: unexpected end of file\n");
-				write(STDERR_FILENO, "minishell: syntax error: unexpected end of file\n", 49);
-				return 1;
+				quote = tokens[i].arg[j];
+				j++;
+				while (tokens[i].arg[j] != '\0' && tokens[i].arg[j] != quote)
+					j++;
+				if (tokens[i].arg[j] != quote)
+				{
+					quote = tokens[i].arg[j];
+					write_syntax_error();
+					return 1;
+				}
 			}
+			j++;
+
 		}
 		i++;
 	}
@@ -79,8 +79,7 @@ int pipe_error(t_token *tokens)
 		{
 			if (flag == 0)
 			{
-				// printf("minishell: syntax error near unexpected token `|'\n");
-				write_token_error("|");
+				write_syntax_error();
 				return (1);
 			}
 			flag = 0;
@@ -91,8 +90,7 @@ int pipe_error(t_token *tokens)
 	}
 	if (flag == 0)
 	{
-		// printf("minishell: syntax error near unexpected token `|'\n");
-		write_token_error("|");
+		write_syntax_error();
 		return (1);
 	}
 	return 0;

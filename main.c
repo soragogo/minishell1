@@ -37,7 +37,7 @@ int main()
 		}
 		// commands = create_command_pipeline(tokens);
 		// expand_env(commands->command, info.map_head);
-		info.exit_status_log = handle_command(commands, &info);
+		// info.exit_status_log = handle_command(commands, &info);
 		// printf("exit_status_log:%d\n", info.exit_status_log);
 		free_before_closing(commands, command_buf);
 		/* ------------------ exec_command ---------------------- */
