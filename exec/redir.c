@@ -142,7 +142,7 @@ int heredoc(const char *delimiter, t_info *info)
 				i--;	
 			}
 			if (flag == 0)
-				line = expand_quote(&line, env_head, info->exit_status_log);
+				line = expand_quote(line, env_head, &(info->exit_status_log));
 			if (ft_strncmp(line, delimiter, d_len + 1) == 0)
 			{
 				free(line);
