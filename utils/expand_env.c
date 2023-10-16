@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-char *deal_status(char *arg, int *i, int status)
+char *deal_status(char *arg, int *i, int status, char *ret)
 {
     char *a_st;
     char *tmp;
@@ -8,8 +8,17 @@ char *deal_status(char *arg, int *i, int status)
     char *rest;
 
     a_st = ft_itoa(status);
+    if (ft_strncmp(ret, "status", 6) == 0)
+    {
+        *i += ft_strlen(a_st) - 2;
+        printf("i: [%d]\n", *i);
+        return (a_st);
+    }
+
     joined = ft_substr(arg, 0, *i);
+    printf("joined: %s\n", joined);
     tmp = ft_strjoin(joined, a_st);
+    printf("joined: %s\n", joined);
     free(joined);
     if (ft_strncmp(&arg[*i],"$?", 2) == 0)
         rest = &arg[*i] + 2;
@@ -17,6 +26,7 @@ char *deal_status(char *arg, int *i, int status)
         rest = &arg[*i] + 4;
     *i += ft_strlen(a_st) ;
     joined = ft_strjoin(tmp, rest);
+    printf("joined: %s\n", joined);
     free(tmp);
     free(arg);
     free(a_st);
@@ -37,6 +47,8 @@ char *return_end_of_env(char *end)
         if (*end == '}')
             end++;
     }
+    else if (*end == '?')
+        end++;
     else
     {
         while (*end && (ft_isalnum(*end) || *end == '_'))
@@ -93,13 +105,9 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     expanded = NULL;
     tmp = ft_substr(arg, 0, *i);
     rest = &arg[*i + 1];
-    printf("rest: %s\n", rest);
     rest = return_end_of_env(rest);
-    printf("rest: %s\n", rest);
     rest = ft_strdup(rest);
-    printf("arg: %s\n", &arg[*i]);
     expanded = deal_env(arg, i, env_head, &increment);
-    printf("expanded: [%s]\n", expanded);
     joined = ft_strjoin(tmp, expanded);
     free(tmp);
     tmp = ft_strjoin(joined, rest);
@@ -111,7 +119,7 @@ char *deal_raw_env(char *arg, int *i, t_env *env_head)
     return (tmp);
 }
 
-char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
+char *expand_env(char *arg, int *i, t_env *env_head, int *increment, int *status)
 {
     char *start;
     char *env_value;
@@ -127,13 +135,15 @@ char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
     {
         if (arg[*i] == '$')
         {
-            expanded = deal_env(arg, i, env_head, increment);
+            if (ft_strncmp(&arg[*i],"$?", 2) * ft_strncmp(&arg[*i],"${?}", 4) == 0)
+                expanded = deal_status(arg, i, *status, "status");
+            else
+                expanded = deal_env(arg, i, env_head, increment);
             start++;
             start = return_end_of_env(start);
         }
         else
-        {
-            while (arg[*i] && arg[*i] != '\"' && arg[*i] != '$')
+        {            while (arg[*i] && arg[*i] != '\"' && arg[*i] != '$')
                 (*i)++;
             expanded = ft_substr(start, 0, &arg[*i] - start);
         }
