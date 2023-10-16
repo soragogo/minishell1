@@ -44,6 +44,7 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
     rest = NULL;
     expanded = NULL;
     tmp = NULL;
+    joined = NULL;
     while (arg[(*i)] && arg[(*i)] != '\"')
         (*i)++;
     tmp = ft_substr(arg, 0, *i);
