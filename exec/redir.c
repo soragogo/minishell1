@@ -85,7 +85,7 @@ void here_document(t_redirect *node, t_info *info)
 	// int fd;
 
 	node->oldfd = STDIN_FILENO;
-	node->newfd = heredoc(node->filename, info->map_head, &(info->exit_status_log));
+	node->newfd = heredoc(node->filename, info);
 	do_redirect(node);
 	// printf("\nfd:%d\n", command->node->newfd);
 }
@@ -111,28 +111,38 @@ void undo_redirect(t_redirect *node)
 	close(node->newfd);
 }
 
-int heredoc(const char *delimiter, t_env *env_head, int *status)
+int heredoc(const char *delimiter, t_info *info)
 {	//pipeの読み込み側fdを返す
 	int pipefd[2];
 	char *line;
 	int count;
 	size_t d_len;
 	int i;
+	int flag;
+	t_env *env_head = info->map_head;
 
 	count = 0;
 	pipe(pipefd);
 	d_len = ft_strlen(delimiter);
+	if (d_len == 0)
+		flag = 1;
 	while(1){
 		line = readline("> ");
+		if (line == NULL)
+			break ;
+		if (flag == 1 && *line == '\0')
+		{
+			free(line);
+			break ;
+		}
 		if (only_space(line) == FALSE){
 			i = skip_space(&line);
 			while(i > 0){
 				write(pipefd[1], " ", 1);
-				i--;
+				i--;	
 			}
-			line = expand_quote(line, env_head, status);
-			if (line == NULL)
-				break ;
+			if (flag == 0)
+				line = expand_quote(&line, env_head, info->exit_status_log);
 			if (ft_strncmp(line, delimiter, d_len + 1) == 0)
 			{
 				free(line);
@@ -158,7 +168,7 @@ int heredoc(const char *delimiter, t_env *env_head, int *status)
 //     t_info info; // 任意の情報構造体を初期化または設定
 
 //     // ヒアドキュメントをテストするために、デリミタとして"END"を使用
-//     const char *delimiter = "END";
+//     const char *delimiter = "\0";
 
 //     int heredoc_fd = heredoc(delimiter, env_head);
 
