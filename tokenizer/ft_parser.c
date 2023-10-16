@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/15 10:39:53 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/16 12:23:12 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ t_commandset *ft_parser(char *buff, int *status, t_env *env_head)
 		while (tokens[i].arg)
 		{
 			skip_space(&(tokens->arg));
-			tokens[i].arg = expand_quote(tokens[i].arg, env_head);
+			tokens[i].arg = expand_quote(tokens[i].arg, env_head, status);
 			i++;
 		}
 		num_of_commands = count_commandset(tokens);

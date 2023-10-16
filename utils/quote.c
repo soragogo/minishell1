@@ -62,7 +62,7 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
     return tmp;
 }
 
-char *expand_quote(char *arg, t_env *env_head)
+char *expand_quote(char *arg, t_env *env_head, int *status)
 
 {
     char    quote_char;
@@ -81,6 +81,8 @@ char *expand_quote(char *arg, t_env *env_head)
             deal_single_quote(arg, &i);
         else if (arg[i] == '\"')
             arg = deal_double_quote(arg, &i, env_head);
+        if (ft_strncmp(&arg[i],"$?", 2) * ft_strncmp(&arg[i],"${?}", 4) == 0)
+            arg = deal_status(arg, &i, *status);
         else if (arg[i] == '$')
             arg = deal_raw_env(arg, &i, env_head);
     }

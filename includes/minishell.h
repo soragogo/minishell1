@@ -57,7 +57,7 @@ void waitline();
 // t_commandset *ft_parser(char *buff);
 // t_commandset *ft_parser(char *buff, int *status);
 t_commandset *ft_parser(char *buff, int *status, t_env *env_head);
-
+char *deal_status(char *arg, int *i, int status);
 // t_commandset *create_command_pipeline(t_token *tokens, int num_of_commands);
 
 	/* env function */
@@ -94,7 +94,7 @@ void here_document(t_redirect *node, t_info *info);
 void do_redirect(t_redirect *node);
 // void undo_redirect(t_commandset *commands);
 void undo_redirect(t_redirect *node);
-int heredoc(const char *delimiter, t_env *env_head);
+int heredoc(const char *delimiter, t_env *env_head, int *status);
 void append(t_redirect *node);
 
 	/* utils */
@@ -109,7 +109,7 @@ int handle_command(t_commandset *commands, t_info *info);
 char *expand_env(char *arg, int *i, t_env *env_head, int *increment);
 int ft_strcmp(char *s1, char *s2);
 // void expand_quote(char **command, t_env *env_head);
-char *expand_quote(char *command, t_env *env_head);
+char *expand_quote(char *command, t_env *env_head, int *status);
 // int	skip_space(char *str);
 int	skip_space(char **str);
 char *ft_readline(t_env *env_head);

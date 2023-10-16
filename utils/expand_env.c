@@ -1,5 +1,27 @@
 #include "../includes/minishell.h"
 
+char *deal_status(char *arg, int *i, int status)
+{
+    char *a_st;
+    char *tmp;
+    char *joined;
+    char *rest;
+
+    a_st = ft_itoa(status);
+    joined = ft_substr(arg, 0, *i);
+    tmp = ft_strjoin(joined, a_st);
+    free(joined);
+    if (ft_strncmp(&arg[*i],"$?", 2) == 0)
+        rest = &arg[*i] + 2;
+    else
+        rest = &arg[*i] + 4;
+    *i += ft_strlen(a_st) ;
+    joined = ft_strjoin(tmp, rest);
+    free(tmp);
+    free(arg);
+    free(a_st);
+    return (joined);
+}
 
 char *return_end_of_env(char *end)
 {
