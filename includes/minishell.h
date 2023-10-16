@@ -96,7 +96,8 @@ void here_document(t_redirect *node, t_info *info);
 void do_redirect(t_redirect *node);
 // void undo_redirect(t_commandset *commands);
 void undo_redirect(t_redirect *node);
-int heredoc(const char *delimiter, t_env *env_head, int *status);
+// int heredoc(const char *delimiter, t_env *env_head, int *status);
+// int heredoc(const char *delimiter, t_info *info);
 void append(t_redirect *node);
 
 	/* utils */
