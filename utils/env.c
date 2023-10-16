@@ -187,6 +187,11 @@ void env_unset(t_env **env_head, char *delete_env_key)
 	if (env)
 	{
 		prev->next = env->next;
+		if (env->is_env == true)
+		{
+			free(env->name);
+			free(env->value);
+		}
 		free(env);
 	}
 }
