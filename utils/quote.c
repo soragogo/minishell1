@@ -30,8 +30,9 @@ void deal_single_quote(char *arg, int *i)
     *tmp = '\0';
 }
 
-char *deal_double_quote(char *arg, int *i, t_env *env_head)
+char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 {
+    puts("-----deal_double_quote----");
     char *rest;
     char *expanded;
     char *tmp;
@@ -45,9 +46,13 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
     joined = NULL;
     while (arg[(*i)] && arg[(*i)] != '\"')
         (*i)++;
+    printf("*i: %d\n", *i);
     tmp = ft_substr(arg, 0, *i);
+    printf("tmp: %s\n", tmp);
     (*i)++;
-    expanded = expand_env(arg, i, env_head, &increment);
+    expanded = expand_env(arg, i, env_head, &increment, status);
+    printf("expanded: %s\n", expanded);
+    printf("*i: %d\n", *i);
     if (arg[(*i)] != '\0')
         rest = &arg[(*i)];
     *i += increment - 2;
@@ -57,6 +62,7 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head)
     free(joined);
     free(expanded);
     free(arg);
+    puts("-------------------------");
     return tmp;
 }
 
@@ -78,11 +84,12 @@ char *expand_quote(char *arg, t_env *env_head, int *status)
         if (arg[i] == '\'')
             deal_single_quote(arg, &i);
         else if (arg[i] == '\"')
-            arg = deal_double_quote(arg, &i, env_head);
-        else if (ft_strncmp(&arg[i],"$?", 2) * ft_strncmp(&arg[i],"${?}", 4) == 0)
-            arg = deal_status(arg, &i, *status);
+            arg = deal_double_quote(arg, &i, env_head, status);
+        if (ft_strncmp(&arg[i],"$?", 2) * ft_strncmp(&arg[i],"${?}", 4) == 0)
+            arg = deal_status(arg, &i, *status, "arg");
         else if (arg[i] == '$')
             arg = deal_raw_env(arg, &i, env_head);
+        printf("current i: %d\n", i);
     }
     return (arg);
 }
