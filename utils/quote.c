@@ -42,8 +42,6 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
     increment = 0;
     rest = NULL;
     expanded = NULL;
-    tmp = NULL;
-    joined = NULL;
     while (arg[(*i)] && arg[(*i)] != '\"')
         (*i)++;
     printf("*i: %d\n", *i);
@@ -69,7 +67,6 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 
 char *expand_quote(char *arg, t_env *env_head, int *status)
 {
-    puts("-------------expand_quote----------------");
     char    quote_char;
     char    *tmp;
     int increment;
@@ -92,7 +89,6 @@ char *expand_quote(char *arg, t_env *env_head, int *status)
             arg = deal_raw_env(arg, &i, env_head);
         printf("current i: %d\n", i);
     }
-    puts("-----------------------------------------");
     return (arg);
 }
 
