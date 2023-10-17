@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/16 15:43:26 by mayu             ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/10/18 02:40:00 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "token.h"
 #include "parser.h"
@@ -227,6 +228,7 @@ t_commandset *ft_parser(char *buff, int *status, t_env *env_head)
 		import_command(tokens, commandsets, num_of_commands);
 		import_redirection(tokens, commandsets, num_of_commands);
 		// test_commandsets(commandsets, num_of_commands);
+		free_tokens(tokens);
 		free_tokens(tokens);
 	}
 	// free_parser(commandsets);
