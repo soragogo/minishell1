@@ -32,7 +32,7 @@ void deal_single_quote(char *arg, int *i)
 
 char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 {
-    puts("-----deal_double_quote----");
+    //puts("-----deal_double_quote----");
     char *rest;
     char *expanded;
     char *tmp;
@@ -46,13 +46,13 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
     joined = NULL;
     while (arg[(*i)] && arg[(*i)] != '\"')
         (*i)++;
-    printf("*i: %d\n", *i);
+    // printf("*i: %d\n", *i);
     tmp = ft_substr(arg, 0, *i);
-    printf("tmp: %s\n", tmp);
+    // printf("tmp: %s\n", tmp);
     (*i)++;
     expanded = expand_env(arg, i, env_head, &increment, status);
-    printf("expanded: %s\n", expanded);
-    printf("*i: %d\n", *i);
+    // printf("expanded: %s\n", expanded);
+    // printf("*i: %d\n", *i);
     if (arg[(*i)] != '\0')
         rest = &arg[(*i)];
     *i += increment - 2;
@@ -62,13 +62,13 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
     free(joined);
     free(expanded);
     free(arg);
-    puts("-------------------------");
+    //puts("-------------------------");
     return tmp;
 }
 
 char *expand_quote(char *arg, t_env *env_head, int *status)
 {
-    puts("-------------expand_quote----------------");
+    //puts("-------------expand_quote----------------");
     char    quote_char;
     char    *tmp;
     int increment;
@@ -89,9 +89,9 @@ char *expand_quote(char *arg, t_env *env_head, int *status)
             arg = deal_status(arg, &i, *status, "arg");
         else if (arg[i] == '$')
             arg = deal_raw_env(arg, &i, env_head);
-        printf("current i: %d\n", i);
+        // printf("current i: %d\n", i);
     }
-    puts("-----------------------------------------");
+    //puts("-----------------------------------------");
     return (arg);
 }
 
