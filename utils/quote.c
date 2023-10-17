@@ -67,29 +67,29 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 
 char *expand_quote(char *arg, t_env *env_head, int *status)
 {
-    char    quote_char;
-    char    *tmp;
-    int increment;
-    int i;
+	char    quote_char;
+	char    *tmp;
+	int increment;
+	int i;
 
-    tmp = arg;
-    i = 0;
-    increment = 0;
-    while (arg[i])
-    {
-        while (arg[i] && arg[i] != '\'' && arg[i] != '\"' && arg[i] != '$')
-                i++;
-        if (arg[i] == '\'')
-            deal_single_quote(arg, &i);
-        else if (arg[i] == '\"')
-            arg = deal_double_quote(arg, &i, env_head, status);
-        if (ft_strncmp(&arg[i],"$?", 2) * ft_strncmp(&arg[i],"${?}", 4) == 0)
-            arg = deal_status(arg, &i, *status, "arg");
-        else if (arg[i] == '$')
-            arg = deal_raw_env(arg, &i, env_head);
-        printf("current i: %d\n", i);
-    }
-    return (arg);
+	tmp = arg;
+	i = 0;
+	increment = 0;
+	while (arg[i])
+	{
+		while (arg[i] && arg[i] != '\'' && arg[i] != '\"' && arg[i] != '$')
+				i++;
+		if (arg[i] == '\'')
+			deal_single_quote(arg, &i);
+		else if (arg[i] == '\"')
+			arg = deal_double_quote(arg, &i, env_head, status);
+		if (ft_strncmp(&arg[i],"$?", 2) * ft_strncmp(&arg[i],"${?}", 4) == 0)
+			arg = deal_status(arg, &i, *status, "arg");
+		else if (arg[i] == '$')
+			arg = deal_raw_env(arg, &i, env_head);
+		printf("current i: %d\n", i);
+	}
+	return (arg);
 }
 
 
