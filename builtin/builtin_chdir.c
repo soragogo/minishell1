@@ -85,13 +85,15 @@ int ft_chdir(char **commands, t_env **env)
         dir_path = ft_strdup(home);
 	else if (ft_strncmp(commands[1], "~", 2) == 0)//引数が~の場合
 	{
-		ft_strlcpy(dir_path, home, PATH_MAX);
-		ft_strlcat(dir_path, commands[1] + 1, PATH_MAX);
+		// ft_strlcpy(dir_path, home, PATH_MAX);
+		// ft_strlcat(dir_path, commands[1] + 1, PATH_MAX);
+        dir_path = ft_strjoin(home, commands[1] + 1);
 	}
 	// else if (commands[1] == '-')//引数が-の場合
 	else if (ft_strncmp(commands[1], "-", 2) == 0)//引数が-の場合
 	{
-		dir_path = map_get(env, "OLDPWD");
+        dir_path = ft_strdup(old_pwd);
+		// dir_path = map_get(env, "OLDPWD");
 		if (!dir_path){
 			error_message("cd", NULL, "OLDPWD not set");
 			return (1);
@@ -113,7 +115,7 @@ int ft_chdir(char **commands, t_env **env)
 		error_message("cd", commands[1], strerror(errno));
 		return (1);
 	}
-	if(set_env(env, "OLDPWD", old_pwd, false) == -1 || set_env(env, "PWD", dir_path, false) == -1)
+	if(set_env(env, ft_strdup("OLDPWD"), ft_strdup(old_pwd), true) == -1 || set_env(env, ft_strdup("PWD"), dir_path, true) == -1)
 	{
 		free(old_pwd);
 		return (1);
@@ -124,7 +126,7 @@ int ft_chdir(char **commands, t_env **env)
 	// printf("PWD: %s\n", map_get(env, "PWD"));
 	// printf("%s\n", dir_path);
 	ft_pwd();//確認用
-	free(old_pwd);
+	// free(old_pwd);
     // free(dir_path);
     // free(home);
     // free(pwd_path);
