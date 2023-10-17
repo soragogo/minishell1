@@ -138,6 +138,7 @@ int ft_chdir(char **commands, t_env **env)
 	{
 		set_env(env, ft_strdup("PWD"), ft_strdup(old_pwd), true);
 		error_message("cd", commands[1], strerror(errno));
+        free(dir_path);
 		return (1);
 	}
 	if(set_env(env, ft_strdup("OLDPWD"), ft_strdup(pwd_path), true) == -1 || set_env(env, ft_strdup("PWD"), ft_strdup(dir_path), true) == -1)
