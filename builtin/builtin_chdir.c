@@ -16,16 +16,6 @@ char *delete_path(char *dir_path)
             fatal_error("malloc error");
         ft_strlcpy(ret, dir_path, i);
     }
-		// dir_path[i - 1] = '\0';
-	else
-    {
-        ret = malloc(sizeof(char) * i + 1);
-        if (!ret)
-            fatal_error("malloc error");
-        ft_strlcpy(ret, dir_path, i);
-    }
-		// dir_path[i] = '\0';
-    // ret = ft_strdup(dir_path);
     free(dir_path);
     return (ret);
 }
@@ -66,7 +56,6 @@ char *convert_relative_path(char *dir_path, char *input)
 		if (ft_strncmp(tmp[i], "..", 3) == 0)
 		{
 			dir_path = delete_path(dir_path);
-            printf("dir_path: %s\n", dir_path);
 		}
 		else if (ft_strncmp(*tmp, ".", 2) == 0)
 			;
@@ -76,8 +65,6 @@ char *convert_relative_path(char *dir_path, char *input)
 		}
 		i++;
 	}
-    // ret = ft_strdup(*dir_path);
-    printf("dir_path: %s\n", dir_path);
     free_split(tmp);
     return (dir_path);
 }
@@ -108,9 +95,6 @@ int ft_chdir(char **commands, t_env **env)
 	char *dir_path = NULL;
 
     init_dir_path(&home, &pwd_path, &old_pwd, env);
-    printf("home: %s\n", home);
-    printf("pwd_path: %s\n", pwd_path);
-    printf("old_pwd: %s\n", old_pwd);
 	if (commands[1] == NULL)//引数がない場合
         dir_path = ft_strdup(home);
 	else if (ft_strncmp(commands[1], "~", 2) == 0)//引数が~の場合
@@ -146,7 +130,6 @@ int ft_chdir(char **commands, t_env **env)
 		free(dir_path);
 		return (1);
 	}
-	ft_pwd();//確認用
     free(dir_path);
 	return (0);
 }
