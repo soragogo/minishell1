@@ -73,6 +73,7 @@ char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
         env_value = ft_substr(start, 0, &arg[*i] - start);
     printf("env_value %s\n", env_value);
     expanded = map_get(&env_head, env_value);
+	expanded = ft_strdup(expanded);
     *increment += ft_strlen(expanded) - (ft_strlen(env_value) + 1);
     free(env_value);
     return (expanded);

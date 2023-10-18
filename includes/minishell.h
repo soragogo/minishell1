@@ -85,6 +85,7 @@ int ft_exit(char **command, t_info *info);
 int ft_unset(t_env **env_head, char **commands);
 int	ft_env(t_env **env_head);
 int ft_export(t_env **map, char **commands);
+char	*convert_relative_path(char *dir_path, char *input);
 
 	/* redirection */
 void redirect(t_commandset *commands, t_info *info);

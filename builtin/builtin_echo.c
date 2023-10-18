@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/18 15:21:57 by mayu              #+#    #+#             */
+/*   Updated: 2023/10/18 15:21:58 by mayu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./../includes/minishell.h"
 
 void	ft_putstr(char *ch, int fd)
@@ -63,42 +75,3 @@ int	ft_echo(char **command, int status)
 		write(1, "\n", STDOUT_FILENO);
 	return (0);
 }
-
-/* ------------------------------------------------------------ */
-
-// #include <stdio.h>
-// #include <stdbool.h>
-// #include <string.h>
-
-// // テスト用の関数
-// void test_builtin_echo(char **argv) {
-// 	setbuf(stdout, NULL);
-//     printf("Input: ");
-// 	fflush(stdout);
-//     for (int i = 0; argv[i] != NULL; i++) {
-//         printf("%s ", argv[i]);
-// 		fflush(stdout);
-//     }
-//     printf("\nOutput: ");
-// 	fflush(stdout);
-//     ft_echo(argv, 1);
-//     printf("\n\n");
-// 	fflush(stdout);
-// }
-
-// int main() {
-//     // // テストケースを用意して実行
-//     // char *test1[] = {"echo", "Hello,", "world!", NULL};
-//     // test_builtin_echo(test1);
-
-//     // char *test2[] = {"echo", "-n", "No", "newline", "here.", NULL};
-//     // test_builtin_echo(test2);
-
-//     // char *test3[] = {"echo", NULL};
-//     // test_builtin_echo(test3);
-
-// 	char *test4[] = {"echo", "a$?asd", NULL};
-// 	test_builtin_echo(test4);
-
-//     return 0;
-// }
