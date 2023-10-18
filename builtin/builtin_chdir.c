@@ -1,105 +1,103 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_chdir.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/18 15:18:00 by mayu              #+#    #+#             */
+/*   Updated: 2023/10/18 16:16:00 by mayu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./../includes/minishell.h"
 
-void delete_path(char *dir_path)
+void	init_dir_path(char **home,
+	char **pwd_path, char **old_path, t_env **env)
 {
-	int i;
-
-	i = ft_strlen(dir_path);
-	while (i > 2 && dir_path[i - 1] != '/')
-		i--;
-	if (i != 0)
-		dir_path[i - 1] = '\0';
-	else
-		dir_path[i] = '\0';
-}
-
-void convert_relative_path(char **dir_path, char *input)
-{
-	char **tmp = ft_split(input, '/');
-
-	while (*tmp)
+	*home = map_get(env, "HOME");
+	if (!home)
 	{
-		if (ft_strncmp(*tmp, "..", 3) == 0)
-		{
-			delete_path(*dir_path);
-		}
-		else if (ft_strncmp(*tmp, ".", 2) == 0)
-			;
-		else
-		{
-			strlcat(*dir_path, "/", PATH_MAX);
-			strlcat(*dir_path, *tmp, PATH_MAX);
-		}
-		tmp++;
-	}
-}
-
-int ft_chdir(char **commands, t_env **env)
-{
-	char *home;
-	char *dir_path;
-	char *old_pwd;
-
-	home = getenv("HOME");
-	if (!home){
 		error_message("cd", NULL, "HOME not set");
-		return (1);
+		return ;
 	}
-	dir_path = map_get(env, "PWD");
-	if (!dir_path){
+	*pwd_path = map_get(env, "PWD");
+	if (!pwd_path)
+	{
 		error_message("cd", NULL, "PWD not set");
+		return ;
+	}
+	*old_path = map_get(env, "OLDPWD");
+	if (!old_path)
+	{
+		error_message("cd", NULL, "OLDPWD not set");
+		return ;
+	}
+}
+
+int	change_dir(char **commands, char *dir_path, char *old_path, t_env **env)
+{
+	if (chdir(dir_path) != 0)
+	{
+		set_env(env, ft_strdup("PWD"), ft_strdup(old_path), true);
+		error_message("cd", commands[1], strerror(errno));
+		free(dir_path);
 		return (1);
 	}
-	old_pwd = calloc(sizeof(char) * PATH_MAX, 1);
-	if (!old_pwd){
-		fatal_error("calloc error");
-	}
-	strlcpy(old_pwd, dir_path, PATH_MAX);
-	if (commands[1] == NULL)//引数がない場合
-		strlcpy(dir_path, home, PATH_MAX);
-	else if (ft_strncmp(commands[1], "~", 2) == 0)//引数が~の場合
+	return (0);
+}
+
+int	update_path(char **commands, t_env **env, char *pwd_path, char *dir_path)
+{
+	if (set_env(env, ft_strdup("OLDPWD"), ft_strdup(pwd_path), true) == -1
+		|| set_env(env, ft_strdup("PWD"), ft_strdup(dir_path), true) == -1)
 	{
-		ft_strlcpy(dir_path, home, PATH_MAX);
-		ft_strlcat(dir_path, commands[1] + 1, PATH_MAX);
+		free(dir_path);
+		return (1);
 	}
-	// else if (commands[1] == '-')//引数が-の場合
-	else if (ft_strncmp(commands[1], "-", 2) == 0)//引数が-の場合
+	return (0);
+}
+
+int	create_dirpath(char **commands,
+	char **dir_path, char *old_pwd, char *pwd_path)
+{
+	if (ft_strncmp(commands[1], "-", 2) == 0)
 	{
-		dir_path = map_get(env, "OLDPWD");
-		if (!dir_path){
+		*dir_path = ft_strdup(old_pwd);
+		if (!dir_path)
+		{
 			error_message("cd", NULL, "OLDPWD not set");
 			return (1);
 		}
-		// printf("%s\n", dir_path);
 	}
-	else//ディレクトリ直書きの場合
+	else
 	{
-		if (ft_strncmp(commands[1], "/", 2) == 0)//絶対パスの場合
-			ft_strlcpy(dir_path, commands[1], PATH_MAX);
+		if (ft_strncmp(commands[1], "/", 2) == 0)
+			*dir_path = ft_strdup(commands[1]);
 		else
-		{
-			convert_relative_path(&dir_path, commands[1]);
-		}
+			*dir_path = convert_relative_path(ft_strdup(pwd_path), commands[1]);
 	}
-	if (chdir(dir_path) != 0)
-	{
-		set_env(env, "PWD", old_pwd, false);
-		error_message("cd", commands[1], strerror(errno));
+	return (0);
+}
+
+int	ft_chdir(char **commands, t_env **env)
+{
+	char	*home;
+	char	*pwd_path;
+	char	*old_pwd;
+	char	*dir_path;
+
+	init_dir_path(&home, &pwd_path, &old_pwd, env);
+	if (commands[1] == NULL)
+		dir_path = ft_strdup(home);
+	else if (ft_strncmp(commands[1], "~", 2) == 0)
+		dir_path = ft_strjoin(home, commands[1] + 1);
+	else if (create_dirpath(commands, &dir_path, old_pwd, pwd_path) == 1)
 		return (1);
-	}
-	// printf("OLDPWD: %s\n\n", old_pwd);
-	// int ret = chdir(dir_path);
-	// printf("ret: %d\n", ret);
-	if(set_env(env, "OLDPWD", old_pwd, false) == -1 || set_env(env, "PWD", dir_path, false) == -1)
-	{
-		free(old_pwd);
+	if (change_dir(commands, dir_path, old_pwd, env) == 1)
 		return (1);
-	}
-	// printf("OLDPWD: %s\n\n", map_get(env, "OLDPWD"));
-	// printf("PWD: %s\n", map_get(env, "PWD"));
-	// printf("%s\n", dir_path);
-	// chdir(dir_path);
-	ft_pwd();//確認用
-	free(old_pwd);
+	if (update_path(commands, env, pwd_path, dir_path) == 1)
+		return (1);
+	free(dir_path);
 	return (0);
 }

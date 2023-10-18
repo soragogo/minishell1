@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/18 15:42:39 by mayu              #+#    #+#             */
+/*   Updated: 2023/10/18 16:37:26 by mayu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-// 環境変数から変数名取り出す
-char *get_env_name(char *ret, char *env)
+char	*get_env_name(char *ret, char *env)
 {
-	size_t i;
-	size_t j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	j = 0;
@@ -22,11 +33,10 @@ char *get_env_name(char *ret, char *env)
 	return (ret);
 }
 
-// 環境変数から値取り出す
-char *get_env_value(char *ret, char *env) //""で囲まれてた時とかの処理
+char	*get_env_value(char *ret, char *env)
 {
-	size_t i;
-	size_t j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	j = 0;
@@ -44,10 +54,9 @@ char *get_env_value(char *ret, char *env) //""で囲まれてた時とかの処�
 	return (ret);
 }
 
-// 新しいマップデータ構造を作成
-t_env *map_new(void)
+t_env	*map_new(void)
 {
-	t_env *map;
+	t_env	*map;
 
 	map = ft_calloc(1, sizeof(*map));
 	if (map == NULL)
@@ -55,15 +64,15 @@ t_env *map_new(void)
 	return (map);
 }
 
-// 環境変数をマップデータ構造に初期化
-void envmap_init(t_env **map)
+void	envmap_init(t_env **map)
 {
-	extern char **environ;
-	char **env = environ;
-	char *name;
-	char *value;
+	extern char	**environ;
+	char		**env;
+	char		*name;
+	char		*value;
 
 	*map = NULL;
+	env = environ;
 	while (*env)
 	{
 		name = get_env_name(name, *env);
@@ -73,9 +82,9 @@ void envmap_init(t_env **map)
 	}
 }
 
-int ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!s1 || !s2)
@@ -91,22 +100,21 @@ int ft_strcmp(char *s1, char *s2)
 	return (0);
 }
 
-// マップデータ構造に環境変数を追加
-int set_env(t_env **env_head, char *name, char *value ,bool is_env) // 値がNULLの場合？
+int	set_env(t_env **env_head, char *name, char *value, bool is_env)
 {
-	t_env *env;
-	t_env *new;
+	t_env	*env;
+	t_env	*new;
 
 	new = NULL;
 	env = *env_head;
-	if (name == NULL) // || !is_identifier(name)) //環境変数に設定できない文字ってどれ？
+	if (name == NULL)
 		return (-1);
-	while (env) // name && env->name
+	while (env)
 	{
 		if (ft_strcmp(name, env->name) == 0)
 		{
 			env_unset(env_head, env->name);
-			break;
+			break ;
 		}
 		env = env->next;
 	}
@@ -117,10 +125,9 @@ int set_env(t_env **env_head, char *name, char *value ,bool is_env) // 値がNUL
 	return (0);
 }
 
-// 新しいt_envを作成
-t_env *item_new(t_env *new_env, char *name, char *value)
+t_env	*item_new(t_env *new_env, char *name, char *value)
 {
-	new_env = calloc(1, sizeof(*new_env));
+	new_env = ft_calloc(1, sizeof(*new_env));
 	if (!new_env)
 		return (NULL);
 	new_env->name = name;
@@ -130,9 +137,9 @@ t_env *item_new(t_env *new_env, char *name, char *value)
 	return (new_env);
 }
 
-size_t count_env(t_env *env)
+size_t	count_env(t_env *env)
 {
-	size_t count;
+	size_t	count;
 
 	count = 0;
 	if (!(env))
@@ -145,10 +152,9 @@ size_t count_env(t_env *env)
 	return (count);
 }
 
-// 後ろに新しいの追加
-void add_new(t_env **map, t_env *new_env)
+void	add_new(t_env **map, t_env *new_env)
 {
-	t_env *env;
+	t_env	*env;
 
 	env = *map;
 	if (!env)
@@ -167,34 +173,38 @@ void add_new(t_env **map, t_env *new_env)
 	env->next = new_env;
 }
 
-// 関数は、マップデータ構造からキーで指定された値を削除します。キーが見つからない場合、0が返されます。
-void env_unset(t_env **env_head, char *delete_env_key)
+void	env_unset(t_env **env_head, char *delete_env_key)
 {
-	t_env *env;
-	t_env *prev;
+	t_env	*env;
+	t_env	*prev;
 
 	env = *env_head;
 	prev = env;
 	if (!delete_env_key)
-		return;
+		return ;
 	while (env && env->name)
 	{
 		if (ft_strcmp(delete_env_key, env->name) == 0)
-			break;
+			break ;
 		prev = env;
 		env = env->next;
 	}
 	if (env)
 	{
 		prev->next = env->next;
+		if (env->is_env == true)
+		{
+			free(env->name);
+			free(env->value);
+		}
 		free(env);
+		env = NULL;
 	}
 }
 
-// 関数は、マップデータ構造からキーで指定された値を取得します。キーが見つからない場合、NULLが返されます。
-char *map_get(t_env **env_head, char *name)
+char	*map_get(t_env **env_head, char *name)
 {
-	t_env *env;
+	t_env	*env;
 
 	env = *env_head;
 	while (env && env->name)
@@ -206,10 +216,10 @@ char *map_get(t_env **env_head, char *name)
 	return (NULL);
 }
 
-void free_map(t_env **map)
+void	free_map(t_env **map)
 {
-	t_env *env;
-	t_env *tmp;
+	t_env	*env;
+	t_env	*tmp;
 
 	env = *map;
 	while (env && env->next)
@@ -220,8 +230,6 @@ void free_map(t_env **map)
 			free(env->name);
 			free(env->value);
 		}
-		// free(env->name);
-		// free(env->value);
 		free(env);
 		env = tmp;
 	}
@@ -232,46 +240,3 @@ void free_map(t_env **map)
 	}
 	free(env);
 }
-
-// #include <stdio.h>
-// // テスト用の main 関数
-// int main()
-// {
-// 	t_env *map = NULL;
-// 	// map = map_new();
-// 	envmap_init(&map);
-// 	t_env *map2 = map;
-
-// 	// マップに環境変数を追加するテスト
-// 	set_env(&map, "TEST_ENV", "Hello, World!", false);
-// 	set_env(&map, "TEST_ENV", "Hello, World!2", false);
-// 	printf("TEST_ENV: %s\n", map_get(&map, "TEST_ENV"));
-// 	set_env(&map, "ANOTHER_ENV", "12345", false);
-
-// 	// マップから環境変数の値を取得するテスト
-// 	printf("TEST_ENV: %s\n", map_get(&map, "TEST_ENV"));
-// 	printf("ANOTHER_ENV: %s\n", map_get(&map, "ANOTHER_ENV"));
-
-// 	// マップから環境変数を削除するテスト
-// 	env_unset(&map, "ANOTHER_ENV");
-
-// 	printf("ANOTHER_ENV after unset: %s\n", map_get(&map, "ANOTHER_ENV"));
-
-// 	while (map)
-// 	{
-// 		printf("name: %s\nvalue: %s\n", map->name, map->value);
-// 		map = map->next;
-// 	}
-
-// 	free_map(&map2);
-
-// 	// メモリの解放
-// 	// ここで実際のコードでは map やその中身の要素を適切に解放する必要があります
-
-// 	return 0;
-// }
-
-// __attribute__((destructor)) static void destructor()
-// {
-// 	system("leaks -q minishell");
-// }

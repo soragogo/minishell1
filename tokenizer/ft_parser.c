@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
 /*   Updated: 2023/10/18 16:32:35 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "token.h"
 #include "parser.h"
@@ -231,6 +233,7 @@ t_commandset *ft_parser(char *buff, int *status, t_env *env_head)
 		import_redirection(tokens, commandsets, num_of_commands);
 		// test_commandsets(commandsets, num_of_commands);
 		free_tokens(tokens);
+		// free_tokens(tokens);
 	}
 	// free_parser(commandsets);
 	return (commandsets);
