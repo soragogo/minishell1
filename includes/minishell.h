@@ -14,8 +14,8 @@
 #include <stdbool.h>
 
 #include "../libft/libft.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "token.h"
+#include "parser.h"
 
 
 int ft_system(t_token *tokens, int *status);
@@ -122,5 +122,7 @@ void free_environ(char **environ);
 	/* error */
 void error_message(char *command, char *arg, char *msg);
 void fatal_error(char *msg);
+
+
 
 #endif

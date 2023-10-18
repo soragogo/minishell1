@@ -1,5 +1,5 @@
-#include "token.h"
-#include "parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 #include <stdbool.h>
 #include <libc.h>
 

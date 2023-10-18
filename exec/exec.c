@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 15:32:11 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/18 17:59:10 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 int	is_builtin(t_commandset *command)
 {
@@ -33,8 +33,8 @@ int	is_builtin(t_commandset *command)
 int	exec_builtin(t_commandset *commands, t_info *info)
 {
 	int	status;
-	int	dupinfd;
-	int	dupoutfd;
+	// int	dupinfd;
+	// int	dupoutfd;
 
 	status = 0;
 	handle_redirection(commands, info);

@@ -1,63 +1,64 @@
-# NAME = minishell
-
-# CC = cc
-# CFLAGS = -Wall -Wextra -Werror -Iincludes
-
-# SRC = src/main.c \
-#       src/ft_system.c \
-#       src/ft_chdir.c \
-# 	  src/signal_handler.c \
-# 	  exec_filename/
-
-
-
 LIBFTDIR = libft
 LIBFT = $(LIBFTDIR)/libft.a
 LIBFT_INCLUDE = -I$(LIBFTDIR)
 LIBFT_LINK = -L$(LIBFTDIR) -lft
 
-TOKENDIR = tokenizer
-TOKEN = $(TOKENDIR)/libtokenizer.a
-TOKEN_INCLUDE = -I$(TOKENDIR)
-TOKEN_LINK = -L$(TOKENDIR) -ltokenizer
+# TOKENDIR = tokenizer
+# TOKEN = $(TOKENDIR)/libtokenizer.a
+# TOKEN_INCLUDE = -I$(TOKENDIR)
+# TOKEN_LINK = -L$(TOKENDIR) -ltokenizer
 
 
 NAME	=	minishell
 
 SRC_DIR			=	src
 TOKENIZER_DIR	=	tokenizer
-OBJ_DIR			=	obj
 BUILTIN_DIR		=	builtin
+EXEC_DIR 		=	exec
+UTIL_DIR		=	utils
+OBJ_DIR			=	obj
 
-SRCS =	env.c \
-		ft_system.c \
-		main.c \
-		signal_handler.c \
-		search_path.c
+SRCS =	main.c
 
-T_SRCS		=	ft_tokenizer.c \
-				getpath.c
+E_SRCS		=		exec.c \
+					readline.c \
+					redir.c \
+					search_path.c
 
-B_SRCS		=	builtin_chdir.c \
-				builtin_echo.c \
-				builtin_env.c \
-				builtin_exit.c \
-				builtin_export.c \
-				builtin_pwd.c \
-				builtin_unset.c
+T_SRCS		=		ft_parser.c \
+					ft_redirection.c \
+					ft_tests.c \
+					ft_tokenizer.c \
+					getpath.c \
+					syntax_error_handling.c \
+					utils.c
 
-LIBFT_DIR	=	./libft
-LIBFT		=	$(LIBFTDIR)/libft.a
+B_SRCS		=		builtin_chdir.c \
+					builtin_echo.c \
+					builtin_env.c \
+					builtin_exit.c \
+					builtin_export.c \
+					builtin_pwd.c \
+					builtin_unset.c
 
-<<<<<<< HEAD
+U_SRCS		=	env.c \
+				error.c \
+				expand_env.c \
+				ft_system.c \
+				quote.c \
+				signal_handler.c \
+				utils.c
+
+# LIBFT_DIR	=	./libft
+# LIBFT		=	$(LIBFTDIR)/libft.a
+
 OBJS		=	$(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o)) \
+				$(addprefix $(OBJ_DIR)/,$(E_SRCS:.c=.o)) \
 				$(addprefix $(OBJ_DIR)/,$(T_SRCS:.c=.o)) \
-				$(addprefix $(OBJ_DIR)/,$(B_SRCS:.c=.o))
+				$(addprefix $(OBJ_DIR)/,$(B_SRCS:.c=.o)) \
+				$(addprefix $(OBJ_DIR)/,$(U_SRCS:.c=.o))
 
-=======
-OBJS		=	$(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o)) $(addprefix $(OBJ_DIR)/,$(T_SRCS:.c=.o))
 RLDIR = $(shell brew --prefix readline)
->>>>>>> ffd562c95b262524d0e74e84217e6a8f6d89be3e
 CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror -I./readline
 
@@ -68,14 +69,35 @@ $(NAME): $(OBJS)
 	@mkdir -p $(OBJ_DIR)
 	@make -C $(LIBFTDIR)
 	@make -C $(TOKENDIR)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_LINK) $(TOKEN_LINK) -lreadline -L$(RLDIR)/lib
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_LINK) -lreadline -L$(RLDIR)/lib
 
 obj/%.o: src/%.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/include $(LIBFT_INCLUDE) $(TOKEN_INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE) $(TOKEN_INCLUDE)
 
 
 $(OBJ_DIR)/%.o: $(TOKENIZER_DIR)/%.c
 	@ $(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE) $(TOKEN_INCLUDE)
+
+
+$(OBJ_DIR)/%.o: $(EXEC_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE) $(TOKEN_INCLUDE)
+
+$(OBJ_DIR)/%.o: $(BUILTIN_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE) $(TOKEN_INCLUDE)
+
+$(OBJ_DIR)/%.o: $(UTIL_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE) $(TOKEN_INCLUDE)
+
+$(OBJ_DIR)/%.o: $(TOKENIZER_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE) $(TOKEN_INCLUDE)
 
 $(LIBFT):
 	make -C $(LIBFTDIR)

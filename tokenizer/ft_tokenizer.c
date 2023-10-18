@@ -1,6 +1,6 @@
 
-#include "token.h"
-#include "parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 #include <stdbool.h>
 
 char	*find_end_of_quote(char *command)

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/18 16:32:35 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/18 17:55:38 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include "token.h"
-#include "parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 #include "../includes/minishell.h"
 #include <stdbool.h>
 #include <libc.h>
