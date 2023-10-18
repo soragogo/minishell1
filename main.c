@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 16:37:34 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/18 16:47:48 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "tokenizer/parser.h"
 #include <stdbool.h>
 
-int main()
+int main(void)
 {
 	char *command_buf;
 	t_token *tokens;
@@ -41,7 +41,6 @@ int main()
 			free(command_buf);
 			continue ;
 		}
-
 		info.exit_status_log = handle_command(commands, &info);
 		free_before_closing(commands, command_buf);
 	}
