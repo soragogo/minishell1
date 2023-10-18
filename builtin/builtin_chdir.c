@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:18:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 03:27:44 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 03:28:58 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ int	create_dirpath(char **commands,
 		else
 			*dir_path = convert_relative_path(ft_strdup(pwd_path), commands[1]);
 	}
-	printf("dir_path: %s\n", *dir_path);
 	return (0);
 }
 
