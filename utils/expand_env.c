@@ -2,63 +2,63 @@
 
 int	caliculate_incriment(char *prev, char *new)
 {
-	int prev_len;
-	int new_len;
+	int	prev_len;
+	int	new_len;
 
 	if (ft_strncmp(prev, "$?", 2) == 0)
 		prev_len = ft_strlen("$?");
 	else
 		prev_len = ft_strlen("${?}");
-	return(prev_len);
+	return (prev_len);
 }
 
-char *deal_status(char *arg, int *i, int status, char *ret)
+char	*deal_status(char *arg, int *i, int status, char *ret)
 {
-	puts("------deal_status-----");
 	char	*a_st;
 	char	*tmp;
 	char	*joined;
 	char	*rest;
 
+	// puts("------deal_status-----");
 	if (status == -1)
 		a_st = ft_strdup("[pid]");
 	else
 		a_st = ft_itoa(status);
 	if (ft_strncmp(ret, "status", 6) == 0)
 	{
-		printf("arg[%d]: %s\n",*i, &arg[*i]);
+		// printf("arg[%d]: %s\n",*i, &arg[*i]);
 		*i += caliculate_incriment(&arg[*i], a_st);
-		printf("arg[%d]: %s\n",*i, &arg[*i]);
-		puts("-----");
+		// printf("arg[%d]: %s\n",*i, &arg[*i]);
+		// puts("-----");
 		return (a_st);
 	}
 	joined = ft_substr(arg, 0, *i);
 	tmp = ft_strjoin(joined, a_st);
 	free(joined);
 	rest = &arg[*i] + 2;
-	if (ft_strncmp(&arg[*i],"${", 2) == 0)
+	if (ft_strncmp(&arg[*i], "${", 2) == 0)
 		rest += 2;
 	*i += ft_strlen(a_st);
 	joined = ft_strjoin(tmp, rest);
 	free(tmp);
 	free(arg);
 	free(a_st);
-	puts("-----------");
+	// puts("-----------");
 	return (joined);
 }
 
-int return_end_of_env(char *end)
+int	return_end_of_env(char *end)
 {
 	int	i;
 
-	printf("end: %s\n", end);
+	// printf("end: %s\n", end);
 	i = 0;
 	if (ft_isdigit(end[i]))
 	{
 		while (ft_isdigit(end[i]))
 			i++;
 	}
-	else if(end[i] == '{')
+	else if (end[i] == '{')
 	{
 		while (end[i] != '}' && end[i])
 			i++;
@@ -72,7 +72,7 @@ int return_end_of_env(char *end)
 		while (end[i] && (ft_isalnum(end[i]) || end[i] == '_'))
 			i++;
 	}
-	printf("i: %d\n", i);
+	// printf("i: %d\n", i);
 	return (i);
 }
 
@@ -99,18 +99,18 @@ char	*deal_env(char *arg, int *i, t_env *env_head)
 
 char	*deal_raw_env(char *arg, int *i, t_env *env_head)
 {
-	printf("---------deal_raw_env-------");
 	char	*tmp;
 	char	*rest;
 	char	*joined;
 	char	*expanded;
 
+	// printf("---------deal_raw_env-------");
 	joined = NULL;
 	expanded = NULL;
 	tmp = ft_substr(arg, 0, *i);
-	printf("tmp: %s\n", tmp);
+	// printf("tmp: %s\n", tmp);
 	rest = &arg[*i + 1] + return_end_of_env(&arg[*i + 1]);
-	printf("rest: %s\n", rest);
+	// printf("rest: %s\n", rest);
 	expanded = deal_env(arg, i, env_head);
 	joined = ft_strjoin(tmp, expanded);
 	free(tmp);
@@ -121,9 +121,8 @@ char	*deal_raw_env(char *arg, int *i, t_env *env_head)
 	return (tmp);
 }
 
-char	*handle_dollar_expansion(char *arg, int *i, t_env *env_head, int *status)
+char	*handle_dollar(char *arg, int *i, t_env *env_head, int *status)
 {
-
 	char	*expanded;
 
 	if (ft_strncmp(&arg[*i], "$?", 2) * ft_strncmp(&arg[*i], "${?}", 4) == 0)
@@ -133,7 +132,7 @@ char	*handle_dollar_expansion(char *arg, int *i, t_env *env_head, int *status)
 	return (expanded);
 }
 
-char	*extract_until_special_char(char *arg, int *i, char **start)
+char	*extract_not_env(char *arg, int *i, char **start)
 {
 	*start = &arg[*i];
 	while (arg[*i] && arg[*i] != '\"' && arg[*i] != '$')
@@ -141,23 +140,23 @@ char	*extract_until_special_char(char *arg, int *i, char **start)
 	return (ft_substr(*start, 0, &arg[*i] - *start));
 }
 
-char	*expand_env(char *arg, int i,t_env *env_head, int *status)
+char	*expand_env(char *arg, int i, t_env *env_head, int *status)
 {
-	puts("-----expand_env----");
 	char	*expanded;
 	char	*tmp;
 	char	*joined;
-	char 	*start;
+	char	*start;
 
+	// puts("-----expand_env----");
 	joined = NULL;
-	printf("arg[%d]: %s\n", i, &arg[i]);
+	// printf("arg[%d]: %s\n", i, &arg[i]);
 	while (arg[i] != '\"' && arg[i])
 	{
 		if (arg[i] == '$')
-			expanded = handle_dollar_expansion(arg, &i, env_head, status);
+			expanded = handle_dollar(arg, &i, env_head, status);
 		else
-			expanded = extract_until_special_char(arg, &i, &start);
-		printf("expanded: %s\n", expanded);
+			expanded = extract_not_env(arg, &i, &start);
+		// printf("expanded: %s\n", expanded);
 		tmp = ft_strdup(joined);
 		free(joined);
 		joined = ft_strjoin(tmp, expanded);
@@ -165,6 +164,6 @@ char	*expand_env(char *arg, int i,t_env *env_head, int *status)
 		free(expanded);
 		expanded = NULL;
 	}
-	puts("----------------");
-	return joined;
+	// puts("----------------");
+	return (joined);
 }
