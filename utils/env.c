@@ -193,6 +193,7 @@ void env_unset(t_env **env_head, char *delete_env_key)
 			free(env->value);
 		}
 		free(env);
+		env = NULL;
 	}
 }
 
@@ -205,7 +206,7 @@ char *map_get(t_env **env_head, char *name)
 	while (env && env->name)
 	{
 		if (ft_strcmp(name, env->name) == 0)
-			return (ft_strdup(env->value));
+			return (env->value);
 		env = env->next;
 	}
 	return (NULL);
