@@ -3,44 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:37 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/07 16:57:45 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/18 15:39:36 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "parser.h"
 #include <stdbool.h>
 #include <libc.h>
 
-int count_redirection(t_token *tokens, int current_pipe)
+int	count_redirection(t_token *tokens, int current_pipe)
 {
-    int i = 0;
-    int count = 0;
+	int i;
+	int count;
 
-    while (tokens[i].arg && current_pipe)
-    {
-        if (tokens[i++].type == PIPE)
+	i = 0;
+	count = 0;
+	while (tokens[i].arg && current_pipe)
+	{
+		if (tokens[i++].type == PIPE)
 			current_pipe--;
-    }
-    if (tokens[i].type == PIPE) i++;
-    while (tokens[i].arg && tokens[i].type != PIPE)
-    {
-        if (tokens[i].type >= REDIRECT_OUT && tokens[i].type <= HERE_DOCUMENT)
-            count++;
-        i++;
-    }
-    return (count);
+	}
+	if (tokens[i].type == PIPE) i++;
+	while (tokens[i].arg && tokens[i].type != PIPE)
+	{
+		if (tokens[i].type >= REDIRECT_OUT && tokens[i].type <= HERE_DOCUMENT)
+			count++;
+		i++;
+	}
 }
 
 
-void connect_redirections(t_redirect *node, int count)
+void	connect_redirections(t_redirect *node, int count)
 {
 	if (count <= 0)
-		return;
 	node[0].prev = NULL;
 	node[0].next = (count > 1) ? &node[1] : NULL;
 	for (int i = 1; i < count - 1; i++)
@@ -57,10 +55,10 @@ void connect_redirections(t_redirect *node, int count)
 
 void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_commands)
 {
-	int i;
-	int j;
-	int k;
-	int count;
+	int	i;
+	int	j;
+	int	k;
+	int	count;
 
 	i = 0;
 	j = 0;
@@ -73,7 +71,6 @@ void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_c
 		{
 			commandsets[i].node = NULL;
 			i++;
-			// return ;
 			continue ;
 		}
 		commandsets[i].node = ft_calloc(count, sizeof(t_redirect));

@@ -3,40 +3,38 @@
 #include "parser.h"
 #include <stdbool.h>
 
-
-char *find_end_of_quote(char *command)
+char	*find_end_of_quote(char *command)
 {
-    char quote_char;
+	char quote_char;
 
 	quote_char = *command;
 	command++;
-    while (*command && *command != quote_char)
-        command++;
-    if (*command)
-        command++;
-    return command;
+	while (*command && *command != quote_char)
+		command++;
+	if (*command)
+		command++;
+	return (command);
 }
 
-char *find_end_of_arg(char *command)
+char	*find_end_of_arg(char *command)
 {
-    if (is_dilimeter(*command))
-    {
-        if ((*command == '<' && *(command + 1) == '<') || (*command == '>' && *(command + 1) == '>'))
-            command++;
-        return (command);
-    }
-    while (*command && !is_dilimeter(*command) && *command != ' ' && *command != '\t')
-    {
-        if (*command == '\'' || *command == '\"')
-            command = find_end_of_quote(command);
-        else
-            command++;
-    }
-    return (command - 1);
+	if (is_dilimeter(*command))
+	{
+		if ((*command == '<' && *(command + 1) == '<') || (*command == '>' && *(command + 1) == '>'))
+			command++;
+		return (command);
+	}
+	while (*command && !is_dilimeter(*command) && *command != ' ' && *command != '\t')
+	{
+		if (*command == '\'' || *command == '\"')
+			command = find_end_of_quote(command);
+		else
+			command++;
+	}
+	return (command - 1);
 }
 
-
-int count_tokens(char *command)
+int	count_tokens(char *command)
 {
 	int count;
 
@@ -53,31 +51,28 @@ int count_tokens(char *command)
 	return (count);
 }
 
-
-
-void split_into_tokens(t_token *tokens, char *command, int num_of_tokens)
+void	split_into_tokens(t_token *tokens, char *command, int num_of_tokens)
 {
-    char *start;
-    char *end;
-    int i;
+	char	*start;
+	char	*end;
+	int		i;
 
-    start = skip_spaces(command);
-    for (i = 0; i < num_of_tokens; i++)
-    {
-        end = find_end_of_arg(start);
-        tokens[i].arg = ft_calloc(end - start + 2, sizeof(char));
-        tokens[i].is_freed = 0;
-        strlcpy(tokens[i].arg, start, end - start + 2);
-        start = skip_spaces(end + 1);
-    }
-    tokens[i].arg = NULL;
+	start = skip_spaces(command);
+	for (i = 0; i < num_of_tokens; i++)
+	{
+		end = find_end_of_arg(start);
+		tokens[i].arg = ft_calloc(end - start + 2, sizeof(char));
+		tokens[i].is_freed = 0;
+		strlcpy(tokens[i].arg, start, end - start + 2);
+		start = skip_spaces(end + 1);
+	}
+	tokens[i].arg = NULL;
 }
 
-
-t_token *ft_tokenizer(char *command)
+t_token	*ft_tokenizer(char *command)
 {
-	int num_of_tokens;
-	t_token *tokens;
+	int		num_of_tokens;
+	t_token	*tokens;
 
 	num_of_tokens = count_tokens(command);
 	tokens = (t_token *)ft_calloc(num_of_tokens + 1, sizeof(t_token));

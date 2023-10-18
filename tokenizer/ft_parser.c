@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/16 19:11:52 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/18 16:32:35 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ void categorize_tokens(t_token *tokens)
 	}
 }
 
-t_commandset *create_command_pipeline(t_token *tokens, int num_of_commands)
+t_commandset	*create_command_pipeline(t_token *tokens, int num_of_commands)
 {
-	t_commandset *commandsets;
+	t_commandset	*commandsets;
+	int i;
 
 	commandsets = ft_calloc(num_of_commands, sizeof(t_commandset));
-
-	int i = 1;
+	i = 1;
 	commandsets[0].prev = NULL;
 	if (num_of_commands > 1)
 		commandsets[0].next = &commandsets[1];
@@ -88,7 +88,7 @@ t_commandset *create_command_pipeline(t_token *tokens, int num_of_commands)
 	i = 0;
 	while (commandsets[i].next != NULL)
 		i++;
-	return commandsets;
+	return (commandsets);
 }
 
 int count_command(t_token *tokens, int current_cmd)
@@ -116,10 +116,15 @@ int count_command(t_token *tokens, int current_cmd)
 
 void import_command(t_token *tokens, t_commandset *commandsets, int num_of_commands)
 {
-	int i = 0;
-	int j = 0;
-	int k = 0;
-	int count = 0;
+	int i;
+	int j;
+	int k;
+	int count;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	count = 0;
 	while (i < num_of_commands)
 	{
 		count = count_command(tokens, i);
@@ -153,7 +158,6 @@ void free_tokens(t_token *tokens)
 		free(tokens[i].arg);
 		i++;
 	}
-
 	free(tokens);
 }
 
@@ -163,9 +167,10 @@ void free_commandset(t_commandset *csets)
     t_redirect *tmp_redir1;
     t_redirect *tmp_redir2;
     t_commandset *tmp_cset;
-    int i = 0;
+    int i;
     int j;
 
+	i = 0;
     while((i != 0 && csets[i - 1].next != NULL)|| i == 0)
     {
         tmp_cmd = csets[i].command[0];
@@ -177,7 +182,6 @@ void free_commandset(t_commandset *csets)
             j++;
         }
         free(csets[i].command);
-
         j = 0;
         tmp_redir1 = csets[i].node;
         tmp_redir2 = csets[i].node;
@@ -193,16 +197,15 @@ void free_commandset(t_commandset *csets)
     free(csets);
 }
 
-
-
 t_commandset *ft_parser(char *buff, int *status, t_env *env_head)
 {
 	t_token *tokens;
 	t_token *tmp_token;
 	t_commandset *commandsets;
 	int num_of_commands;
-	int i = 0;
+	int i;
 
+	i = 0;
 	tokens = ft_tokenizer(buff);
 	tmp_token = tokens;
 	tokens = tmp_token;
