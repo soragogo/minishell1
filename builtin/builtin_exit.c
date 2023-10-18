@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/18 15:23:11 by mayu              #+#    #+#             */
+/*   Updated: 2023/10/18 15:23:12 by mayu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-int is_num(char *str)
+int	is_num(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -14,14 +26,14 @@ int is_num(char *str)
 	return (0);
 }
 
-int ft_exit(char **command, t_info *info)
+int	ft_exit(char **command, t_info *info)
 {
-	int status;
-	char *arg;
+	int		status;
+	char	*arg;
 
 	status = 0;
 	if (command[1] == NULL)
-		status = info->exit_status_log;//前回の終了コード
+		status = info->exit_status_log;
 	else if (command[2])
 	{
 		error_message("exit", NULL, "too many arguments");
@@ -39,20 +51,3 @@ int ft_exit(char **command, t_info *info)
 	}
 	exit (status);
 }
-
-
-// int main(void) {
-//     char *command[] = {"exit", "42", NULL}; // コマンドと引数の例
-//     t_info info;
-//     info.exit_status_log = 0; // 仮の exit ステータス
-
-//     int result = ft_exit(command, &info);
-
-//     if (result == 1) {
-//         printf("Error: Too many arguments\n");
-//     } else {
-//         printf("Program exited with status: %d\n", info.exit_status_log);
-//     }
-
-//     return 0;
-// }
