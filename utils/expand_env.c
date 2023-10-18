@@ -96,6 +96,7 @@ char	*deal_env(char *arg, int *i, t_env *env_head)
 	else
 		env_value = ft_substr(start, 0, &arg[*i] - start);
 	expanded = map_get(&env_head, env_value);
+	expanded = ft_strdup(expanded);
 	free(env_value);
 return (expanded);
 }
