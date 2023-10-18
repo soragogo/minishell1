@@ -10,25 +10,23 @@ void deal_single_quote(char *arg, int *i)
 {
     char *start;
     char *end;
-    char *tmp;
 
     start = &arg[(*i)];
-    end = &arg[(*i) + 1];
-    ft_memmove(start, end, ft_strlen(end));
-    tmp = arg;
-    while ((*tmp + 1))
-        tmp++;
-    *tmp = '\0';
-    while (arg[(*i)] && arg[(*i)] != '\'')
+    end = start + 1;
+
+    ft_memmove(start, end, ft_strlen(end) + 1);
+
+    while (arg[*i] && arg[*i] != '\'')
         (*i)++;
-    start = &arg[(*i)];
-    end = &arg[(*i) + 1];
-    ft_memmove(start, end, ft_strlen(end));
-    tmp = arg;
-    while ((*tmp + 1))
-        tmp++;
-    *tmp = '\0';
+
+    if (arg[*i] == '\'')
+    {
+        start = &arg[*i];
+        end = start + 1;
+        ft_memmove(start, end, ft_strlen(end) + 1);
+    }
 }
+
 
 char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 {
@@ -48,22 +46,28 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
     tmp = ft_substr(arg, 0, *i);
     printf("tmp: %s\n", tmp);
     (*i)++;
-	rest = ft_strdup(ft_strchr(&arg[*i], '\"') + 1);
+	printf("&arg[%d]: %s\n", *i, &arg[*i]);
+	rest = ft_strchr(&arg[*i], '\"') + 1;
+	// if (rest)
+	// 	rest = ft_strdup(rest);
+	// else
+	// 	rest = NULL;
     printf("rest: %s\n", rest);
     expanded = expand_env(arg, *i, env_head, status);
     printf("expanded: %s\n", expanded);
     printf("&arg[%d]: %s\n", *i, &arg[*i]);
-	printf("rest - tmp + 1 =%ld\n", ft_strchr(&arg[*i - 2], '\"') - &arg[*i - 2] - 2);
-	if (*i > 1)
-    	*i += ft_strlen(expanded) + ft_strchr(&arg[*i - 2], '\"') - &arg[*i - 2] - 2;
-	printf("current *i: %d\n", *i);
+
     joined = ft_strjoin(tmp, expanded);
     free(tmp);
     tmp = ft_strjoin(joined, rest);
     free(joined);
     free(expanded);
+	// free(rest);
+	printf("rest - tmp + 1 =%ld\n", ft_strchr(&arg
+	[*i - 2], '\"') - &arg[*i - 2] - 2);
+	*i += ft_strlen(expanded);
     free(arg);
-	free(rest);
+	printf("current *i: %d\n", *i);
     puts("-------------------------");
     return tmp;
 }
