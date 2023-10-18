@@ -1,9 +1,8 @@
 #include "../includes/minishell.h"
 
-int	caliculate_incriment(char *prev, char *new)
+int	caliculate_incriment(char *prev)
 {
 	int	prev_len;
-	int	new_len;
 
 	if (ft_strncmp(prev, "$?", 2) == 0)
 		prev_len = ft_strlen("$?");
@@ -27,7 +26,7 @@ char	*deal_status(char *arg, int *i, int status, char *ret)
 	if (ft_strncmp(ret, "status", 6) == 0)
 	{
 		// printf("arg[%d]: %s\n",*i, &arg[*i]);
-		*i += caliculate_incriment(&arg[*i], a_st);
+		*i += caliculate_incriment(&arg[*i]);
 		// printf("arg[%d]: %s\n",*i, &arg[*i]);
 		// puts("-----");
 		return (a_st);

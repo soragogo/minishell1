@@ -37,4 +37,5 @@ typedef struct s_list_token
 t_token *ft_tokenizer(char *command);
 char *skip_spaces(char *str);
 int is_dilimeter(char c);
+void	split_into_tokens(t_token *tokens, char *command, int num_of_tokens);
 #endif

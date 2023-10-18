@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:23:11 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 15:23:12 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/18 18:11:46 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	is_num(char *str)
 int	ft_exit(char **command, t_info *info)
 {
 	int		status;
-	char	*arg;
 
 	status = 0;
 	if (command[1] == NULL)

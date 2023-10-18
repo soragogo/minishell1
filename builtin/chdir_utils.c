@@ -3,32 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   chdir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 16:14:59 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 16:15:27 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/18 18:50:51 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 char	*delete_path(char *dir_path)
 {
 	int		i;
 	char	*ret;
 
+	ret = NULL;
 	if (!dir_path)
 		return (NULL);
 	i = ft_strlen(dir_path);
 	while (i > 2 && dir_path[i - 1] != '/')
 		i--;
-	if (i != 0)
-	{
+	// if (i != 0)
+	// {
 		ret = malloc(sizeof(char) * i + 1);
 		if (!ret)
 			fatal_error("malloc error");
 		ft_strlcpy(ret, dir_path, i);
-	}
+	// }
 	free(dir_path);
 	return (ret);
 }
@@ -61,7 +64,7 @@ char	*convert_relative_path(char *dir_path, char *input)
 {
 	int		i;
 	char	**tmp;
-	char	*ret;
+	// char	*ret;
 
 	i = 0;
 	tmp = ft_split(input, '/');

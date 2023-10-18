@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/18 17:55:38 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/18 18:06:12 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void categorize_tokens(t_token *tokens)
 	}
 }
 
-t_commandset	*create_command_pipeline(t_token *tokens, int num_of_commands)
+t_commandset	*create_command_pipeline(int num_of_commands)
 {
 	t_commandset	*commandsets;
 	int i;
@@ -152,7 +152,6 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 void free_tokens(t_token *tokens)
 {
 	int i;
-	char *tmp;
 
 	i = 0;
 	while (tokens[i].arg)
@@ -168,7 +167,6 @@ void free_commandset(t_commandset *csets)
     char *tmp_cmd;
     t_redirect *tmp_redir1;
     t_redirect *tmp_redir2;
-    t_commandset *tmp_cset;
     int i;
     int j;
 
@@ -228,7 +226,7 @@ t_commandset *ft_parser(char *buff, int *status, t_env *env_head)
 		}
 		num_of_commands = count_commandset(tokens);
 		// printf("num_of_commands: [%d]\n", num_of_commands);
-		commandsets = create_command_pipeline(tokens, num_of_commands);
+		commandsets = create_command_pipeline(num_of_commands);
 		import_command(tokens, commandsets, num_of_commands);
 		import_redirection(tokens, commandsets, num_of_commands);
 		// test_commandsets(commandsets, num_of_commands);
