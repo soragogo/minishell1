@@ -10,13 +10,6 @@ int	caliculate_incriment(char *prev, char *new)
 	else
 		prev_len = ft_strlen("${?}");
 	return(prev_len);
-	// printf("prev: %s\n",prev);
-	// printf("new: %s\n",new);
-	// new_len = ft_strlen(new);
-	// if (prev_len <= new_len)
-	// 	return (new_len - 1);
-	// else
-	// 	return (prev_len - new_len);
 }
 
 char *deal_status(char *arg, int *i, int status, char *ret)
@@ -27,6 +20,9 @@ char *deal_status(char *arg, int *i, int status, char *ret)
 	char	*joined;
 	char	*rest;
 
+	if (status == -1)
+		a_st = ft_strdup("[pid]");
+	else
 	a_st = ft_itoa(status);
 	if (ft_strncmp(ret, "status", 6) == 0)
 	{
@@ -40,7 +36,7 @@ char *deal_status(char *arg, int *i, int status, char *ret)
 	tmp = ft_strjoin(joined, a_st);
 	free(joined);
 	rest = &arg[*i] + 2;
-	if (ft_strncmp(&arg[*i],"${?}", 4) == 0)
+	if (ft_strncmp(&arg[*i],"${", 2) == 0)
 		rest += 2;
 	*i += ft_strlen(a_st);
 	joined = ft_strjoin(tmp, rest);
@@ -69,7 +65,7 @@ int return_end_of_env(char *end)
 		if (end[i] == '}')
 			i++;
 	}
-	else if (end[i] == '?')
+	else if (end[i] == '?' || end[i] == '$')
 		i++;
 	else
 	{
@@ -98,7 +94,7 @@ char	*deal_env(char *arg, int *i, t_env *env_head)
 	expanded = map_get(&env_head, env_value);
 	expanded = ft_strdup(expanded);
 	free(env_value);
-return (expanded);
+	return (expanded);
 }
 
 char	*deal_raw_env(char *arg, int *i, t_env *env_head)
@@ -106,11 +102,9 @@ char	*deal_raw_env(char *arg, int *i, t_env *env_head)
 	printf("---------deal_raw_env-------");
 	char	*tmp;
 	char	*rest;
-	// int		increment;
 	char	*joined;
 	char	*expanded;
 
-	// increment = 0;
 	joined = NULL;
 	expanded = NULL;
 	tmp = ft_substr(arg, 0, *i);
@@ -123,8 +117,6 @@ char	*deal_raw_env(char *arg, int *i, t_env *env_head)
 	tmp = ft_strjoin(joined, rest);
 	free(joined);
 	free(expanded);
-	// (*i) += increment;
-
 	free(arg);
 	return (tmp);
 }
