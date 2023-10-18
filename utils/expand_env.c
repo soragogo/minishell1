@@ -23,7 +23,7 @@ char *deal_status(char *arg, int *i, int status, char *ret)
 	if (status == -1)
 		a_st = ft_strdup("[pid]");
 	else
-	a_st = ft_itoa(status);
+		a_st = ft_itoa(status);
 	if (ft_strncmp(ret, "status", 6) == 0)
 	{
 		printf("arg[%d]: %s\n",*i, &arg[*i]);

@@ -45,7 +45,7 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
     printf("*i: %d\n", *i);
     tmp = ft_substr(arg, 0, *i);
     printf("tmp: %s\n", tmp);
-    (*i)++;
+    // (*i)++;
 	printf("&arg[%d]: %s\n", *i, &arg[*i]);
 	rest = ft_strchr(&arg[*i], '\"') + 1;
     printf("rest: %s\n", rest);
