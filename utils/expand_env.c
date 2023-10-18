@@ -1,19 +1,51 @@
 #include "../includes/minishell.h"
 
+<<<<<<< HEAD
 int	caliculate_incriment(char *prev, char *new)
+=======
+char *deal_status(char *arg, int *i, int status, char *ret)
+>>>>>>> 07419a0 ( ダブルクオーとないの　)
 {
 	int	prev_len;
 	int	new_len;
 
+<<<<<<< HEAD
 	if (ft_strncmp(prev, "$?", 2) == 0)
 		prev_len = ft_strlen("$?");
 	else
 		prev_len = ft_strlen("${?}");
 	return (prev_len);
+=======
+    a_st = ft_itoa(status);
+    if (ft_strncmp(ret, "status", 6) == 0)
+    {
+        *i += ft_strlen(a_st) - 2;
+        printf("i: [%d]\n", *i);
+        return (a_st);
+    }
+
+    joined = ft_substr(arg, 0, *i);
+    printf("joined: %s\n", joined);
+    tmp = ft_strjoin(joined, a_st);
+    printf("joined: %s\n", joined);
+    free(joined);
+    if (ft_strncmp(&arg[*i],"$?", 2) == 0)
+        rest = &arg[*i] + 2;
+    else
+        rest = &arg[*i] + 4;
+    *i += ft_strlen(a_st) ;
+    joined = ft_strjoin(tmp, rest);
+    printf("joined: %s\n", joined);
+    free(tmp);
+    free(arg);
+    free(a_st);
+    return (joined);
+>>>>>>> 07419a0 ( ダブルクオーとないの　)
 }
 
 char	*deal_status(char *arg, int *i, int status, char *ret)
 {
+<<<<<<< HEAD
 	char	*a_st;
 	char	*tmp;
 	char	*joined;
@@ -45,6 +77,28 @@ char	*deal_status(char *arg, int *i, int status, char *ret)
 	free(a_st);
 	// puts("-----------");
 	return (joined);
+=======
+    if (ft_isdigit(*end))
+    {
+        while (ft_isdigit(*end))
+            end++;
+    }
+    else if(*end == '{')
+    {
+        while (*end != '}' && *end)
+            end++;
+        if (*end == '}')
+            end++;
+    }
+    else if (*end == '?')
+        end++;
+    else
+    {
+        while (*end && (ft_isalnum(*end) || *end == '_'))
+            end++;
+    }
+    return (end);
+>>>>>>> 07419a0 ( ダブルクオーとないの　)
 }
 
 int	return_end_of_env(char *end)
