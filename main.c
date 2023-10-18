@@ -41,6 +41,7 @@ int main()
 			free(command_buf);
 			continue ;
 		}
+
 		info.exit_status_log = handle_command(commands, &info);
 		free_before_closing(commands, command_buf);
 	}

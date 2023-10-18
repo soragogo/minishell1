@@ -1,152 +1,169 @@
 #include "../includes/minishell.h"
 
-char *deal_status(char *arg, int *i, int status)
+int	caliculate_incriment(char *prev, char *new)
 {
-    char *a_st;
-    char *tmp;
-    char *joined;
-    char *rest;
+	int	prev_len;
+	int	new_len;
 
-    a_st = ft_itoa(status);
-    joined = ft_substr(arg, 0, *i);
-    tmp = ft_strjoin(joined, a_st);
-    free(joined);
-    if (ft_strncmp(&arg[*i],"$?", 2) == 0)
-        rest = &arg[*i] + 2;
-    else
-        rest = &arg[*i] + 4;
-    *i += ft_strlen(a_st) ;
-    joined = ft_strjoin(tmp, rest);
-    free(tmp);
-    free(arg);
-    free(a_st);
-    return (joined);
+	if (ft_strncmp(prev, "$?", 2) == 0)
+		prev_len = ft_strlen("$?");
+	else
+		prev_len = ft_strlen("${?}");
+	return (prev_len);
 }
 
-char *return_end_of_env(char *end)
+char	*deal_status(char *arg, int *i, int status, char *ret)
 {
-    if (ft_isdigit(*end))
-    {
-        while (ft_isdigit(*end))
-            end++;
-    }
-    else if(*end == '{')
-    {
-        while (*end != '}' && *end)
-            end++;
-        if (*end == '}')
-            end++;
-    }
-    else
-    {
-        while (*end && (ft_isalnum(*end) || *end == '_'))
-            end++;
-    }
-    return (end);
+	char	*a_st;
+	char	*tmp;
+	char	*joined;
+	char	*rest;
+
+	// puts("------deal_status-----");
+	if (status == -1)
+		a_st = ft_strdup("[pid]");
+	else
+		a_st = ft_itoa(status);
+	if (ft_strncmp(ret, "status", 6) == 0)
+	{
+		// printf("arg[%d]: %s\n",*i, &arg[*i]);
+		*i += caliculate_incriment(&arg[*i], a_st);
+		// printf("arg[%d]: %s\n",*i, &arg[*i]);
+		// puts("-----");
+		return (a_st);
+	}
+	joined = ft_substr(arg, 0, *i);
+	tmp = ft_strjoin(joined, a_st);
+	free(joined);
+	rest = &arg[*i] + 2;
+	if (ft_strncmp(&arg[*i], "${", 2) == 0)
+		rest += 2;
+	*i += ft_strlen(a_st);
+	joined = ft_strjoin(tmp, rest);
+	free(tmp);
+	free(arg);
+	free(a_st);
+	// puts("-----------");
+	return (joined);
 }
 
-
-
-char *deal_env(char *arg, int *i, t_env *env_head, int *increment)
+int	return_end_of_env(char *end)
 {
-    char *start;
-    char *env_value;
-    char *expanded;
+	int	i;
 
-    env_value = NULL;
-    expanded = NULL;
-    (*i)++;
-    start = &arg[*i];
-    if (ft_isdigit(arg[*i]))
-    {
-        while (ft_isdigit(arg[*i]))
-            (*i)++;
-    }
-    else
-    {
-        while (arg[*i] && (ft_isalnum(arg[*i]) || arg[*i] == '_'))
-            (*i)++;
-    }
-    if (*start == '{')
-        env_value = ft_substr(start, 1, ft_strchr(start, '}') - start - 1);
-    else
-        env_value = ft_substr(start, 0, &arg[*i] - start);
-    printf("env_value %s\n", env_value);
-    expanded = map_get(&env_head, env_value);
+	// printf("end: %s\n", end);
+	i = 0;
+	if (ft_isdigit(end[i]))
+	{
+		while (ft_isdigit(end[i]))
+			i++;
+	}
+	else if (end[i] == '{')
+	{
+		while (end[i] != '}' && end[i])
+			i++;
+		if (end[i] == '}')
+			i++;
+	}
+	else if (end[i] == '?' || end[i] == '$')
+		i++;
+	else
+	{
+		while (end[i] && (ft_isalnum(end[i]) || end[i] == '_'))
+			i++;
+	}
+	// printf("i: %d\n", i);
+	return (i);
+}
+
+char	*deal_env(char *arg, int *i, t_env *env_head)
+{
+	char	*start;
+	char	*env_value;
+	char	*expanded;
+
+	env_value = NULL;
+	expanded = NULL;
+	(*i)++;
+	start = &arg[*i];
+	*i += return_end_of_env(&arg[*i]);
+	if (*start == '{')
+		env_value = ft_substr(start, 1, ft_strchr(start, '}') - start - 1);
+	else
+		env_value = ft_substr(start, 0, &arg[*i] - start);
+	expanded = map_get(&env_head, env_value);
 	expanded = ft_strdup(expanded);
-    *increment += ft_strlen(expanded) - (ft_strlen(env_value) + 1);
-    free(env_value);
-    return (expanded);
+	free(env_value);
+	return (expanded);
 }
 
-char *deal_raw_env(char *arg, int *i, t_env *env_head)
+char	*deal_raw_env(char *arg, int *i, t_env *env_head)
 {
-    char *tmp;
-    char *rest;
-    int increment;
-    char *joined;
-    char *expanded;
+	char	*tmp;
+	char	*rest;
+	char	*joined;
+	char	*expanded;
 
-    increment = 0;
-    tmp = NULL;
-    joined = NULL;
-    rest = NULL;
-    expanded = NULL;
-    tmp = ft_substr(arg, 0, *i);
-    rest = &arg[*i + 1];
-    printf("rest: %s\n", rest);
-    rest = return_end_of_env(rest);
-    printf("rest: %s\n", rest);
-    rest = ft_strdup(rest);
-    printf("arg: %s\n", &arg[*i]);
-    expanded = deal_env(arg, i, env_head, &increment);
-    printf("expanded: [%s]\n", expanded);
-    joined = ft_strjoin(tmp, expanded);
-    free(tmp);
-    tmp = ft_strjoin(joined, rest);
-    free(rest);
-    free(joined);
-    free(expanded);
-    (*i) += increment;
-    free(arg);
-    return (tmp);
+	// printf("---------deal_raw_env-------");
+	joined = NULL;
+	expanded = NULL;
+	tmp = ft_substr(arg, 0, *i);
+	// printf("tmp: %s\n", tmp);
+	rest = &arg[*i + 1] + return_end_of_env(&arg[*i + 1]);
+	// printf("rest: %s\n", rest);
+	expanded = deal_env(arg, i, env_head);
+	joined = ft_strjoin(tmp, expanded);
+	free(tmp);
+	tmp = ft_strjoin(joined, rest);
+	free(joined);
+	free(expanded);
+	free(arg);
+	return (tmp);
 }
 
-char *expand_env(char *arg, int *i, t_env *env_head, int *increment)
+char	*handle_dollar(char *arg, int *i, t_env *env_head, int *status)
 {
-    char *start;
-    char *env_value;
-    char *expanded;
-    char *tmp;
-    char *joined;
+	char	*expanded;
 
-    start = &arg[*i];
-    tmp = NULL;
-    joined = NULL;
-    expanded = NULL;
-    while (arg[*i] != '\"' && arg[*i])
-    {
-        if (arg[*i] == '$')
-        {
-            expanded = deal_env(arg, i, env_head, increment);
-            start++;
-            start = return_end_of_env(start);
-        }
-        else
-        {
-            while (arg[*i] && arg[*i] != '\"' && arg[*i] != '$')
-                (*i)++;
-            expanded = ft_substr(start, 0, &arg[*i] - start);
-        }
-        tmp = ft_strdup(joined);
-        free(joined);
-        joined = NULL;
-        joined = ft_strjoin(tmp, expanded);
-        free(tmp);
-        tmp = NULL;
-        free(expanded);
-        expanded = NULL;
-    }
-    (*i)++;
-    return (joined);
+	if (ft_strncmp(&arg[*i], "$?", 2) * ft_strncmp(&arg[*i], "${?}", 4) == 0)
+		expanded = deal_status(arg, i, *status, "status");
+	else
+		expanded = deal_env(arg, i, env_head);
+	return (expanded);
+}
+
+char	*extract_not_env(char *arg, int *i, char **start)
+{
+	*start = &arg[*i];
+	while (arg[*i] && arg[*i] != '\"' && arg[*i] != '$')
+		(*i)++;
+	return (ft_substr(*start, 0, &arg[*i] - *start));
+}
+
+char	*expand_env(char *arg, int i, t_env *env_head, int *status)
+{
+	char	*expanded;
+	char	*tmp;
+	char	*joined;
+	char	*start;
+
+	// puts("-----expand_env----");
+	joined = NULL;
+	// printf("arg[%d]: %s\n", i, &arg[i]);
+	while (arg[i] != '\"' && arg[i])
+	{
+		if (arg[i] == '$')
+			expanded = handle_dollar(arg, &i, env_head, status);
+		else
+			expanded = extract_not_env(arg, &i, &start);
+		// printf("expanded: %s\n", expanded);
+		tmp = ft_strdup(joined);
+		free(joined);
+		joined = ft_strjoin(tmp, expanded);
+		free(tmp);
+		free(expanded);
+		expanded = NULL;
+	}
+	// puts("----------------");
+	return (joined);
 }
