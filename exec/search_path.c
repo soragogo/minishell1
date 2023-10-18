@@ -1,49 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   search_path.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/18 15:37:58 by mayu              #+#    #+#             */
+/*   Updated: 2023/10/18 15:38:20 by mayu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <libc.h>
 #include "../includes/minishell.h"
 
-char *fetch_path(char *file, t_env **map)
+char	*fetch_path(char *file, t_env **map)
 {
-	char path[PATH_MAX];
-	// char *pathlist = getenv("PATH");
-	char *pathlist;
-	char *start;
-	char *end = NULL;
-	char *result;
-	int flag = 0;
+	char	path[PATH_MAX];
+	char	*pathlist;
+	char	*start;
+	char	*end;
+	char	*result;
+	int		flag;
+	int		len;
 
-	
-	// while (*map)
-	// {
-	// 	printf("name: %s\nvalue: %s\n", (*map)->name, (*map)->value);
-	// 	map = (*map)->next;
-	// }
+	flag = 0;
+	end = NULL;
 	pathlist = map_get(map, "PATH");
-	// printf("pathlist: [%s]\n", pathlist);
 	if (pathlist == NULL)
 		return (NULL);
 	start = pathlist;
 	end = NULL;
-	// printf("pathlist: [%s]\n", pathlist);
 	while (flag == 0)
 	{
 		ft_bzero(path, PATH_MAX);
-		if (end != NULL && *(end + 1)!='\0')
+		if (end != NULL && *(end + 1) != '\0')
 			start = end + 1;
 		end = ft_strchr(start, ':');
 		if (end)
-		{
 			ft_strlcpy(path, start, end - start + 1);
-		}
 		else
 		{
 			flag = 1;
-			int len = ft_strlen(start);
+			len = ft_strlen(start);
 			ft_strlcpy(path, start, len + 1);
 		}
 		ft_strlcat(path, "/", PATH_MAX);
 		ft_strlcat(path, file, PATH_MAX);
-		// printf("file: [%s]\n",file);
-		// printf("path: [%s]\n",path);
 		if (access(path, F_OK) == 0)
 		{
 			result = ft_strdup(path);
@@ -52,43 +54,3 @@ char *fetch_path(char *file, t_env **map)
 	}
 	return (NULL);
 }
-
-// int main() {
-// 	t_env *map;
-//     envmap_init(&map);
-//     char *command = "wc"; // 実行したいコマンド名を設定
-//     char *path = fetch_path(command, &map);
-
-// 	t_info info;
-// 	info.map_head = map;
-//     if (path) {
-//         printf("コマンド '%s' のフルパス: %s\n", command, path);
-//         // ここで path を使ってコマンドを実行できます
-//     } else {
-//         printf("コマンド '%s' が見つかりませんでした。\n", command);
-//     }
-// 	free(path);
-// 	free_map(&map);
-//     return 0;
-// }
-
-// // // #include "../includes/minishell.h"
-// // #include <unistd.h>
-// // int main()
-// // {
-// // 	char *command_buf;
-// // 	while (1)
-// // 	{
-// // 		command_buf = readline("exec_path> ");
-// // 		search_path(command_buf);
-// // 		printf("%s\n", command_buf);
-// // 		if (command_buf != NULL)
-// // 			exec(command_buf);
-// // 		free(command_buf);
-// // 	}	return (0);
-// // }
-
-// __attribute__((destructor)) static void destructor()
-// {
-// 	system("leaks -q minishell");
-// }
