@@ -48,15 +48,15 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
     tmp = ft_substr(arg, 0, *i);
     printf("tmp: %s\n", tmp);
     (*i)++;
-	rest = ft_strchr(&arg[*i], '\"') + 1;
-	rest = ft_strdup(rest);
+	rest = ft_strdup(ft_strchr(&arg[*i], '\"') + 1);
     printf("rest: %s\n", rest);
-    expanded = expand_env(arg, i, env_head, &increment, status);
+    expanded = expand_env(arg, *i, env_head, status);
     printf("expanded: %s\n", expanded);
     printf("&arg[%d]: %s\n", *i, &arg[*i]);
-    // if (arg[(*i)] != '\0')
-        // rest = &arg[(*i)];
-    *i += increment - 2;
+	printf("rest - tmp + 1 =%ld\n", ft_strchr(&arg[*i - 2], '\"') - &arg[*i - 2] - 2);
+	if (*i > 1)
+    	*i += ft_strlen(expanded) + ft_strchr(&arg[*i - 2], '\"') - &arg[*i - 2] - 2;
+	printf("current *i: %d\n", *i);
     joined = ft_strjoin(tmp, expanded);
     free(tmp);
     tmp = ft_strjoin(joined, rest);
@@ -91,6 +91,7 @@ char *expand_quote(char *arg, t_env *env_head, int *status)
 		else if (arg[i] == '$')
 			arg = deal_raw_env(arg, &i, env_head);
 		printf("current i: %d\n", i);
+		printf("arg[%d]: %s\n", i, arg);
 	}
 	return (arg);
 }

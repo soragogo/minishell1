@@ -110,7 +110,7 @@ int handle_command(t_commandset *commands, t_info *info);
 // void expand_env(char **command, t_env *env_head);
 // char *expand_env(char *arg, int *i, t_env *env_head);
 // char *expand_env(char *arg, int *i, t_env *env_head, int *increment);
-char *expand_env(char *arg, int *i, t_env *env_head, int *increment, int *status);
+char *expand_env(char *arg, int i, t_env *env_head, int *status);
 int ft_strcmp(char *s1, char *s2);
 // void expand_quote(char **command, t_env *env_head);
 char *expand_quote(char *command, t_env *env_head, int *status);
