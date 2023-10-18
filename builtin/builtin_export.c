@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:24:13 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 01:20:59 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 02:20:34 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ int	display_envlist(t_env **env_head)
 			{
 				ft_putstr_fd("=\"", STDOUT_FILENO);
 				ft_putstr_fd(tmp->value, STDOUT_FILENO);
-				ft_putendl_fd("\"", STDOUT_FILENO);
+				ft_putstr_fd("\"", STDOUT_FILENO);
 			}
+			ft_putstr_fd("\n", STDOUT_FILENO);
 			tmp = tmp->next;
 		}
 	}
@@ -53,6 +54,8 @@ int	ft_export(t_env **map, char **commands)
 	}
 	if (ft_strchr(commands[1], '=') == NULL)
 	{
+		if (set_env(map, ft_strdup(commands[1]), NULL, true) == -1)
+			return (1);
 		return (0);
 	}
 	name = get_env_name(name, commands[1]);
