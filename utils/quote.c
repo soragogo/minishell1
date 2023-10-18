@@ -23,11 +23,7 @@ void	deal_single_quote(char *arg, int *i)
 	}
 }
 
-<<<<<<< HEAD
 char	*deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
-=======
-char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
->>>>>>> 07419a0 ( ダブルクオーとないの　)
 {
 	char	*rest;
 	char	*expanded;
@@ -35,7 +31,6 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 	char	*joined;
 	int		increment;
 
-<<<<<<< HEAD
 	// puts("-----deal_double_quote----");
 	increment = 0;
 	rest = NULL;
@@ -61,28 +56,6 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 	// printf("current *i: %d\n", *i);
 	// puts("-------------------------");
 	return (tmp);
-=======
-    increment = 0;
-    rest = NULL;
-    expanded = NULL;
-    tmp = NULL;
-    joined = NULL;
-    while (arg[(*i)] && arg[(*i)] != '\"')
-        (*i)++;
-    tmp = ft_substr(arg, 0, *i);
-    (*i)++;
-    expanded = expand_env(arg, i, env_head, &increment, status);
-    if (arg[(*i)] != '\0')
-        rest = &arg[(*i)];
-    *i += increment - 2;
-    joined = ft_strjoin(tmp, expanded);
-    free(tmp);
-    tmp = ft_strjoin(joined, rest);
-    free(joined);
-    free(expanded);
-    free(arg);
-    return tmp;
->>>>>>> 07419a0 ( ダブルクオーとないの　)
 }
 
 char	*expand_quote(char *arg, t_env *env_head, int *status)
@@ -90,7 +63,6 @@ char	*expand_quote(char *arg, t_env *env_head, int *status)
 	char	quote_char;
 	int		i;
 
-<<<<<<< HEAD
 	i = 0;
 	while (arg[i])
 	{
@@ -112,23 +84,4 @@ char	*expand_quote(char *arg, t_env *env_head, int *status)
 		// printf("arg[%d]: %s\n", i, arg);
 	}
 	return (arg);
-=======
-    tmp = arg;
-    i = 0;
-    increment = 0;
-    while (arg[i])
-    {
-        while (arg[i] && arg[i] != '\'' && arg[i] != '\"' && arg[i] != '$')
-                i++;
-        if (arg[i] == '\'')
-            deal_single_quote(arg, &i);
-        else if (arg[i] == '\"')
-            arg = deal_double_quote(arg, &i, env_head, status);
-        if (ft_strncmp(&arg[i],"$?", 2) * ft_strncmp(&arg[i],"${?}", 4) == 0)
-            arg = deal_status(arg, &i, *status, "arg");
-        else if (arg[i] == '$')
-            arg = deal_raw_env(arg, &i, env_head);
-    }
-    return (arg);
->>>>>>> 07419a0 ( ダブルクオーとないの　)
 }
