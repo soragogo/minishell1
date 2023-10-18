@@ -48,12 +48,14 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
     tmp = ft_substr(arg, 0, *i);
     printf("tmp: %s\n", tmp);
     (*i)++;
+	rest = ft_strchr(&arg[*i], '\"') + 1;
+	rest = ft_strdup(rest);
+    printf("rest: %s\n", rest);
     expanded = expand_env(arg, i, env_head, &increment, status);
     printf("expanded: %s\n", expanded);
     printf("&arg[%d]: %s\n", *i, &arg[*i]);
-    if (arg[(*i)] != '\0')
-        rest = &arg[(*i)];
-    printf("rest: %s\n", rest);
+    // if (arg[(*i)] != '\0')
+        // rest = &arg[(*i)];
     *i += increment - 2;
     joined = ft_strjoin(tmp, expanded);
     free(tmp);
@@ -61,6 +63,7 @@ char *deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
     free(joined);
     free(expanded);
     free(arg);
+	free(rest);
     puts("-------------------------");
     return tmp;
 }
