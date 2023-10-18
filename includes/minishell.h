@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 17:05:26 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 00:47:38 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char			**join(char *s1, char *s2, char **environ);
 char			*env_join(char *name, char *value, char **environ);
 char			*fetch_path(char *file, t_env **map);
 int				handle_command(t_commandset *commands, t_info *info);
-char			expand_env(char *arg, int i, t_env *env_head, int *status);
+char			*expand_env(char *arg, int i, t_env *env_head, int *status);
 int				ft_strcmp(char *s1, char *s2);
 char			*expand_quote(char *command, t_env *env_head, int *status);
 int				skip_space(char **str);

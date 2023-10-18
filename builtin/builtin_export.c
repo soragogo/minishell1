@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:24:13 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 15:24:14 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 01:20:59 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	display_envlist(t_env **env_head)
 	size_t	count;
 
 	tmp = *env_head;
+	if (tmp == NULL)
+		return (0);
 	while (tmp)
 	{
 		if (tmp->name)

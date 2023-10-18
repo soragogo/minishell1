@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:42:39 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 16:37:26 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 01:56:04 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	ft_strcmp(char *s1, char *s2)
 	i = 0;
 	if (!s1 || !s2)
 		return (-1);
-	while (s1[i] && s2[i])
+	while (s1[i] != '\0' && s2[i] != '\0')
 	{
 		if (s1[i] != s2[i])
 			return (s1[i] - s2[i]);
@@ -192,6 +192,8 @@ void	env_unset(t_env **env_head, char *delete_env_key)
 	if (env)
 	{
 		prev->next = env->next;
+		if (env == prev)
+			*env_head = NULL;
 		if (env->is_env == true)
 		{
 			free(env->name);
@@ -222,6 +224,8 @@ void	free_map(t_env **map)
 	t_env	*tmp;
 
 	env = *map;
+	if (!env)
+		return ;
 	while (env && env->next)
 	{
 		tmp = env->next;
