@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 00:47:38 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 13:43:57 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,12 @@ int				ft_system(t_token *tokens, int *status);
 void			ft_signals(void);
 void			waitline(void);
 char			*search_path(char *command);
-
 void			ft_signals(void);
 void			waitline(void);
 t_commandset	*ft_parser(char *buff, int *status, t_env *env_head);
 char			*deal_status(char *arg, int *i, int status, char *ret);
 
 	/* env function */
-t_env			*map_new(void);
 char			*get_env_name(char *ret, char *env);
 char			*get_env_value(char *ret, char *env);
 void			envmap_init(t_env **map);
@@ -89,6 +87,11 @@ void			do_redirect(t_redirect *node);
 void			undo_redirect(t_redirect *node);
 int				heredoc(const char *delimiter, t_info *info);
 void			append(t_redirect *node);
+
+	/* exec */
+void	create_pipe(t_commandset *command, int new_pipe[2]);
+void	handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command);
+int		wait_command(t_commandset *commands, t_info *info);
 
 	/* utils */
 int				is_builtin(t_commandset *command);

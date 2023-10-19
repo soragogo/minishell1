@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:18:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 03:28:58 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 13:45:03 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	ft_chdir(char **commands, t_env **env)
 
 	dir_path = NULL;
 	init_dir_path(&home, &pwd_path, &old_pwd, env);
-	printf("dir_path: %s\n", dir_path);
 	if (commands[1] == NULL)
 		dir_path = ft_strdup(home);
 	else if (ft_strncmp(commands[1], "~", 2) == 0)
