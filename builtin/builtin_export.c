@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:24:13 by mayu              #+#    #+#             */
 /*   Updated: 2023/10/19 02:20:34 by mayu             ###   ########.fr       */
@@ -15,8 +15,6 @@
 int	display_envlist(t_env **env_head)
 {
 	t_env	*tmp;
-	t_env	*tmplist;
-	size_t	count;
 
 	tmp = *env_head;
 	if (tmp == NULL)

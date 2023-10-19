@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
 /*   Updated: 2023/10/19 16:13:14 by mayu             ###   ########.fr       */
@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-#include "tokenizer/token.h"
-#include "tokenizer/parser.h"
+#include "includes/token.h"
+#include "includes/parser.h"
 #include <stdbool.h>
 
 void	loop_commandline(t_info *info,

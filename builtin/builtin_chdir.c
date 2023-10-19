@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_chdir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:18:00 by mayu              #+#    #+#             */
 /*   Updated: 2023/10/19 13:45:03 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../includes/minishell.h"
+#include "../includes/minishell.h"
+#include "../includes/parser.h"
+#include "../includes/token.h"
+
+char	*convert_relative_path(char *dir_path, char *input);
 
 void	init_dir_path(char **home,
 	char **pwd_path, char **old_path, t_env **env)
@@ -47,7 +51,7 @@ int	change_dir(char **commands, char *dir_path, char *old_path, t_env **env)
 	return (0);
 }
 
-int	update_path(char **commands, t_env **env, char *pwd_path, char *dir_path)
+int	update_path(t_env **env, char *pwd_path, char *dir_path)
 {
 	if (set_env(env, ft_strdup("OLDPWD"), ft_strdup(pwd_path), true) == -1
 		|| set_env(env, ft_strdup("PWD"), ft_strdup(dir_path), true) == -1)
@@ -97,7 +101,7 @@ int	ft_chdir(char **commands, t_env **env)
 		return (1);
 	if (change_dir(commands, dir_path, old_pwd, env) == 1)
 		return (1);
-	if (update_path(commands, env, pwd_path, dir_path) == 1)
+	if (update_path(env, pwd_path, dir_path) == 1)
 		return (1);
 	free(dir_path);
 	return (0);

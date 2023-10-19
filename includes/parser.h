@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:34 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/09 03:42:11 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/18 18:44:45 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,8 @@ void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_c
 void test_commandsets(t_commandset *commandsets, int num_of_commands);
 int syntax_error(t_token *tokens);
 void free_commandset(t_commandset *csets);
+t_token *ft_tokenizer(char *command);
+char *skip_spaces(char *str);
+int is_dilimeter(char c);
+void	split_into_tokens(t_token *tokens, char *command, int num_of_tokens);
 #endif

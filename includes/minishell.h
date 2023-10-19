@@ -113,4 +113,10 @@ void			free_environ(char **environ);
 void			error_message(char *command, char *arg, char *msg);
 void			fatal_error(char *msg);
 
+
+t_token *ft_tokenizer(char *command);
+char *skip_spaces(char *str);
+int is_dilimeter(char c);
+void	split_into_tokens(t_token *tokens, char *command, int num_of_tokens);
+char	*convert_relative_path(char *dir_path, char *input);
 #endif

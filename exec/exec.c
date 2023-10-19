@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
 /*   Updated: 2023/10/19 14:03:15 by mayu             ###   ########.fr       */
@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 int	child_prosess(t_commandset *commands, t_info *info)
 {
@@ -83,9 +83,9 @@ int	handle_command(t_commandset *commands, t_info *info)
 {
 	t_commandset	*tmp_head;
 	int				status;
-	int				i;
+	// int				i;
 
-	i = 0;
+	// i = 0;
 	status = 0;
 	tmp_head = commands;
 	if (!(commands->next) && is_builtin(commands) != -1)
@@ -97,7 +97,7 @@ int	handle_command(t_commandset *commands, t_info *info)
 			exec_command(commands, info);
 			commands = commands->next;
 		}
-		status = wait_command(tmp_head, info);
+		status = wait_command(tmp_head);
 	}
 	return (status);
 }
