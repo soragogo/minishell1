@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 17:12:35 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 17:28:48 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ void			append(t_redirect *node);
 
 	/* exec */
 void			create_pipe(t_commandset *command, int new_pipe[2]);
-void			handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command);
+void			handle_pipe(int left_pipe[2],
+					int right_pipe[2], t_commandset *command);
 int				wait_command(t_commandset *commands);
 
 	/* utils */
@@ -104,7 +105,7 @@ char			*expand_env(char *arg, int i, t_env *env_head, int *status);
 int				ft_strcmp(char *s1, char *s2);
 char			*expand_quote(char *command, t_env *env_head, int *status);
 int				skip_space(char **str);
-char			*ft_readline();
+char			*ft_readline(void);
 bool			only_space(char *command);
 void			free_before_closing(t_commandset *command, char *command_buf);
 void			free_environ(char **environ);
@@ -113,10 +114,10 @@ void			free_environ(char **environ);
 void			error_message(char *command, char *arg, char *msg);
 void			fatal_error(char *msg);
 
-
-t_token *ft_tokenizer(char *command);
-char *skip_spaces(char *str);
-int is_dilimeter(char c);
-void	split_into_tokens(t_token *tokens, char *command, int num_of_tokens);
-char	*convert_relative_path(char *dir_path, char *input);
+t_token			*ft_tokenizer(char *command);
+char			*skip_spaces(char *str);
+int				is_dilimeter(char c);
+void			split_into_tokens(t_token *tokens,
+					char *command, int num_of_tokens);
+char			*convert_relative_path(char *dir_path, char *input);
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_env.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/19 17:32:16 by mayu              #+#    #+#             */
+/*   Updated: 2023/10/19 17:33:52 by mayu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int	caliculate_incriment(char *prev)
@@ -11,6 +23,13 @@ int	caliculate_incriment(char *prev)
 	return (prev_len);
 }
 
+void	free_all(char *tmp, char *a_st, char *arg)
+{
+	free(tmp);
+	free(a_st);
+	free(arg);
+}
+
 char	*deal_status(char *arg, int *i, int status, char *ret)
 {
 	char	*a_st;
@@ -18,17 +37,13 @@ char	*deal_status(char *arg, int *i, int status, char *ret)
 	char	*joined;
 	char	*rest;
 
-	// puts("------deal_status-----");
 	if (status == -1)
 		a_st = ft_strdup("[pid]");
 	else
 		a_st = ft_itoa(status);
 	if (ft_strncmp(ret, "status", 6) == 0)
 	{
-		// printf("arg[%d]: %s\n",*i, &arg[*i]);
 		*i += caliculate_incriment(&arg[*i]);
-		// printf("arg[%d]: %s\n",*i, &arg[*i]);
-		// puts("-----");
 		return (a_st);
 	}
 	joined = ft_substr(arg, 0, *i);
@@ -39,10 +54,7 @@ char	*deal_status(char *arg, int *i, int status, char *ret)
 		rest += 2;
 	*i += ft_strlen(a_st);
 	joined = ft_strjoin(tmp, rest);
-	free(tmp);
-	free(arg);
-	free(a_st);
-	// puts("-----------");
+	free_all(tmp, a_st, arg);
 	return (joined);
 }
 
@@ -50,7 +62,6 @@ int	return_end_of_env(char *end)
 {
 	int	i;
 
-	// printf("end: %s\n", end);
 	i = 0;
 	if (ft_isdigit(end[i]))
 	{
@@ -71,7 +82,6 @@ int	return_end_of_env(char *end)
 		while (end[i] && (ft_isalnum(end[i]) || end[i] == '_'))
 			i++;
 	}
-	// printf("i: %d\n", i);
 	return (i);
 }
 
@@ -103,13 +113,10 @@ char	*deal_raw_env(char *arg, int *i, t_env *env_head)
 	char	*joined;
 	char	*expanded;
 
-	// printf("---------deal_raw_env-------");
 	joined = NULL;
 	expanded = NULL;
 	tmp = ft_substr(arg, 0, *i);
-	// printf("tmp: %s\n", tmp);
 	rest = &arg[*i + 1] + return_end_of_env(&arg[*i + 1]);
-	// printf("rest: %s\n", rest);
 	expanded = deal_env(arg, i, env_head);
 	joined = ft_strjoin(tmp, expanded);
 	free(tmp);
@@ -146,16 +153,13 @@ char	*expand_env(char *arg, int i, t_env *env_head, int *status)
 	char	*joined;
 	char	*start;
 
-	// puts("-----expand_env----");
 	joined = NULL;
-	// printf("arg[%d]: %s\n", i, &arg[i]);
 	while (arg[i] != '\"' && arg[i])
 	{
 		if (arg[i] == '$')
 			expanded = handle_dollar(arg, &i, env_head, status);
 		else
 			expanded = extract_not_env(arg, &i, &start);
-		// printf("expanded: %s\n", expanded);
 		tmp = ft_strdup(joined);
 		free(joined);
 		joined = ft_strjoin(tmp, expanded);
@@ -163,6 +167,5 @@ char	*expand_env(char *arg, int i, t_env *env_head, int *status)
 		free(expanded);
 		expanded = NULL;
 	}
-	// puts("----------------");
 	return (joined);
 }

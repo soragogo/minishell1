@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/19 17:38:25 by mayu              #+#    #+#             */
+/*   Updated: 2023/10/19 17:38:52 by mayu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 #include "../includes/token.h"
 #include "../includes/parser.h"
@@ -30,20 +42,13 @@ char	*deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 	char	*tmp;
 	char	*joined;
 
-	// puts("-----deal_double_quote----");
 	rest = NULL;
 	expanded = NULL;
 	while (arg[(*i)] && arg[(*i)] != '\"')
 		(*i)++;
-	// printf("*i: %d\n", *i);
 	tmp = ft_substr(arg, 0, *i);
-	// printf("tmp: %s\n", tmp);
-	// printf("&arg[%d]: %s\n", *i, &arg[*i]);
 	rest = ft_strchr(&arg[*i], '\"') + 1;
-	// printf("rest: %s\n", rest);
 	expanded = expand_env(arg, *i, env_head, status);
-	// printf("expanded: %s\n", expanded);
-	// printf("&arg[%d]: %s\n", *i, &arg[*i]);
 	joined = ft_strjoin(tmp, expanded);
 	free(tmp);
 	tmp = ft_strjoin(joined, rest);
@@ -51,8 +56,6 @@ char	*deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 	free(expanded);
 	*i += ft_strlen(expanded);
 	free(arg);
-	// printf("current *i: %d\n", *i);
-	// puts("-------------------------");
 	return (tmp);
 }
 
@@ -77,8 +80,6 @@ char	*expand_quote(char *arg, t_env *env_head, int *status)
 			arg = deal_status(arg, &i, -1, "arg");
 		else if (arg[i] == '$')
 			arg = deal_raw_env(arg, &i, env_head);
-		// printf("current i: %d\n", i);
-		// printf("arg[%d]: %s\n", i, arg);
 	}
 	return (arg);
 }
