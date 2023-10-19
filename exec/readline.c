@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:24 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 15:33:25 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/18 18:04:22 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 void	free_before_closing(t_commandset *command, char *command_buf)
 {
@@ -31,7 +31,7 @@ bool	only_space(char *command)
 	return (true);
 }
 
-char	*ft_readline(t_env *env_head)
+char	*ft_readline()
 {
 	char	*command_buf;
 

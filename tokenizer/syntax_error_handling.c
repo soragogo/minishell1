@@ -1,5 +1,5 @@
-#include "token.h"
-#include "parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 #include <stdbool.h>
 #include <libc.h>
 
@@ -11,21 +11,19 @@ void write_syntax_error(void)
 
 int redirect_error(t_token *tokens)
 {
-	int i = 0;
-	int type;
-	char *redirect[] = {">", "<", ">>", "<<"};
+	int i;
 
+	i = 0;
 	while (tokens[i].arg)
 	{
 		if (tokens[i].type >= 2 && tokens[i].type <= 5)
 		{
-			if (!tokens[i+1].arg || tokens[i + 1].type >= 2 && tokens[i + 1].type <= 5)
+			if (!tokens[i+1].arg || (tokens[i + 1].type >= 2 && tokens[i + 1].type <= 5))
 			{
 				if (!tokens[i+1].arg)
 					write_syntax_error();
 				else
 				{
-					type = tokens[i + 1].type;
 					write_syntax_error();
 				}
 				return 1;

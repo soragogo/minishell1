@@ -1,7 +1,20 @@
 
-#include "token.h"
-#include "parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 #include <stdbool.h>
+
+char *skip_spaces(char *str)
+{
+    while (*str && (*str == ' ' || *str == '\t'))
+        str++;
+    return str;
+}
+
+int is_dilimeter(char c)
+{
+	return (c == '|' || c == '<' || c == '>') ? 1 : 0;
+}
+
 
 char	*find_end_of_quote(char *command)
 {

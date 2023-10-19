@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 char	*deal_env(char *arg, int *i, t_env *env_head);
 char	*deal_raw_env(char *arg, int *i, t_env *env_head);
@@ -29,10 +29,8 @@ char	*deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 	char	*expanded;
 	char	*tmp;
 	char	*joined;
-	int		increment;
 
 	// puts("-----deal_double_quote----");
-	increment = 0;
 	rest = NULL;
 	expanded = NULL;
 	while (arg[(*i)] && arg[(*i)] != '\"')
@@ -60,7 +58,6 @@ char	*deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 
 char	*expand_quote(char *arg, t_env *env_head, int *status)
 {
-	char	quote_char;
 	int		i;
 
 	i = 0;

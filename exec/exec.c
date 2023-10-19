@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 15:32:11 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/18 18:03:43 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 int	is_builtin(t_commandset *command)
 {
@@ -33,8 +33,8 @@ int	is_builtin(t_commandset *command)
 int	exec_builtin(t_commandset *commands, t_info *info)
 {
 	int	status;
-	int	dupinfd;
-	int	dupoutfd;
+	// int	dupinfd;
+	// int	dupoutfd;
 
 	status = 0;
 	handle_redirection(commands, info);
@@ -134,7 +134,7 @@ int	exec_command(t_commandset *commands, t_info *info)
 	return (status);
 }
 
-int	wait_command(t_commandset *commands, t_info *info)
+int	wait_command(t_commandset *commands)
 {
 	int	status;
 
@@ -155,9 +155,9 @@ int	handle_command(t_commandset *commands, t_info *info)
 {
 	t_commandset	*tmp_head;
 	int				status;
-	int				i;
+	// int				i;
 
-	i = 0;
+	// i = 0;
 	status = 0;
 	tmp_head = commands;
 	if (!(commands->next) && is_builtin(commands) != -1)
@@ -169,7 +169,7 @@ int	handle_command(t_commandset *commands, t_info *info)
 			exec_command(commands, info);
 			commands = commands->next;
 		}
-		status = wait_command(tmp_head, info);
+		status = wait_command(tmp_head);
 	}
 	return (status);
 }
