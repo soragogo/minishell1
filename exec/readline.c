@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:24 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 18:04:22 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/19 17:11:07 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	only_space(char *command)
 	return (true);
 }
 
-char	*ft_readline()
+char	*ft_readline(void)
 {
 	char	*command_buf;
 

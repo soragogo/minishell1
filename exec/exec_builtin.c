@@ -6,13 +6,13 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:27:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 13:27:03 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 17:10:04 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 int	is_builtin(t_commandset *command)
 {
@@ -33,8 +33,6 @@ int	is_builtin(t_commandset *command)
 int	exec_builtin(t_commandset *commands, t_info *info)
 {
 	int	status;
-	int	dupinfd;
-	int	dupoutfd;
 
 	status = 0;
 	handle_redirection(commands, info);

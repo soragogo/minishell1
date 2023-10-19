@@ -6,13 +6,13 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 13:28:28 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 16:53:57 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 void	append(t_redirect *node)
 {

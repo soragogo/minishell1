@@ -6,13 +6,13 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 14:49:11 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 17:10:22 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 int	write_to_pipe(int pipefd[2],
 	char *line, const char *delimiter, t_info *info)
@@ -48,9 +48,7 @@ int	heredoc(const char *delimiter, t_info *info)
 {
 	int		pipefd[2];
 	char	*line;
-	int		flag;
 
-	flag = 0;
 	pipe(pipefd);
 	while (1)
 	{

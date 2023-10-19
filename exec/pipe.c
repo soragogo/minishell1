@@ -6,13 +6,13 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:25:47 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 13:27:38 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 17:12:29 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../tokenizer/token.h"
-#include "../tokenizer/parser.h"
+#include "../includes/token.h"
+#include "../includes/parser.h"
 
 void	create_pipe(t_commandset *command, int new_pipe[2])
 {
@@ -39,7 +39,7 @@ void	handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command)
 	}
 }
 
-int	wait_command(t_commandset *commands, t_info *info)
+int	wait_command(t_commandset *commands)
 {
 	int	status;
 

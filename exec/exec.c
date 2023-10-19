@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 14:03:15 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 17:12:56 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,7 @@ int	handle_command(t_commandset *commands, t_info *info)
 {
 	t_commandset	*tmp_head;
 	int				status;
-	// int				i;
 
-	// i = 0;
 	status = 0;
 	tmp_head = commands;
 	if (!(commands->next) && is_builtin(commands) != -1)

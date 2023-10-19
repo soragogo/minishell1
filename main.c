@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 16:13:14 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 17:12:00 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	loop_commandline(t_info *info,
 	while (1)
 	{
 		ft_signals();
-		command_buf = ft_readline(info->map_head);
+		command_buf = ft_readline();
 		if (!command_buf)
 			break ;
 		if (*command_buf == '\0' || only_space(command_buf))
@@ -44,10 +44,11 @@ void	loop_commandline(t_info *info,
 int	main(void)
 {
 	char			*command_buf;
-	t_token			*tokens;
 	t_info			info;
 	t_commandset	*commands;
 
+	command_buf = NULL;
+	commands = NULL;
 	envmap_init(&info.map_head);
 	info.exit_status_log = 0;
 	while (1)

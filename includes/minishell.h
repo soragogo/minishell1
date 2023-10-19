@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 16:16:16 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 17:12:35 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # include <limits.h>
 # include <stdbool.h>
 # include "../libft/libft.h"
-# include "../tokenizer/token.h"
-# include "../tokenizer/parser.h"
+# include "../includes/token.h"
+# include "../includes/parser.h"
 
 typedef struct s_env	t_env;
 typedef struct s_info	t_info;
@@ -91,7 +91,7 @@ void			append(t_redirect *node);
 	/* exec */
 void			create_pipe(t_commandset *command, int new_pipe[2]);
 void			handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command);
-int				wait_command(t_commandset *commands, t_info *info);
+int				wait_command(t_commandset *commands);
 
 	/* utils */
 int				is_builtin(t_commandset *command);
@@ -104,7 +104,7 @@ char			*expand_env(char *arg, int i, t_env *env_head, int *status);
 int				ft_strcmp(char *s1, char *s2);
 char			*expand_quote(char *command, t_env *env_head, int *status);
 int				skip_space(char **str);
-char			*ft_readline(t_env *env_head);
+char			*ft_readline();
 bool			only_space(char *command);
 void			free_before_closing(t_commandset *command, char *command_buf);
 void			free_environ(char **environ);
