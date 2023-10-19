@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:18:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 18:31:16 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/19 13:45:03 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	create_dirpath(char **commands,
 	}
 	else
 	{
-		if (ft_strncmp(commands[1], "/", 2) == 0)
+		if (commands[1][0] == '/')
 			*dir_path = ft_strdup(commands[1]);
 		else
 			*dir_path = convert_relative_path(ft_strdup(pwd_path), commands[1]);
@@ -91,6 +91,7 @@ int	ft_chdir(char **commands, t_env **env)
 	char	*old_pwd;
 	char	*dir_path;
 
+	dir_path = NULL;
 	init_dir_path(&home, &pwd_path, &old_pwd, env);
 	if (commands[1] == NULL)
 		dir_path = ft_strdup(home);

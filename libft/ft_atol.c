@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 19:44:32 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/19 03:40:07 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 03:39:57 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-int	check_overflow(const char *str, int minus, size_t count)
-{
-	char	*str_;
-
-	str_ = (char *)str;
-	if (count > ft_strlen("9223372036854775807"))
-		return (-1);
-	else if (count == ft_strlen("9223372036854775807"))
-	{
-		if (minus < 0)
-		{
-			if ((ft_strncmp(str_, "9223372036854775808", 19)) > 0)
-				return (0);
-		}
-		else if ((ft_strncmp(str_, "9223372036854775807", 19)) > 0)
-			return (-1);
-	}
-	return (1);
-}
 
 static size_t	num_len(const char *str)
 {
@@ -55,7 +35,7 @@ static long long int	num_maker(const char *str)
 	return (num);
 }
 
-int	ft_atoi(const char *str)
+long	ft_atol(const char *str)
 {
 	int		minus;
 	size_t	count;
@@ -77,7 +57,7 @@ int	ft_atoi(const char *str)
 	count = num_len(str);
 	if (check_overflow(str, minus, count) != 1)
 		return (check_overflow(str, minus, count));
-	return ((int)num_maker(str) * minus);
+	return (num_maker(str) * minus);
 }
 // int main()
 // {
