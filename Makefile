@@ -7,6 +7,7 @@ BUILTIN_DIR		=	builtin
 EXEC_DIR 		=	exec
 UTIL_DIR		=	utils
 OBJ_DIR			=	obj
+ENV_DIR			=	env
 
 LIBFTDIR = libft
 LIBFT = $(LIBFTDIR)/libft.a
@@ -15,8 +16,18 @@ LIBFT_LINK = -L$(LIBFTDIR) -lft
 
 SRCS =	main.c
 
-E_SRCS		=		exec.c \
+ENV_SRCS	=		create_map.c \
+					env_command.c \
+					env_utils.c \
+					env.c
+
+
+E_SRCS		=		exec_builtin.c \
+					exec.c \
+					heredoc.c \
+					pipe.c \
 					readline.c \
+					redir_utils.c \
 					redir.c \
 					search_path.c
 
@@ -38,19 +49,18 @@ B_SRCS		=		builtin_chdir.c \
 					builtin_unset.c \
 					chdir_utils.c
 
-U_SRCS		=	env.c \
-				error.c \
+U_SRCS		=	error.c \
 				expand_env.c \
 				ft_system.c \
 				quote.c \
-				signal_handler.c \
-				utils.c
+				signal_handler.c
 
 OBJS		=	$(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o)) \
 				$(addprefix $(OBJ_DIR)/,$(E_SRCS:.c=.o)) \
 				$(addprefix $(OBJ_DIR)/,$(T_SRCS:.c=.o)) \
 				$(addprefix $(OBJ_DIR)/,$(B_SRCS:.c=.o)) \
-				$(addprefix $(OBJ_DIR)/,$(U_SRCS:.c=.o))
+				$(addprefix $(OBJ_DIR)/,$(U_SRCS:.c=.o)) \
+				$(addprefix $(OBJ_DIR)/,$(ENV_SRCS:.c=.o))
 
 RLDIR = $(shell brew --prefix readline)
 CC		=	cc
@@ -89,6 +99,10 @@ $(OBJ_DIR)/%.o: $(UTIL_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
 
 $(OBJ_DIR)/%.o: $(TOKENIZER_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
+
+$(OBJ_DIR)/%.o: $(ENV_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
 
