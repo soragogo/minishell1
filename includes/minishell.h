@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 13:43:57 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 16:16:16 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ int				heredoc(const char *delimiter, t_info *info);
 void			append(t_redirect *node);
 
 	/* exec */
-void	create_pipe(t_commandset *command, int new_pipe[2]);
-void	handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command);
-int		wait_command(t_commandset *commands, t_info *info);
+void			create_pipe(t_commandset *command, int new_pipe[2]);
+void			handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command);
+int				wait_command(t_commandset *commands, t_info *info);
 
 	/* utils */
 int				is_builtin(t_commandset *command);
