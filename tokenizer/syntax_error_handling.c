@@ -19,16 +19,7 @@ int redirect_error(t_token *tokens)
 		if (tokens[i].type >= 2 && tokens[i].type <= 5)
 		{
 			if (!tokens[i+1].arg || (tokens[i + 1].type >= 2 && tokens[i + 1].type <= 5))
-			{
-				if (!tokens[i+1].arg)
-					write_syntax_error();
-				else
-				{
-					write_syntax_error();
-				}
-				return 1;
-			}
-
+				return (1);
 		}
 		i++;
 	}
@@ -55,8 +46,7 @@ int quote_error(t_token *tokens)
 				if (tokens[i].arg[j] != quote)
 				{
 					quote = tokens[i].arg[j];
-					write_syntax_error();
-					return 1;
+					return (1);
 				}
 			}
 			j++;
@@ -76,10 +66,7 @@ int pipe_error(t_token *tokens)
 		if (tokens[i].type == PIPE)
 		{
 			if (flag == 0)
-			{
-				write_syntax_error();
 				return (1);
-			}
 			flag = 0;
 		}
 		else if (tokens[i].type != PIPE)
@@ -87,21 +74,58 @@ int pipe_error(t_token *tokens)
 		i++;
 	}
 	if (flag == 0)
-	{
-		write_syntax_error();
 		return (1);
-	}
 	return 0;
+}
+
+int	bracket_error(t_token *tokens, char left_bracket, char right_bracket)
+{
+	int i;
+	int j;
+	bool inside_bracket;
+
+	i = 0;
+	inside_bracket = false;
+	while (tokens[i].arg)
+	{
+		j = 0;
+		while (tokens[i].arg[j])
+		{
+			if (tokens[i].arg[j] == left_bracket)
+			{
+				if (inside_bracket)
+					return (1);
+				inside_bracket = !inside_bracket;
+			}
+			else if (tokens[i].arg[j] == right_bracket)
+			{
+				if (!inside_bracket)
+					return (1);
+				inside_bracket = !inside_bracket;
+			}
+			j++;
+		}
+		i ++;
+	}
+	if (inside_bracket)
+		return (1);
+	return (0);
 }
 
 
 int syntax_error(t_token *tokens)
 {
 	if (pipe_error(tokens))
-		return 1;
-	if (quote_error(tokens))
-		return 1;
-	if (redirect_error(tokens))
-		return 1;
-	return 0;
+		write_syntax_error();
+	else if (quote_error(tokens))
+		write_syntax_error();
+	else if (redirect_error(tokens))
+		write_syntax_error();
+	else if (bracket_error(tokens, '{', '}'))
+		write_syntax_error();
+	else if (bracket_error(tokens, '(', ')'))
+		write_syntax_error();
+	else
+		return (0);
+	return (1);
 }
