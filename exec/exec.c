@@ -6,82 +6,13 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 15:32:11 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 13:26:48 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../tokenizer/token.h"
 #include "../tokenizer/parser.h"
-
-int	is_builtin(t_commandset *command)
-{
-	static char	*builtin[]
-		= {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
-	int			i;
-
-	i = 0;
-	while (builtin[i] != NULL)
-	{
-		if (ft_strcmp(*command[0].command, builtin[i]) == 0)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-int	exec_builtin(t_commandset *commands, t_info *info)
-{
-	int	status;
-	int	dupinfd;
-	int	dupoutfd;
-
-	status = 0;
-	handle_redirection(commands, info);
-	if (ft_strncmp(*commands[0].command, "echo", 4) == 0)
-		status = ft_echo(commands->command, info->exit_status_log);
-	else if (ft_strncmp(*commands[0].command, "cd", 3) == 0)
-		status = ft_chdir(commands->command, &(info->map_head));
-	else if (ft_strncmp(*commands[0].command, "env", 4) == 0)
-		status = ft_env(&(info->map_head));
-	else if (ft_strncmp(*commands[0].command, "pwd", 4) == 0)
-		status = ft_pwd();
-	else if (ft_strncmp(*commands[0].command, "export", 7) == 0)
-		status = ft_export(&info->map_head, commands->command);
-	else if (ft_strncmp(*commands[0].command, "unset", 6) == 0)
-		status = ft_unset(&info->map_head, commands->command);
-	else if (ft_strncmp(*commands[0].command, "exit", 5) == 0)
-		status = ft_exit(commands->command, info);
-	else
-		return (-1);
-	undo_redirect(commands->node);
-	return (status);
-}
-
-void	handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command)
-{
-	if (command->prev)
-	{
-		close(left_pipe[1]);
-		dup2(left_pipe[0], STDIN_FILENO);
-		close(left_pipe[0]);
-	}
-	if (command->next)
-	{
-		close(right_pipe[0]);
-		dup2(right_pipe[1], STDOUT_FILENO);
-		close(right_pipe[1]);
-	}
-}
-
-void	create_pipe(t_commandset *command, int new_pipe[2])
-{
-	if (command->next)
-	{
-		if (pipe(new_pipe) < 0)
-			fatal_error("pipe error");
-	}
-}
 
 int	exec_command(t_commandset *commands, t_info *info)
 {
@@ -131,23 +62,6 @@ int	exec_command(t_commandset *commands, t_info *info)
 	}
 	commands->pid = pid;
 	free_environ(my_environ);
-	return (status);
-}
-
-int	wait_command(t_commandset *commands, t_info *info)
-{
-	int	status;
-
-	while (commands)
-	{
-		if (waitpid(commands->pid, &status, 0) < 0)
-			fatal_error("waitpid error");
-		if (WIFEXITED(status))
-		{
-			status = WEXITSTATUS(status);
-		}
-		commands = commands->next;
-	}
 	return (status);
 }
 

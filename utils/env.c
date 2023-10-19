@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:42:39 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 01:56:04 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 13:22:25 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ void	env_unset(t_env **env_head, char *delete_env_key)
 	{
 		prev->next = env->next;
 		if (env == prev)
-			*env_head = NULL;
+			*env_head = env->next;
 		if (env->is_env == true)
 		{
 			free(env->name);
