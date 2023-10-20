@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 21:08:51 by emukamada         #+#    #+#             */
-/*   Updated: 2023/10/20 00:03:12 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/20 15:15:56 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,13 @@ t_commandset	*ft_parser(char *buff, int *status, t_env *env_head)
 	t_token			*tokens;
 
 	tokens = ft_tokenizer(buff);
+
+
+	// for (int i = 0; tokens[i].arg; i++)
+	// {
+	// 	printf("tokens[%d]: %5s | ", i, tokens[i].arg);
+	// 	printf("type: %d\n", tokens[i].type);
+	// }
 	categorize_tokens(tokens);
 	if (syntax_error(tokens))
 	{

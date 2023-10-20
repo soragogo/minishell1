@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/19 23:20:37 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/20 15:26:20 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	assign_command_type(t_token *token, t_token *prev_token, int *command_flag)
 	if (token->arg[0] == '-' && *command_flag == 1)
 		return (COMMAND_OPTION);
 	else if (prev_token == NULL
-		|| (*command_flag == 0 && prev_token->type < REDIRECT_OUT))
+		|| (*command_flag == 0
+		&& (prev_token->type < REDIRECT_OUT || prev_token->type > HERE_DOCUMENT)))
 	{
 		*command_flag = 1;
 		return (COMMAND);
@@ -62,11 +63,9 @@ void	categorize_tokens(t_token *tokens)
 		if (type == -1)
 		{
 			if (i == 0)
-				type = assign_command_type(&tokens[i],
-						NULL, &command_flag);
-			if (i == 0)
-				type = assign_command_type(&tokens[i],
-						&tokens[i - 1], &command_flag);
+				type = assign_command_type(&tokens[i], NULL, &command_flag);
+			else
+				type = assign_command_type(&tokens[i], &tokens[i - 1], &command_flag);
 		}
 		tokens[i].type = type;
 		i++;
