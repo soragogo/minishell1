@@ -1,24 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/19 21:08:43 by emukamada         #+#    #+#             */
+/*   Updated: 2023/10/20 00:03:35 by emukamada        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/token.h"
 #include "../includes/parser.h"
+#include "../includes/minishell.h"
 #include <stdbool.h>
-
-char *skip_spaces(char *str)
-{
-    while (*str && (*str == ' ' || *str == '\t'))
-        str++;
-    return str;
-}
-
-int is_dilimeter(char c)
-{
-	return (c == '|' || c == '<' || c == '>') ? 1 : 0;
-}
-
+#include <libc.h>
 
 char	*find_end_of_quote(char *command)
 {
-	char quote_char;
+	char	quote_char;
 
 	quote_char = *command;
 	command++;
@@ -33,11 +33,13 @@ char	*find_end_of_arg(char *command)
 {
 	if (is_dilimeter(*command))
 	{
-		if ((*command == '<' && *(command + 1) == '<') || (*command == '>' && *(command + 1) == '>'))
+		if ((*command == '<' && *(command + 1) == '<')
+			|| (*command == '>' && *(command + 1) == '>'))
 			command++;
 		return (command);
 	}
-	while (*command && !is_dilimeter(*command) && *command != ' ' && *command != '\t')
+	while (*command && !is_dilimeter(*command)
+		&& *command != ' ' && *command != '\t')
 	{
 		if (*command == '\'' || *command == '\"')
 			command = find_end_of_quote(command);
@@ -49,7 +51,7 @@ char	*find_end_of_arg(char *command)
 
 int	count_tokens(char *command)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (*command)
@@ -71,13 +73,15 @@ void	split_into_tokens(t_token *tokens, char *command, int num_of_tokens)
 	int		i;
 
 	start = skip_spaces(command);
-	for (i = 0; i < num_of_tokens; i++)
+	i = 0;
+	while (i < num_of_tokens)
 	{
 		end = find_end_of_arg(start);
 		tokens[i].arg = ft_calloc(end - start + 2, sizeof(char));
 		tokens[i].is_freed = 0;
 		strlcpy(tokens[i].arg, start, end - start + 2);
 		start = skip_spaces(end + 1);
+		i++;
 	}
 	tokens[i].arg = NULL;
 }
