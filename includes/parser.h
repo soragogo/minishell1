@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:34 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/20 00:16:01 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/21 13:32:06 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_list_token
 {
 	char				*arg;
 	t_type				type;
-	int					is_freed;
 	struct s_list_token	*next_token;
 }	t_token;
 

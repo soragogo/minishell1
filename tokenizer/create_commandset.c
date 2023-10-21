@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/19 23:27:37 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/21 10:06:50 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ t_commandset	*create_command_pipeline(int num_of_commands)
 	int				i;
 
 	commandsets = ft_calloc(num_of_commands, sizeof(t_commandset));
+	if (!commandsets)
+		return (NULL);
 	i = 1;
 	commandsets[0].prev = NULL;
 	if (num_of_commands > 1)
