@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:18:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/24 16:07:45 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/24 17:08:58 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,17 @@ void	init_dir_path(char **home,
 	char **pwd_path, char **old_path, t_env **env)
 {
 	*home = map_get(env, "HOME");
-	if (!home)
-	{
-		error_message("cd", NULL, "HOME not set");
-		return ;
-	}
-	*pwd_path = map_get(env, "PWD");
-	if (!pwd_path)
-	{
-		error_message("cd", NULL, "PWD not set");
-		return ;
-	}
+	*pwd_path = getcwd(NULL, 0);
 	*old_path = map_get(env, "OLDPWD");
-	if (!old_path)
-	{
-		error_message("cd", NULL, "OLDPWD not set");
-		return ;
-	}
 }
 
-int	change_dir(char **commands, char *dir_path)
+int	change_dir(char **commands, char *dir_path, char *pwd_path)
 {
 	if (chdir(dir_path) != 0)
 	{
 		error_message("cd", commands[1], strerror(errno));
 		free(dir_path);
+		free(pwd_path);
 		return (1);
 	}
 	return (0);
@@ -55,6 +41,7 @@ int	update_path(t_env **env, char *pwd_path, char *dir_path)
 	if (set_env(env, ft_strdup("OLDPWD"), ft_strdup(pwd_path), true) == -1
 		|| set_env(env, ft_strdup("PWD"), ft_strdup(dir_path), true) == -1)
 	{
+		free(pwd_path);
 		free(dir_path);
 		return (1);
 	}
@@ -67,9 +54,10 @@ int	create_dirpath(char **commands,
 	if (ft_strncmp(commands[1], "-", 2) == 0)
 	{
 		*dir_path = ft_strdup(old_pwd);
-		if (!dir_path)
+		if (*dir_path == NULL)
 		{
 			error_message("cd", NULL, "OLDPWD not set");
+			free(pwd_path);
 			return (1);
 		}
 	}
@@ -95,13 +83,22 @@ int	ft_chdir(char **commands, t_env **env)
 	if (commands[1] == NULL)
 		dir_path = ft_strdup(home);
 	else if (ft_strncmp(commands[1], "~", 2) == 0)
+	{
+		if (!home)
+		{
+			error_message("cd", NULL, "HOME not set");
+			free(pwd_path);
+			return (1);
+		}
 		dir_path = ft_strjoin(home, commands[1] + 1);
+	}
 	else if (create_dirpath(commands, &dir_path, old_pwd, pwd_path) == 1)
 		return (1);
-	if (change_dir(commands, dir_path) == 1)
+	if (change_dir(commands, dir_path, pwd_path) == 1)
 		return (1);
 	if (update_path(env, pwd_path, dir_path) == 1)
 		return (1);
+	free(pwd_path);
 	free(dir_path);
 	return (0);
 }
