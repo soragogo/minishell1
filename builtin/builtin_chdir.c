@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_chdir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:18:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 13:45:03 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/24 16:07:45 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,10 @@ void	init_dir_path(char **home,
 	}
 }
 
-int	change_dir(char **commands, char *dir_path, char *old_path, t_env **env)
+int	change_dir(char **commands, char *dir_path)
 {
 	if (chdir(dir_path) != 0)
 	{
-		set_env(env, ft_strdup("PWD"), ft_strdup(old_path), true);
 		error_message("cd", commands[1], strerror(errno));
 		free(dir_path);
 		return (1);
@@ -99,7 +98,7 @@ int	ft_chdir(char **commands, t_env **env)
 		dir_path = ft_strjoin(home, commands[1] + 1);
 	else if (create_dirpath(commands, &dir_path, old_pwd, pwd_path) == 1)
 		return (1);
-	if (change_dir(commands, dir_path, old_pwd, env) == 1)
+	if (change_dir(commands, dir_path) == 1)
 		return (1);
 	if (update_path(env, pwd_path, dir_path) == 1)
 		return (1);

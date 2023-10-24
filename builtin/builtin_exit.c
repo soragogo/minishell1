@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:23:11 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 13:18:56 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/24 16:14:09 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	is_num(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '-' && str[i + 1] != '\0')
+		i++;
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]) != 1)
