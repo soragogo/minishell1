@@ -21,7 +21,6 @@ ENV_SRCS	=		create_map.c \
 					env_utils.c \
 					env.c
 
-
 E_SRCS		=		exec_builtin.c \
 					exec.c \
 					heredoc.c \
@@ -31,14 +30,16 @@ E_SRCS		=		exec_builtin.c \
 					redir.c \
 					search_path.c
 
-T_SRCS		=		ft_parser.c \
+T_SRCS		=		bracket_error.c \
+					categorize_tokens.c \
+					create_commandset.c \
+					free_commandset.c \
+					import_command.c \
+					parser.c \
+					redirection.c \
+					syntax_error_handling.c \
 					token_utils.c \
-					ft_redirection.c \
-					ft_tests.c \
-					ft_tokenizer.c \
-					getpath.c \
-					syntax_error_handling.c
-
+					tokenizer.c
 
 B_SRCS		=		builtin_chdir.c \
 					builtin_echo.c \
@@ -51,7 +52,7 @@ B_SRCS		=		builtin_chdir.c \
 
 U_SRCS		=	error.c \
 				expand_env.c \
-				ft_system.c \
+				expand_env_utils.c \
 				quote.c \
 				signal_handler.c
 

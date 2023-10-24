@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/20 17:02:58 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/24 15:22:11 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	child_prosess(t_commandset *commands, t_info *info)
 	else
 	{
 		handle_redirection(commands, info);
+		execve(*commands->command, commands->command, my_environ);
 		path = fetch_path(*commands->command, &(info->map_head));
 		status = execve(path, commands->command, my_environ);
 		free(path);

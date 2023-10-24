@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:34 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/19 17:55:08 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/20 00:16:01 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,28 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
-# include "token.h"
 # include "../libft/libft.h"
+
+typedef enum type
+{
+	UNCATEGORIZED,
+	PIPE,
+	REDIRECT_OUT,
+	REDIRECT_IN,
+	APPEND_OUT,
+	HERE_DOCUMENT,
+	COMMAND,
+	COMMAND_OPTION,
+	FILE_NAME
+}	t_type;
+
+typedef struct s_list_token
+{
+	char				*arg;
+	t_type				type;
+	int					is_freed;
+	struct s_list_token	*next_token;
+}	t_token;
 
 typedef struct s_node
 {
@@ -46,13 +66,25 @@ typedef struct s_commandset
 	struct s_commandset	*prev;
 }	t_commandset;
 
-void	import_redirection(t_token *tokens,
-			t_commandset *commandsets, int num_of_commands);
-void	test_commandsets(t_commandset *commandsets, int num_of_commands);
-int		syntax_error(t_token *tokens);
-void	free_commandset(t_commandset *csets);
-t_token	*ft_tokenizer(char *command);
-char	*skip_spaces(char *str);
-int		is_dilimeter(char c);
-void	split_into_tokens(t_token *tokens, char *command, int num_of_tokens);
+t_commandset	*create_command_pipeline(int num_of_commands);
+void			free_tokens(t_token *tokens);
+void			categorize_tokens(t_token *tokens);
+int				count_commandset(t_token *tokens);
+int				count_command(t_token *tokens, int current_cmd);
+void			import_command(t_token *tokens,
+					t_commandset *commandsets, int num_of_commands);
+void			import_redirection(t_token *tokens,
+					t_commandset *commandsets, int num_of_commands);
+void			test_commandsets(t_commandset *commandsets,
+					int num_of_commands);
+int				syntax_error(t_token *tokens);
+void			free_commandset(t_commandset *csets);
+t_token			*ft_tokenizer(char *command);
+char			*skip_spaces(char *str);
+int				is_dilimeter(char c);
+void			split_into_tokens(t_token *tokens,
+					char *command, int num_of_tokens);
+int				return_end_of_env(char *end);
+int				bracket_error(t_token *tokens, char l_br, char r_br);
+
 #endif

@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_redirection.c                                   :+:      :+:    :+:   */
+/*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:37 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/19 21:34:19 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/24 15:24:38 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "../includes/parser.h"
-#include "../includes/minishell.h"
 #include <stdbool.h>
 #include <libc.h>
 
@@ -78,9 +77,8 @@ void import_redirection(t_token *tokens, t_commandset *commandsets, int num_of_c
 			continue ;
 		}
 		commandsets[i].node = ft_calloc(count, sizeof(t_redirect));
-		if (!commandsets[i].node)
-			fatal_error("malloc error");
 		connect_redirections(commandsets[i].node, count);
+
 		while (tokens[j].arg && tokens[j].type != PIPE)
 		{
 			if (tokens[j].type >= REDIRECT_OUT && tokens[j].type <= HERE_DOCUMENT && tokens[j + 1].type == FILE_NAME)

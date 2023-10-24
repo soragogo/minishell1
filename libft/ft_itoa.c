@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 15:25:11 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/16 12:22:08 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/19 21:35:25 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	ft_itoa_recursive(char *ascii, int n)
 
 	n_ = (unsigned long)n;
 	if (n_ < 10)
-	*ascii++ = n_ + '0';
+		*ascii++ = n_ + '0';
 	if (n_ > 9)
 	{
 		i = 1;
 		while (i < n_)
 			i *= 10;
-			i /= 10;
+		i /= 10;
 		while (i != 0)
 		{
 			*ascii++ = n_ / i + '0';

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 09:55:13 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/15 15:21:50 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 21:36:37 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,3 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (t);
 }
-
-/* int main()
-{
-	//char copy[10] = {"he1234"};
-	//char name[10] = {"he12345"};
-	// printf("%d", strncmp(NULL, "hello", 0));
-	// printf("%d", strncmp(NULL, NULL, 0));
-	// return 0;
-	char *str = "libft-test-tokyo";
-	char *cmp = "libft-test-tokyo";
-	int	len = strlen(str);
-	for (int i = 0; i <= len; i++)
-	{
-		cmp = strndup(str, i);
-		printf("%i : %d : %d\n", i, ft_strncmp(cmp, str, i), strncmp(cmp, str, i));
-		printf("%i : %d : %d\n", i, ft_strncmp(cmp, str, len), strncmp(cmp, str, len));
-		free(cmp);
-	}
-}
- */

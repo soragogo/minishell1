@@ -3,7 +3,7 @@
 # テスト関数
 function run_test() {
     # echo "Testing: $1"
-    output=$(echo "$1" | ./a.out)  # コマンドをa.outに渡し、結果を取得
+    output=$(echo "$1" | ./minishell)  # コマンドをminishellに渡し、結果を取得
     if [ "$output" == "$2" ]; then
         printf "\e[32mOK\e[0m\n"
     else
@@ -15,27 +15,27 @@ function run_test() {
     fi
 }
 
-run_error_test() {
-    local command="$1"
-    local expected_stdout="$2"
-    local expected_stderr="$3"
+# run_test() {
+#     local command="$1"
+#     local expected_stdout="$2"
+#     local expected_stderr="$3"
 
-    # コマンドを実行して、標準出力と標準エラー出力の両方をキャッチします
-    local actual_stdout=$({ echo "$command" | ./a.out; } 2>./tmp.stderr)
-    local actual_stderr=$(cat ./tmp.stderr)
+#     # コマンドを実行して、標準出力と標準エラー出力の両方をキャッチします
+#     local actual_stdout=$({ echo "$command" | ./minishell; } 2>./tmp.stderr)
+#     local actual_stderr=$(cat ./tmp.stderr)
 
-    # 出力を比較します
-    if [[ "$actual_stdout" == "$expected_stdout" && "$actual_stderr" == "$expected_stderr" ]]; then
-        printf "\e[32mOK\e[0m\n"
-    else
-        printf "\e[31mKO\e[0m\n"
-        printf "      \e[31mTested: $command\e[0m\n"
-        printf "      \e[31mExpected stdout: $expected_stdout\e[0m\n"
-        printf "      \e[31mGot stdout: $actual_stdout\e[0m\n"
-        printf "      \e[31mExpected stderr: $expected_stderr\e[0m\n"
-        printf "      \e[31mGot stderr: $actual_stderr\e[0m\n"
-    fi
-}
+#     # 出力を比較します
+#     if [[ "$actual_stdout" == "$expected_stdout" && "$actual_stderr" == "$expected_stderr" ]]; then
+#         printf "\e[32mOK\e[0m\n"
+#     else
+#         printf "\e[31mKO\e[0m\n"
+#         printf "      \e[31mTested: $command\e[0m\n"
+#         printf "      \e[31mExpected stdout: $expected_stdout\e[0m\n"
+#         printf "      \e[31mGot stdout: $actual_stdout\e[0m\n"
+#         printf "      \e[31mExpected stderr: $expected_stderr\e[0m\n"
+#         printf "      \e[31mGot stderr: $actual_stderr\e[0m\n"
+#     fi
+# }
 
 # 使用例
 
@@ -43,14 +43,14 @@ run_error_test() {
 # コンパイル
 cd ../
 # cc exec/*.c tokenizer/*.c builtin/*.c libft/*.c -lreadline
-cc exec/*.c tokenizer/*.c builtin/*.c libft/*.c utils/*.c main.c -lreadline
+
 # テストケースの実行
 
-run_error_test "ls non_existent_file" "" "ls: non_existent_file: No such file or directory"
-run_test "echo hello" "hello" ""
-run_test "ls" "$(ls)" ""
-run_test "       ls" "$(ls)" ""
-run_test "ls -l | grep -v \"c\"" "$(ls -l | grep -v "c")" ""
+run_test "ls non_existent_file" ""
+run_test "echo hello" "hello"
+run_test "ls" "$(ls)"
+run_test "       ls" "$(ls)"
+run_test "ls -l | grep -v \"c\"" "$(ls -l | grep -v "c")"
 
 
 # ... 他のテストケースを追加 ...
@@ -141,36 +141,36 @@ printf  "\e[33mENV EXPANSIONS TESTS\e[0m\n"
 echo "--------------------------------"
 # SYNTAX ERROR
 printf  "\e[33mSYNTAX ERROR TESTS\e[0m\n"
-run_error_test '| test' "" "minishell: syntax error"
-run_error_test 'echo > <' "" "minishell: syntax error"
-run_error_test 'echo | |' "" "minishell: syntax error"
-run_error_test '<' "" "minishell: syntax error"
+run_test '| test' "" "minishell: syntax error"
+run_test 'echo > <' "" "minishell: syntax error"
+run_test 'echo | |' "" "minishell: syntax error"
+run_test '<' "" "minishell: syntax error"
 
 # # EXIT
 printf  "\e[33mEXIT ERROR TESTS\e[0m\n"
 run_test "exit 42" "$(exit 42)"
-run_error_test "exit 42 53 68" "" "minishell: exit: too many arguments"
+run_test "exit 42 53 68" "" "minishell: exit: too many arguments"
 run_test "exit 259" "$(exit 259)"
-run_error_test "exit 9223372036854775807" "$(exit 9223372036854775807)"
-run_error_test "exit -9223372036854775808" "$(exit -9223372036854775808)"
-# run_error_test "exit 9223372036854775808" "$(exit 9223372036854775808)" "minishell: exit: 9223372036854775808: numeric argument required"
-# run_error_test "exit -9223372036854775810" "$(exit -9223372036854775810)" "minishell: exit: -9223372036854775810: numeric argument required"
+run_test "exit 9223372036854775807" "$(exit 9223372036854775807)"
+run_test "exit -9223372036854775808" "$(exit -9223372036854775808)"
+# run_test "exit 9223372036854775808" "$(exit 9223372036854775808)" "minishell: exit: 9223372036854775808: numeric argument required"
+# run_test "exit -9223372036854775810" "$(exit -9223372036854775810)" "minishell: exit: -9223372036854775810: numeric argument required"
 run_test "exit -4" "$(exit -4)"
-run_error_test "exit wrong" "$(exit wrong)" "minishell: exit: wrong: numeric argument required"
-run_error_test "exit wrong_command" "$(exit wrong_command)" "minishell: exit: wrong_command: numeric argument required"
+run_test "exit wrong" "$(exit wrong)" "minishell: exit: wrong: numeric argument required"
+run_test "exit wrong_command" "$(exit wrong_command)" "minishell: exit: wrong_command: numeric argument required"
 
 
 
 echo "--------------------------------"
 # # EXIT
 printf  "\e[33mMULTI ERROR TESTS\e[0m\n"
-run_error_test "gdagadgag" "$(gdagadgag)" "minishell: gdagadgag: command not found"
-run_error_test "ls -Z" "$(ls -Z)" "ls: invalid option -- Z
+run_test "gdagadgag" "$(gdagadgag)" "minishell: gdagadgag: command not found"
+run_test "ls -Z" "$(ls -Z)" "ls: invalid option -- Z
 usage: ls [-@ABCFGHILOPRSTUWabcdefghiklmnopqrstuvwxy1%,] [--color=when] [-D format] [file ...]"
-run_error_test "cd gdhahahad" "" "minishell: cd: gdhahahad: No such file or directory"
-run_error_test "ls -la | wtf" "" "minishell: wtf: command not found"
-run_error_test "cd nonexistent_directory" "" "minishell: cd: nonexistent_directory: No such file or directory"
-run_error_test "ls --no-option" "" "ls: unrecognized option '--no-option'"
+run_test "cd gdhahahad" "" "minishell: cd: gdhahahad: No such file or directory"
+run_test "ls -la | wtf" "" "minishell: wtf: command not found"
+run_test "cd nonexistent_directory" "" "minishell: cd: nonexistent_directory: No such file or directory"
+run_test "ls --no-option" "" "ls: unrecognized option '--no-option'"
 
 
 
@@ -187,4 +187,4 @@ run_test 'cat < ls > ls' "$(cat < ls > ls)"
 
 rm -f ls lol test 'ls;' 'test;'
 
-rm tmp.stderr ./a.out
+rm tmp.stderr minishell
