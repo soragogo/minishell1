@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:45:48 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 13:33:27 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 21:05:41 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ char	**create_environ(t_env **env_head)
 	tmp = *env_head;
 	env_num = count_env(*env_head);
 	environ = (char **)malloc(sizeof(char *) * env_num + 1);
+	if (!environ)
+		fatal_error("malloc error");
 	while (tmp)
 	{
 		env_join(tmp->name, tmp->value, &environ[i]);

@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:45:48 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 13:39:30 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 21:17:22 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_env	*item_new(t_env *new_env, char *name, char *value)
 {
 	new_env = ft_calloc(1, sizeof(*new_env));
 	if (!new_env)
-		return (NULL);
+		fatal_error("malloc error");
 	new_env->name = name;
 	new_env->value = value;
 	new_env->next = NULL;

@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 18:30:04 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/21 15:14:29 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	loop_commandline(t_info *info,
 	}
 	commands = ft_parser(command_buf,
 			&(info->exit_status_log), info->map_head);
+	// test_commandsets(commands, 2);
 	if (commands == NULL)
 	{
 		free(command_buf);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/18 18:06:12 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/19 21:10:49 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ t_commandset	*create_command_pipeline(int num_of_commands)
 	int i;
 
 	commandsets = ft_calloc(num_of_commands, sizeof(t_commandset));
+	if (!commandsets)
+		fatal_error("malloc error");
 	i = 1;
 	commandsets[0].prev = NULL;
 	if (num_of_commands > 1)
@@ -131,7 +133,8 @@ void import_command(t_token *tokens, t_commandset *commandsets, int num_of_comma
 	{
 		count = count_command(tokens, i);
 		commandsets[i].command = ft_calloc(count + 1, sizeof(char *));
-
+		if (!commandsets[i].command)
+			fatal_error("malloc error");
 		while (tokens[j].arg != NULL && tokens[j].type != PIPE)
 		{
 			if (tokens[j].type == COMMAND || tokens[j].type == COMMAND_OPTION || tokens[j].type == UNCATEGORIZED)

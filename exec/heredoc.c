@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 17:10:22 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/19 22:07:43 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,28 @@ int	write_to_pipe(int pipefd[2],
 	return (0);
 }
 
+void	pipe_handler(int signum)
+{
+	if (signum == SIGQUIT)
+	{
+		rl_redisplay();
+		exit(0);
+	}
+	if (signum == SIGINT)
+	{
+		ft_putchar_fd('\n', STDERR_FILENO);
+		rl_redisplay();
+		ft_putchar_fd('\n', STDERR_FILENO);
+		exit(0);
+	}
+}
+
+void	handle_pipe_signals(void)
+{
+	signal(SIGQUIT, pipe_handler);
+	signal(SIGINT, pipe_handler);
+}
+
 int	heredoc(const char *delimiter, t_info *info)
 {
 	int		pipefd[2];
@@ -52,6 +74,7 @@ int	heredoc(const char *delimiter, t_info *info)
 	pipe(pipefd);
 	while (1)
 	{
+		handle_pipe_signals();
 		line = readline("> ");
 		if (line == NULL)
 			break ;

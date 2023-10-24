@@ -1,4 +1,5 @@
 
+#include "../includes/minishell.h"
 #include "../includes/token.h"
 #include "../includes/parser.h"
 #include <stdbool.h>
@@ -75,6 +76,8 @@ void	split_into_tokens(t_token *tokens, char *command, int num_of_tokens)
 	{
 		end = find_end_of_arg(start);
 		tokens[i].arg = ft_calloc(end - start + 2, sizeof(char));
+		if (!tokens[i].arg)
+			fatal_error("calloc error");
 		tokens[i].is_freed = 0;
 		strlcpy(tokens[i].arg, start, end - start + 2);
 		start = skip_spaces(end + 1);
