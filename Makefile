@@ -73,10 +73,10 @@ $(NAME): $(OBJS)
 	@echo "set echo-control-characters off" > ~/.inputrc
 	@mkdir -p $(OBJ_DIR)
 	@make -C $(LIBFTDIR)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_LINK) -lreadline -L$(RLDIR)/lib -Iincludes
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_LINK) -lreadline -L$(RLDIR)/lib -Iincludes -I $(RLDIR)/include
 
 obj/%.o: src/%.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/include $(LIBFT_INCLUDE)
 
 
 $(OBJ_DIR)/%.o: $(TOKENIZER_DIR)/%.c
@@ -84,28 +84,28 @@ $(OBJ_DIR)/%.o: $(TOKENIZER_DIR)/%.c
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/include $(LIBFT_INCLUDE)
 
 
 $(OBJ_DIR)/%.o: $(EXEC_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/include $(LIBFT_INCLUDE)
 
 $(OBJ_DIR)/%.o: $(BUILTIN_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/include $(LIBFT_INCLUDE)
 
 $(OBJ_DIR)/%.o: $(UTIL_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/include $(LIBFT_INCLUDE)
 
 $(OBJ_DIR)/%.o: $(TOKENIZER_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/include $(LIBFT_INCLUDE)
 
 $(OBJ_DIR)/%.o: $(ENV_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/include $(LIBFT_INCLUDE)
 
 $(LIBFT):
 	make -C $(LIBFTDIR)

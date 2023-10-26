@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/21 15:14:29 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 20:52:47 by ekamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ int	loop_commandline(t_info *info,
 	}
 	commands = ft_parser(command_buf,
 			&(info->exit_status_log), info->map_head);
-	// test_commandsets(commands, 2);
 	if (commands == NULL)
 	{
 		free(command_buf);
 		return (1);
 	}
+	handle_pipe_signals();
 	info->exit_status_log = handle_command(commands, info);
 	free_before_closing(commands, command_buf);
 	return (1);
@@ -52,6 +52,7 @@ int	main(void)
 	info.exit_status_log = 0;
 	while (1)
 	{
+		g_sigstatus = 0;
 		if (loop_commandline(&info, command_buf, commands) == 0)
 			break ;
 	}

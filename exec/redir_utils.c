@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 16:53:57 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 20:04:44 by ekamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ void	here_document(t_redirect *node, t_info *info)
 {
 	node->oldfd = STDIN_FILENO;
 	node->newfd = heredoc(node->filename, info);
+	ft_signals();
 	do_redirect(node);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 23:29:33 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/26 21:13:35 by ekamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 
 typedef struct s_env	t_env;
 typedef struct s_info	t_info;
+
+volatile sig_atomic_t	g_sigstatus;
 
 typedef struct s_env
 {
@@ -109,6 +111,7 @@ char			*ft_readline(void);
 bool			only_space(char *command);
 void			free_before_closing(t_commandset *command, char *command_buf);
 void			free_environ(char **environ);
+void			handle_pipe_signals(void);
 
 	/* error */
 void			error_message(char *command, char *arg, char *msg);
