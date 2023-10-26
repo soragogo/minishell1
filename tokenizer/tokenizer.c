@@ -6,11 +6,10 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 21:08:43 by emukamada         #+#    #+#             */
-/*   Updated: 2023/10/20 00:03:35 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/21 11:51:54 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
 #include "../includes/token.h"
 #include "../includes/parser.h"
 #include "../includes/minishell.h"
@@ -79,9 +78,6 @@ void	split_into_tokens(t_token *tokens, char *command, int num_of_tokens)
 	{
 		end = find_end_of_arg(start);
 		tokens[i].arg = ft_calloc(end - start + 2, sizeof(char));
-		if (!tokens[i].arg)
-			fatal_error("calloc error");
-		tokens[i].is_freed = 0;
 		strlcpy(tokens[i].arg, start, end - start + 2);
 		start = skip_spaces(end + 1);
 		i++;
