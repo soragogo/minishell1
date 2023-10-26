@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:42:39 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 21:17:26 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 19:55:06 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	free_unsetenv(t_env **env_head, t_env *env, t_env *prev)
 	{
 		free(env->name);
 		free(env->value);
+		env->name = NULL;
+		env->value = NULL;
 	}
 	free(env);
 	env = NULL;

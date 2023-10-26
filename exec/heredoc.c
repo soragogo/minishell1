@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 22:07:43 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 20:40:33 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ int	heredoc(const char *delimiter, t_info *info)
 	int		pipefd[2];
 	char	*line;
 
-	pipe(pipefd);
+	if (pipe(pipefd) < 0)
+		return (-1);
 	while (1)
 	{
 		handle_pipe_signals();
@@ -88,6 +89,7 @@ int	heredoc(const char *delimiter, t_info *info)
 		write(pipefd[1], "\n", 1);
 		free(line);
 	}
-	close(pipefd[1]);
+	if (close(pipefd[1]) == -1)
+		fatal_error(strerror(errno));
 	return (pipefd[0]);
 }

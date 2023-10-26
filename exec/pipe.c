@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:25:47 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 17:12:29 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 20:21:33 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,21 @@ void	handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command)
 {
 	if (command->prev)
 	{
-		close(left_pipe[1]);
-		dup2(left_pipe[0], STDIN_FILENO);
-		close(left_pipe[0]);
+		if (close(left_pipe[1]) == -1)
+			fatal_error(strerror(errno));
+		if (dup2(left_pipe[0], STDIN_FILENO) == -1)
+			fatal_error(strerror(errno));
+		if (close(left_pipe[0]) == -1)
+			fatal_error(strerror(errno));
 	}
 	if (command->next)
 	{
-		close(right_pipe[0]);
-		dup2(right_pipe[1], STDOUT_FILENO);
-		close(right_pipe[1]);
+		if (close(right_pipe[0]) == -1)
+			fatal_error(strerror(errno));
+		if (dup2(right_pipe[1], STDIN_FILENO) == -1)
+			fatal_error(strerror(errno));
+		if (close(right_pipe[1]) == -1)
+			fatal_error(strerror(errno));
 	}
 }
 

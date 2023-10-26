@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chdir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 16:14:59 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/24 16:42:23 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 20:53:17 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*delete_path(char *dir_path)
 		i--;
 	if (i != 0)
 	{
-		ret = malloc(sizeof(char) * i + 1);
+		ret = ft_calloc(sizeof(char), i + 1);
 		if (!ret)
 			fatal_error("malloc error");
 		ft_strlcpy(ret, dir_path, i);
@@ -79,4 +79,16 @@ char	*convert_relative_path(char *dir_path, char *input)
 	}
 	free_split(tmp);
 	return (dir_path);
+}
+
+int	chdir_home(char **commands, char *home, char *pwd_path, char **dir_path)
+{
+	if (!home)
+	{
+		error_message("cd", NULL, "HOME not set");
+		free(pwd_path);
+		return (1);
+	}
+	*dir_path = ft_strjoin(home, commands[1] + 1);
+	return (0);
 }

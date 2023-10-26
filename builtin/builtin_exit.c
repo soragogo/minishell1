@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:23:11 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/24 16:14:09 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 19:45:26 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	exit_error(char **command, int minus)
 		|| check_overflow(command[1], minus, ft_strlen(command[1])) != 1)
 	{
 		error_message("exit", command[1], "numeric argument required");
+		ft_putendl_fd("exit", 2),
 		exit(255);
 	}
 	else if (command[2])
@@ -64,5 +65,6 @@ int	ft_exit(char **command, t_info *info)
 		if (status < 0)
 			status = 256 + status;
 	}
+	ft_putendl_fd("exit", 2),
 	exit (status);
 }

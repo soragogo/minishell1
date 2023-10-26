@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:27:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 17:10:04 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 20:00:43 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	exec_builtin(t_commandset *commands, t_info *info)
 	else if (ft_strncmp(*commands[0].command, "env", 4) == 0)
 		status = ft_env(&(info->map_head));
 	else if (ft_strncmp(*commands[0].command, "pwd", 4) == 0)
-		status = ft_pwd();
+		status = ft_pwd(info);
 	else if (ft_strncmp(*commands[0].command, "export", 7) == 0)
 		status = ft_export(&info->map_head, commands->command);
 	else if (ft_strncmp(*commands[0].command, "unset", 6) == 0)

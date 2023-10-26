@@ -78,7 +78,6 @@ $(NAME): $(OBJS)
 obj/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
 
-
 $(OBJ_DIR)/%.o: $(TOKENIZER_DIR)/%.c
 	@ $(CC) $(CFLAGS) -c -o $@ $<
 

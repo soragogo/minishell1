@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:42:39 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 13:38:39 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 20:24:53 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*get_env_name(char *ret, char *env)
 	j = 0;
 	while (env[i] != '=' && env[i] != '\0')
 		i++;
-	ret = malloc(sizeof(char) * i + 1);
+	ret = ft_calloc(sizeof(char), i + 1);
 	if (ret == NULL)
 		fatal_error("malloc error");
 	while (j < i)
@@ -42,7 +42,7 @@ char	*get_env_value(char *ret, char *env)
 	j = 0;
 	while (env[i] != '=' && env[i] != '\0')
 		i++;
-	ret = malloc(sizeof(char) * ft_strlen(&env[i + 1]) + 1);
+	ret = ft_calloc(sizeof(char), ft_strlen(&env[i + 1]) + 1);
 	if (ret == NULL)
 		fatal_error("malloc error");
 	while (env[i + j + 1] != '\0')
