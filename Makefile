@@ -65,7 +65,7 @@ OBJS		=	$(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o)) \
 
 RLDIR = $(shell brew --prefix readline)
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror -I./readline -I $(shell brew --prefix readline)/include
+CFLAGS	=	-Wall -Wextra -Werror -I./readline
 
 all: $(NAME)
 
@@ -73,7 +73,7 @@ $(NAME): $(OBJS)
 	@echo "set echo-control-characters off" > ~/.inputrc
 	@mkdir -p $(OBJ_DIR)
 	@make -C $(LIBFTDIR)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_LINK) -lreadline -L $(RLDIR)/lib -Iincludes
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_LINK) -lreadline -L$(RLDIR)/lib -Iincludes
 
 obj/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(RLDIR)/includes $(LIBFT_INCLUDE)
