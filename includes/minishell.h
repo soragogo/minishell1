@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 23:29:33 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/26 14:41:01 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # include "../libft/libft.h"
 # include "../includes/token.h"
 # include "../includes/parser.h"
+
+# define BACK_CURSOR			"\033[2D"
+# define CLEAR_FROM_CURSOR		"\033[0K"
 
 typedef struct s_env	t_env;
 typedef struct s_info	t_info;

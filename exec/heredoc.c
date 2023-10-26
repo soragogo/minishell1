@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 22:07:43 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 14:42:11 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,20 @@ void	pipe_handler(int signum)
 	}
 }
 
-void	handle_pipe_signals(void)
+// void	handle_pipe_signals(void)
+// {
+// 	signal(SIGQUIT, pipe_handler);
+// 	signal(SIGINT, pipe_handler);
+// }
+
+void		handle_signal(int signal)
 {
-	signal(SIGQUIT, pipe_handler);
-	signal(SIGINT, pipe_handler);
+	extern int		g_status;
+
+	ft_putstr_fd(BACK_CURSOR, STDERR_FILENO);
+	ft_putstr_fd(CLEAR_FROM_CURSOR, STDERR_FILENO);
+	if (signal == SIGINT)
+		ft_putstr_fd("\nminishell>", STDERR_FILENO);
 }
 
 int	heredoc(const char *delimiter, t_info *info)
@@ -74,7 +84,8 @@ int	heredoc(const char *delimiter, t_info *info)
 	pipe(pipefd);
 	while (1)
 	{
-		handle_pipe_signals();
+		// handle_pipe_signals();
+		signal(SIGINT, handle_signal);
 		line = readline("> ");
 		if (line == NULL)
 			break ;
