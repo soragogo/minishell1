@@ -77,7 +77,8 @@ int	heredoc(const char *delimiter, t_info *info)
 	int		pipefd[2];
 	char	*line;
 
-	pipe(pipefd);
+	if (pipe(pipefd) < 0)
+		return (-1);
 	while (1)
 	{
 		rl_event_hook = signal_check;
@@ -95,6 +96,7 @@ int	heredoc(const char *delimiter, t_info *info)
 		write(pipefd[1], "\n", 1);
 		free(line);
 	}
-	close(pipefd[1]);
+	if (close(pipefd[1]) == -1)
+		fatal_error(strerror(errno));
 	return (pipefd[0]);
 }

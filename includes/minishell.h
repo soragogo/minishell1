@@ -72,23 +72,25 @@ size_t			count_env(t_env *env);
 	/* builtin command */
 int				ft_echo(char **command, int status);
 int				ft_chdir(char **commands, t_env **env);
-int				ft_pwd(void);
+int				ft_pwd(t_info *info);
 int				ft_exit(char **command, t_info *info);
 int				ft_unset(t_env **env_head, char **commands);
 int				ft_env(t_env **env_head);
 int				ft_export(t_env **map, char **commands);
 char			*convert_relative_path(char *dir_path, char *input);
+int				chdir_home(char **commands,
+					char *home, char *pwd_path, char **dir_path);
 
 	/* redirection */
 void			redirect(t_commandset *commands, t_info *info);
 void			handle_redirection(t_commandset *commands, t_info *info);
-void			redirect_out(t_redirect *node);
-void			redirect_in(t_redirect *node);
 void			here_document(t_redirect *node, t_info *info);
 void			do_redirect(t_redirect *node);
 void			undo_redirect(t_redirect *node);
+void			redirect_out(t_redirect *node, t_info *info);
+void			redirect_in(t_redirect *node, t_info *info);
 int				heredoc(const char *delimiter, t_info *info);
-void			append(t_redirect *node);
+void			append(t_redirect *node, t_info *info);
 
 	/* exec */
 void			create_pipe(t_commandset *command, int new_pipe[2]);

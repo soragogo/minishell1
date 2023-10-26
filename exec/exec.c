@@ -47,8 +47,10 @@ void	update_pipe(t_commandset *commands, int new_pipe[2], int old_pipe[2])
 {
 	if (commands->prev)
 	{
-		close(old_pipe[0]);
-		close(old_pipe[1]);
+		if (close(old_pipe[0]) == -1)
+			fatal_error(strerror(errno));
+		if (close(old_pipe[1]) == -1)
+			fatal_error(strerror(errno));
 	}
 	if (commands->next)
 	{
@@ -92,6 +94,8 @@ int	handle_command(t_commandset *commands, t_info *info)
 	{
 		while (commands != NULL)
 		{
+			if (commands->command == NULL)
+				break ;
 			exec_command(commands, info);
 			commands = commands->next;
 		}

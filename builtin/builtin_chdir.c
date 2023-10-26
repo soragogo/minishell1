@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_chdir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:18:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/24 17:08:58 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 20:52:16 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,8 @@ int	ft_chdir(char **commands, t_env **env)
 		dir_path = ft_strdup(home);
 	else if (ft_strncmp(commands[1], "~", 2) == 0)
 	{
-		if (!home)
-		{
-			error_message("cd", NULL, "HOME not set");
-			free(pwd_path);
+		if (chdir_home(commands, home, pwd_path, &dir_path) == 1)
 			return (1);
-		}
-		dir_path = ft_strjoin(home, commands[1] + 1);
 	}
 	else if (create_dirpath(commands, &dir_path, old_pwd, pwd_path) == 1)
 		return (1);

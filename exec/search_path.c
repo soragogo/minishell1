@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:37:58 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 16:03:12 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 19:33:24 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ char	*split_path(char *file, char *start, char *end, int *flag)
 		*flag = 1;
 		ft_strlcpy(path, start, ft_strlen(start) + 1);
 	}
-	ft_strlcat(path, "/", PATH_MAX);
-	ft_strlcat(path, file, PATH_MAX);
+	ft_strlcat(path, "/", ft_strlen(path) + 2);
+	ft_strlcat(path, file, ft_strlen(path) + ft_strlen(file) + 1);
 	if (access(path, F_OK) == 0)
 		return (ft_strdup(path));
 	return (NULL);
