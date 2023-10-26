@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   categorize_tokens.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/21 13:34:42 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/26 21:33:40 by ekamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@
 
 int	assign_redirection_type(t_token *token)
 {
-	if (strncmp(token->arg, "|", 2) == 0)
+	if (ft_strncmp(token->arg, "|", 2) == 0)
 		return (PIPE);
-	else if (strncmp(token->arg, ">", 2) == 0)
+	else if (ft_strncmp(token->arg, ">", 2) == 0)
 		return (REDIRECT_OUT);
-	else if (strncmp(token->arg, "<", 2) == 0)
+	else if (ft_strncmp(token->arg, "<", 2) == 0)
 		return (REDIRECT_IN);
-	else if (strncmp(token->arg, ">>", 3) == 0)
+	else if (ft_strncmp(token->arg, ">>", 3) == 0)
 		return (APPEND_OUT);
-	else if (strncmp(token->arg, "<<", 3) == 0)
+	else if (ft_strncmp(token->arg, "<<", 3) == 0)
 		return (HERE_DOCUMENT);
 	return (-1);
 }

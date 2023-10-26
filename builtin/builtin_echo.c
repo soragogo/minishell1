@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:21:57 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/18 15:21:58 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 21:32:55 by ekamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_putstr(char *ch, int fd)
 {
 	if (!ch)
 		return ;
-	write(fd, ch, strlen(ch));
+	write(fd, ch, ft_strlen(ch));
 }
 
 int	handle_n_option(char **command, int *i)
