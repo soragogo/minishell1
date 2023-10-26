@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 17:40:59 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 17:41:13 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/26 17:58:42 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 void	handler(int signum)
 {
@@ -23,6 +21,8 @@ void	handler(int signum)
 	}
 	if (signum == SIGINT)
 	{
+		rl_replace_line("", 0);
+		rl_redisplay();
 		rl_on_new_line();
 		ft_putchar_fd('\n', STDERR_FILENO);
 		rl_redisplay();
