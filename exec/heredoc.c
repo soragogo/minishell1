@@ -6,7 +6,7 @@
 /*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 21:04:00 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/26 22:12:00 by ekamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	handle_pipe_signals(void)
 	signal(SIGINT, pipe_handler);
 }
 
-int	signal_check(void)
+static int	signal_check(void)
 {
 	if (g_sigstatus == SIGINT)
 	{
