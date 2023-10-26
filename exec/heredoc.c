@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 20:40:33 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:04:00 by ekamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,23 @@ void	pipe_handler(int signum)
 	}
 	if (signum == SIGINT)
 	{
-		ft_putchar_fd('\n', STDERR_FILENO);
-		rl_redisplay();
-		ft_putchar_fd('\n', STDERR_FILENO);
-		exit(0);
+		g_sigstatus = SIGINT;
 	}
 }
 
 void	handle_pipe_signals(void)
 {
-	signal(SIGQUIT, pipe_handler);
 	signal(SIGINT, pipe_handler);
+}
+
+int	signal_check(void)
+{
+	if (g_sigstatus == SIGINT)
+	{
+		rl_replace_line("", 0);
+		rl_done = 1;
+	}
+	return (0);
 }
 
 int	heredoc(const char *delimiter, t_info *info)
@@ -75,11 +81,12 @@ int	heredoc(const char *delimiter, t_info *info)
 		return (-1);
 	while (1)
 	{
-		handle_pipe_signals();
+		rl_event_hook = signal_check;
 		line = readline("> ");
 		if (line == NULL)
 			break ;
-		if (ft_strlen(delimiter) == 0 && *line == '\0')
+		if (g_sigstatus == SIGINT
+			|| (ft_strlen(delimiter) == 0 && *line == '\0'))
 		{
 			free(line);
 			break ;
