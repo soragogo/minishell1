@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/27 18:09:30 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/27 18:24:50 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	loop_commandline(t_info *info,
 	command_buf = ft_readline();
 	if (g_sigstatus == SIGINT)
 		info->exit_status_log = 1;
+	g_sigstatus = 0;
 	if (!command_buf)
 		return (0);
 	if (*command_buf == '\0' || only_space(command_buf))
