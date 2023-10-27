@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/27 14:32:53 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/27 18:09:30 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	loop_commandline(t_info *info,
 {
 	ft_signals();
 	command_buf = ft_readline();
+	if (g_sigstatus == SIGINT)
+		info->exit_status_log = 1;
 	if (!command_buf)
 		return (0);
 	if (*command_buf == '\0' || only_space(command_buf))
