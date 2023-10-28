@@ -66,7 +66,9 @@ OBJS		=	$(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o)) \
 RLDIR = $(shell brew --prefix readline)
 CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror -I./readline
-
+ifeq ($(MAKECMDGOALS), debug)
+	CFLAGS += -g -fsanitize=thread
+endif
 all: $(NAME)
 
 $(NAME): $(OBJS)
@@ -118,6 +120,9 @@ fclean: clean
 	make -C $(LIBFTDIR) fclean
 
 re: fclean all
+
+debug: re
+
 
 # all: $(NAME)
 
