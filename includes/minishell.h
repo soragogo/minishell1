@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/28 15:55:36 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/28 19:20:30 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,6 @@ int				is_dilimeter(char c);
 void			split_into_tokens(t_token *tokens,
 					char *command, int num_of_tokens);
 char			*convert_relative_path(char *dir_path, char *input);
+void			missing_file_error(char *command);
+
 #endif

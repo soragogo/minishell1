@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:23:11 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 19:45:26 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/10/28 19:27:14 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	is_num(char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == '-' && str[i + 1] != '\0')
+	if ((str[i] == '-' || str[i] == '+') && str[i + 1] != '\0')
 		i++;
 	while (str[i])
 	{
@@ -60,8 +60,10 @@ int	ft_exit(char **command, t_info *info)
 			minus = -1;
 		if (exit_error(command, minus) == 1)
 			return (1);
-		else
+		else if (ft_atol(command[1]) < 256)
 			status = ft_atol(command[1]) % 255;
+		else
+			status = ft_atol(command[1]) % 255 - 1;
 		if (status < 0)
 			status = 256 + status;
 	}
