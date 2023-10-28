@@ -3,16 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 19:13:21 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/28 19:13:54 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/token.h"
 #include "../includes/parser.h"
+
+void	check_isdir(char **command)
+{
+	struct stat	*buf;
+
+	buf = NULL;
+	if (ft_strncmp(command[0], "./", 2) == 0)
+	{
+		if (stat (command[0], buf) != 0 && access (command[0], F_OK) != 0)
+			missing_file_error(command[0]);
+		else
+			error_message(command[0], NULL, "Permission denied");
+		exit (126);
+	}
+	else if (command[0][0] == '/')
+	{
+		if (stat (command[0], buf) != 0 && access (command[0], F_OK) != 0)
+			missing_file_error(command[0]);
+		else
+			error_message(command[0], NULL, "is a directory");
+		exit (126);
+	}
+	error_message(command[0], NULL, "command not found");
+	exit(127);
+}
 
 int	child_prosess(t_commandset *commands, t_info *info)
 {
@@ -34,10 +59,7 @@ int	child_prosess(t_commandset *commands, t_info *info)
 		status = execve(path, commands->command, my_environ);
 		free(path);
 		if (status == -1)
-		{
-			error_message(*commands->command, NULL, "command not found");
-			exit(127);
-		}
+			check_isdir(commands->command);
 	}
 	free_environ(my_environ);
 	return (status);

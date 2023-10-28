@@ -1,15 +1,11 @@
 *.o
 *.a
-<<<<<<< HEAD
-*.dSYM*
-.vscode*
-=======
 .DS_Store
 *.gch
 *.swp
 .gitignore
 .vscode
->>>>>>> ffd562c95b262524d0e74e84217e6a8f6d89be3e
 a.out
 *.txt
 *.dSYM/
+minishell_tester/*
