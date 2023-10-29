@@ -17,7 +17,7 @@ int	is_num(char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == '-' && str[i + 1] != '\0')
+	if ((str[i] == '-' || str[i] == '+') && str[i + 1] != '\0')
 		i++;
 	while (str[i])
 	{
