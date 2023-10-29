@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:23:11 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/28 19:27:14 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/28 14:35:37 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,8 @@ int	ft_exit(char **command, t_info *info)
 			minus = -1;
 		if (exit_error(command, minus) == 1)
 			return (1);
-		else if (ft_atol(command[1]) < 256)
-			status = ft_atol(command[1]) % 255;
 		else
-			status = ft_atol(command[1]) % 255 - 1;
+			status = ft_atol(command[1]) % 256;
 		if (status < 0)
 			status = 256 + status;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 20:52:47 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/28 15:58:01 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ int	loop_commandline(t_info *info,
 {
 	ft_signals();
 	command_buf = ft_readline();
+	if (g_sigstatus == SIGINT)
+		info->exit_status_log = 1;
+	g_sigstatus = 0;
 	if (!command_buf)
 		return (0);
 	if (*command_buf == '\0' || only_space(command_buf))
@@ -36,8 +39,21 @@ int	loop_commandline(t_info *info,
 	}
 	handle_pipe_signals();
 	info->exit_status_log = handle_command(commands, info);
+	if (g_sigstatus == SIGINT)
+		info->exit_status_log = 1;
 	free_before_closing(commands, command_buf);
 	return (1);
+}
+
+int	main_signal_check(void)
+{
+	if (g_sigstatus == SIGINT)
+	{
+		// rl_replace_line("", 0);
+		g_sigstatus = SIGINT;
+		// rl_done = 1;
+	}
+	return (0);
 }
 
 int	main(void)
@@ -52,9 +68,12 @@ int	main(void)
 	info.exit_status_log = 0;
 	while (1)
 	{
+		rl_event_hook = main_signal_check;
 		g_sigstatus = 0;
 		if (loop_commandline(&info, command_buf, commands) == 0)
 			break ;
+		if (g_sigstatus == SIGINT)
+			info.exit_status_log = 1;
 	}
 	free_map(&info.map_head);
 	return (0);
