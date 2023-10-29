@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:24:50 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 20:06:23 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/10/28 15:14:33 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int	ft_pwd(t_info *info)
 {
 	char	*envp;
 
-	envp = getcwd(NULL, 0);
+	envp = ft_strdup(map_get(&(info->map_head), "PWD"));
 	if (!envp)
 	{
-		envp = ft_strdup(map_get(&(info->map_head), "PWD"));
+		envp = getcwd(NULL, 0);
 		if (!envp)
 		{
 			error_message("pwd", NULL, strerror(errno));

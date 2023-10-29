@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:24:13 by mayu              #+#    #+#             */
 /*   Updated: 2023/10/28 21:31:23 by emukamada        ###   ########.fr       */
@@ -81,6 +81,7 @@ int	ft_export(t_env **map, char **commands)
 		display_envlist(map);
 		return (0);
 	}
+
 	while (*(++commands) != NULL)
 	{
 		if (ft_strchr(*commands, '=') == NULL || !ft_strncmp(*commands, "=", 2))

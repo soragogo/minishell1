@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 21:13:35 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/28 19:20:30 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <signal.h>
 # include <limits.h>
 # include <stdbool.h>
+# include <sys/stat.h>
 # include "../libft/libft.h"
 # include "../includes/token.h"
 # include "../includes/parser.h"
@@ -125,4 +126,6 @@ int				is_dilimeter(char c);
 void			split_into_tokens(t_token *tokens,
 					char *command, int num_of_tokens);
 char			*convert_relative_path(char *dir_path, char *input);
+void			missing_file_error(char *command);
+
 #endif
