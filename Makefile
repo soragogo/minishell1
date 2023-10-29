@@ -71,7 +71,9 @@ ifeq ($(MAKECMDGOAL), debug)
 endif
 
 CFLAGS	=	-Wall -Wextra -Werror -I./readline
-
+ifeq ($(MAKECMDGOALS), debug)
+	CFLAGS += -g -fsanitize=thread
+endif
 all: $(NAME)
 
 $(NAME): $(OBJS)
