@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 21:08:51 by emukamada         #+#    #+#             */
-/*   Updated: 2023/10/31 14:42:19 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 15:19:41 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,13 @@ void import_nonempty_token(t_token *new_tokens, t_token *tokens)
 		if (tokens[j].arg[0] != '\0')
 		{
 			new_tokens[i].arg = ft_strdup(tokens[j].arg);
-			free(tokens[j].arg);
+			// free(tokens[j].arg);
 			// new_tokens[i].type = tokens[j].type;
 			i++;
 		}
 		j++;
 	}
+	// free(tokens[j].arg);
 	new_tokens[i].arg = NULL;
 }
 
@@ -105,6 +106,13 @@ t_commandset	*ft_parser(char *buff, int *status, t_env *env_head)
 	t_token         *non_empty_tokens;
 
 	tokens = ft_tokenizer(buff);
+	if (syntax_error(tokens))
+	{
+		*status = 258;
+		// non_empty_tokens を必要に応じて解放する
+		free_tokens(tokens); // 元の tokens 配列を解放することを忘れないでください
+		return (NULL);
+	}
 	expand_tokens(tokens, env_head, status);
  	non_empty_tokens = remove_empty_tokens(tokens);
 	// for (int i = 0; non_empty_tokens[i].arg != NULL; i++)
@@ -116,21 +124,13 @@ t_commandset	*ft_parser(char *buff, int *status, t_env *env_head)
 	// }
 	if (!non_empty_tokens || (non_empty_tokens && non_empty_tokens[0].arg[0] == '\0'))
 	{
-		free(tokens);
+		free_tokens(tokens);
 		return (NULL);
 	}
 	categorize_tokens(non_empty_tokens);
-	if (syntax_error(non_empty_tokens))
-	{
-		*status = 258;
-		// non_empty_tokens を必要に応じて解放する
-		free(tokens); // 元の tokens 配列を解放することを忘れないでください
-		return (NULL);
-	}
-	else
-	{
+
 		t_commandset *result = process_tokens(non_empty_tokens);
-		free(tokens); // 元の tokens 配列を解放することを忘れないでください
+		free_tokens(tokens); // 元の tokens 配列を解放することを忘れないでください
+		free_tokens(non_empty_tokens);
 		return result;
-	}
 }
