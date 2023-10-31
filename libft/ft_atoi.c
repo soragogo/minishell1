@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 19:44:32 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/19 03:40:07 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/31 21:56:38 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int	check_overflow(const char *str, int minus, size_t count)
 	char	*str_;
 
 	str_ = (char *)str;
+	while (*str_ == '0')
+	{
+		str_++;
+		count --;
+	}
 	if (count > ft_strlen("9223372036854775807"))
 		return (-1);
 	else if (count == ft_strlen("9223372036854775807"))
