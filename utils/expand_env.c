@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 17:32:16 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 21:15:40 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 10:52:15 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ char	*deal_raw_env(char *arg, int *i, t_env *env_head)
 	char	*joined;
 	char	*expanded;
 
+	if (!arg[*i + 1] || (!ft_isalnum(arg[*i + 1]) && arg[*i + 1] != '_'))
+	{
+		(*i)++;
+		return (arg);
+	}
 	joined = NULL;
 	expanded = NULL;
 	tmp = ft_substr(arg, 0, *i);
