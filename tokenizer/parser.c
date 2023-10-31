@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 21:08:51 by emukamada         #+#    #+#             */
-/*   Updated: 2023/10/20 15:40:08 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 11:11:19 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	expand_tokens(t_token *tokens, t_env *env_head, int *status)
 	{
 		skip_space(&(tokens[i].arg));
 		tokens[i].arg = expand_quote(tokens[i].arg, env_head, status);
+		// printf("tokens[%d].arg: %s\n", i, tokens[i].arg);
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 17:32:16 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/31 10:52:15 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 12:02:24 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,11 @@ char	*handle_dollar(char *arg, int *i, t_env *env_head, int *status)
 
 	if (ft_strncmp(&arg[*i], "$?", 2) * ft_strncmp(&arg[*i], "${?}", 4) == 0)
 		expanded = deal_status(arg, i, *status, "status");
+	else if (!ft_isalnum(arg[*i + 1]) && arg[*i + 1] != '_')
+		{
+			(*i)++;
+			expanded = ft_strdup("$");
+		}
 	else
 		expanded = deal_env(arg, i, env_head);
 	return (expanded);
