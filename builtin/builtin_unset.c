@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:25:11 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/31 22:16:15 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 22:19:45 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	command_is_invalid(char *command)
 		return (1);
 	while (command[i])
 	{
-		if (ft_isalnum(command[i]) && command[0] != '_')
+		if (!ft_isalnum(command[i]) && command[i] != '_')
 			return (1);
 		i++;
 	}
