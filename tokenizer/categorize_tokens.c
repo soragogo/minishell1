@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   categorize_tokens.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:41 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/26 21:33:40 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/31 13:02:01 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,16 @@ int	assign_command_type(t_token *token, t_token *prev_token, int *command_flag)
 {
 	if (token->arg[0] == '-' && *command_flag == 1)
 		return (COMMAND_OPTION);
-	else if (prev_token == NULL
+	else if (token->arg[0] != '\0' && (prev_token == NULL
 		|| (*command_flag == 0
 			&& (prev_token->type < REDIRECT_OUT
-				|| prev_token->type > HERE_DOCUMENT)))
+				|| prev_token->type > HERE_DOCUMENT))))
 	{
+		printf("this is command: %s\n", token->arg);
 		*command_flag = 1;
 		return (COMMAND);
 	}
-	else if (prev_token->type >= REDIRECT_OUT
+	else if (prev_token != NULL && prev_token->type >= REDIRECT_OUT
 		&& prev_token->type <= HERE_DOCUMENT)
 		return (FILE_NAME);
 	else

@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/31 12:42:07 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 12:48:45 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	main(void)
 	info.exit_status_log = 0;
 	while (1)
 	{
-		rl_event_hook = main_signal_check;
+		// rl_event_hook = main_signal_check;
 		g_sigstatus = 0;
 		if (loop_commandline(&info, command_buf, commands) == 0)
 			break ;
