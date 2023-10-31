@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/28 19:20:30 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/31 21:48:06 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char			**create_environ(t_env **env_head);
 size_t			count_env(t_env *env);
 
 	/* builtin command */
-int				ft_echo(char **command, int status);
+int				ft_echo(char **command);
 int				ft_chdir(char **commands, t_env **env);
 int				ft_pwd(t_info *info);
 int				ft_exit(char **command, t_info *info);
