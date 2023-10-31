@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 17:38:25 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/31 11:49:52 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 15:39:52 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	deal_single_quote(char *arg, int *i)
 
 char	*deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 {
-	////puts("---------deal_double_quote------------");
 	char	*rest;
 	char	*expanded;
 	char	*tmp;
@@ -48,23 +47,16 @@ char	*deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 	while (arg[(*i)] && arg[(*i)] != '\"')
 		(*i)++;
 	tmp = ft_substr(arg, 0, *i);
-	//printf("tmp: %s\n", tmp);
-	//printf("&arg[%d]: %s\n", *i, &arg[*i]);
 	(*i)++;
 	rest = ft_strchr(&arg[*i], '\"') + 1;
-	//printf("rest: %s\n", rest);
 	expanded = expand_env(arg, *i, env_head, status);
-	//printf("expanded: %s\n", expanded);
 	joined = ft_strjoin(tmp, expanded);
-	//printf("joined: %s\n", joined);
 	free(tmp);
 	tmp = ft_strjoin(joined, rest);
 	free(joined);
 	*i += ft_strlen(expanded) - 1;
 	free(expanded);
 	free(arg);
-	//printf("tmp: %s\n", tmp);
-	//puts("-------------------");
 	return (tmp);
 }
 
@@ -89,7 +81,6 @@ char	*expand_quote(char *arg, t_env *env_head, int *status)
 			arg = deal_status(arg, &i, -1, "arg");
 		else if (arg[i] == '$')
 			arg = deal_raw_env(arg, &i, env_head);
-		// //printf("current arg[%d]: %s\n", i, &arg[i]);
 	}
 	return (arg);
 }

@@ -39,7 +39,8 @@ T_SRCS		=		bracket_error.c \
 					redirection.c \
 					syntax_error_handling.c \
 					token_utils.c \
-					tokenizer.c
+					tokenizer.c \
+					clean_tokenlist.c
 
 B_SRCS		=		builtin_chdir.c \
 					builtin_echo.c \
