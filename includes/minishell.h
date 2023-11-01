@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/31 21:48:06 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/01 10:41:35 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int				ft_export(t_env **map, char **commands);
 char			*convert_relative_path(char *dir_path, char *input);
 int				chdir_home(char **commands,
 					char *home, char *pwd_path, char **dir_path);
-
+int				command_is_invalid(char *command);
 	/* redirection */
 void			redirect(t_commandset *commands, t_info *info);
 void			handle_redirection(t_commandset *commands, t_info *info);

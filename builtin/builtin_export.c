@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:24:13 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/31 15:59:41 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/01 10:41:10 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,10 @@ int	display_envlist(t_env **env_head)
 
 int	name_is_invalid(char *name, int should_free_name)
 {
-	int	i;
 	int	result;
 
 	result = 0;
-	i = 1;
-	if (!isalpha(name[0]) && name[0] != '_')
-		result = 1;
-	else
-	{
-		while (name[i])
-		{
-			if (!isalnum(name[i]) && name[i] != '_')
-				result = 1;
-			i++;
-		}
-	}
+	result = command_is_invalid(name);
 	if (result == 1)
 	{
 		ft_putstr_fd("export: not valid in this context: ", STDERR_FILENO);
