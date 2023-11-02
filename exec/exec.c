@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/28 19:13:54 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/02 18:40:05 by mayyamad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	check_isdir(char **command)
 			error_message(command[0], NULL, "Permission denied");
 		exit (126);
 	}
-	else if (command[0][0] == '/')
+	else if (command[0][0] == '/' ||
+		command[0][ft_strlen(command[0]) - 1] == '/')
 	{
 		if (stat (command[0], buf) != 0 && access (command[0], F_OK) != 0)
 			missing_file_error(command[0]);
