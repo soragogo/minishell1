@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:25:11 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/01 10:40:36 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/02 14:42:07 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ int	command_is_invalid(char *command)
 int	ft_unset(t_env **env_head, char **commands)
 {
 	int	i;
+	int	ret;
 
 	i = 1;
+	ret = 0;
 	while (commands[i] != NULL)
 	{
 		if (command_is_invalid(commands[i]))
@@ -41,10 +43,11 @@ int	ft_unset(t_env **env_head, char **commands)
 			ft_putstr_fd(commands[i], STDERR_FILENO);
 			ft_putstr_fd(": not a valid indentifier", STDERR_FILENO);
 			ft_putstr_fd("\n", STDERR_FILENO);
-			return (1);
+			ret = 1;
 		}
-		env_unset(env_head, commands[i]);
+		else
+			env_unset(env_head, commands[i]);
 		i++;
 	}
-	return (0);
+	return (ret);
 }
