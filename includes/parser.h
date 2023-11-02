@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:38:34 by ekamada           #+#    #+#             */
-/*   Updated: 2023/10/20 00:16:01 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 15:50:17 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ typedef struct s_list_token
 {
 	char				*arg;
 	t_type				type;
-	int					is_freed;
-	struct s_list_token	*next_token;
 }	t_token;
 
 typedef struct s_node
@@ -86,5 +84,8 @@ void			split_into_tokens(t_token *tokens,
 					char *command, int num_of_tokens);
 int				return_end_of_env(char *end);
 int				bracket_error(t_token *tokens, char l_br, char r_br);
-
+int				count_nonempty_tokens(t_token *tokens);
+void			import_nonempty_token(t_token *new_tokens, t_token *tokens);
+t_token			*remove_empty_tokens(t_token *tokens);
+t_commandset	*process_tokens(t_token *tokens);
 #endif

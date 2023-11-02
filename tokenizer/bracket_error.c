@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 21:08:51 by emukamada         #+#    #+#             */
-/*   Updated: 2023/10/19 23:24:33 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 14:50:44 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,23 @@ int	bracket_error(t_token *tokens, char l_br, char r_br)
 	int		i;
 	int		j;
 	bool	in_br;
+	bool	in_quote;
 
 	in_br = false;
+	in_quote = false;
 	i = 0;
 	while (tokens[i].arg)
 	{
 		j = 0;
 		while (tokens[i].arg[j])
 		{
-			if (is_mismatched_bracket(tokens[i].arg[j], l_br, r_br, &in_br))
-				return (1);
+			if (tokens[i].arg[j] == '\"')
+				in_quote = !in_quote;
+			if (!in_quote)
+			{
+				if (is_mismatched_bracket(tokens[i].arg[j], l_br, r_br, &in_br))
+					return (1);
+			}
 			j++;
 		}
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:21:57 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 21:32:55 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/10/31 21:50:45 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,33 +44,28 @@ int	handle_n_option(char **command, int *i)
 	return (n_option);
 }
 
-void	output_command(char **command, int start_idx, int status)
+void	output_command(char **command, int start_idx)
 {
 	int	i;
 
 	i = start_idx;
-	if (command[i] && !ft_strncmp(command[i], "-", 2))
-		i++;
 	while (command[i])
 	{
-		if (command[i] && ft_strncmp(command[i], "$?", 2) == 0)
-			ft_putnbr_fd(status, STDOUT_FILENO);
-		else
-			ft_putstr(command[i], STDOUT_FILENO);
+		ft_putstr(command[i], STDOUT_FILENO);
 		i++;
 		if (command[i])
 			write(1, " ", STDOUT_FILENO);
 	}
 }
 
-int	ft_echo(char **command, int status)
+int	ft_echo(char **command)
 {
 	int	i;
 	int	n_option;
 
 	i = 1;
 	n_option = handle_n_option(command, &i);
-	output_command(command, i, status);
+	output_command(command, i);
 	if (n_option == 0)
 		write(1, "\n", STDOUT_FILENO);
 	return (0);

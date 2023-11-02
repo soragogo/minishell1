@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:24:13 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/28 21:31:23 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/01 10:41:10 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,10 @@ int	display_envlist(t_env **env_head)
 
 int	name_is_invalid(char *name, int should_free_name)
 {
-	int	i;
 	int	result;
 
 	result = 0;
-	i = 1;
-	if (!isalpha(name[0]) && name[0] != '_')
-		result = 1;
-	else
-	{
-		while (name[i])
-		{
-			if (!isalnum(name[i]) && name[i] != '_')
-				result =  1;
-			i++;
-		}
-	}
+	result = command_is_invalid(name);
 	if (result == 1)
 	{
 		ft_putstr_fd("export: not valid in this context: ", STDERR_FILENO);
@@ -67,21 +55,23 @@ int	name_is_invalid(char *name, int should_free_name)
 	return (result);
 }
 
-int	ft_export(t_env **map, char **commands)
+int	add_env_variable(t_env **map, char *name, char *value)
+{
+	if (set_env(map, name, value, true) == -1)
+	{
+		error_message("export", NULL, "not a valid identifier");
+		return (1);
+	}
+	return (0);
+}
+
+int	handle_export_commands(t_env **map, char **commands)
 {
 	char	*name;
 	char	*value;
 	int		ret;
 
-	name = NULL;
-	value = NULL;
 	ret = 0;
-	if (commands[1] == NULL)
-	{
-		display_envlist(map);
-		return (0);
-	}
-
 	while (*(++commands) != NULL)
 	{
 		if (ft_strchr(*commands, '=') == NULL || !ft_strncmp(*commands, "=", 2))
@@ -92,18 +82,24 @@ int	ft_export(t_env **map, char **commands)
 				ret = 1;
 			continue ;
 		}
-		name = get_env_name(name, *commands);
+		name = get_env_name(NULL, *commands);
 		if (name_is_invalid(name, 1))
 		{
 			ret = 1;
 			continue ;
 		}
-		value = get_env_value(value, *commands);
-		if (set_env(map, name, value, true) == -1)
-		{
-			error_message("export", NULL, "not a valid identifier");
-			ret = 1;
-		}
+		value = get_env_value(NULL, *commands);
+		ret = add_env_variable(map, name, value);
 	}
 	return (ret);
+}
+
+int	ft_export(t_env **map, char **commands)
+{
+	if (commands[1] == NULL)
+	{
+		display_envlist(map);
+		return (0);
+	}
+	return (handle_export_commands(map, commands));
 }

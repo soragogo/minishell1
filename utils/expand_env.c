@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 17:32:16 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 21:15:40 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/10/31 15:40:20 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ char	*deal_raw_env(char *arg, int *i, t_env *env_head)
 	char	*joined;
 	char	*expanded;
 
+	if (!arg[*i + 1] || (!ft_isalnum(arg[*i + 1]) && arg[*i + 1] != '_'))
+	{
+		(*i)++;
+		return (arg);
+	}
 	joined = NULL;
 	expanded = NULL;
 	tmp = ft_substr(arg, 0, *i);
@@ -60,6 +65,11 @@ char	*handle_dollar(char *arg, int *i, t_env *env_head, int *status)
 
 	if (ft_strncmp(&arg[*i], "$?", 2) * ft_strncmp(&arg[*i], "${?}", 4) == 0)
 		expanded = deal_status(arg, i, *status, "status");
+	else if (!ft_isalnum(arg[*i + 1]) && arg[*i + 1] != '_')
+	{
+		(*i)++;
+		expanded = ft_strdup("$");
+	}
 	else
 		expanded = deal_env(arg, i, env_head);
 	return (expanded);

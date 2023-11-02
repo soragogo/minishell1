@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 17:38:25 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/19 17:38:52 by mayu             ###   ########.fr       */
+/*   Updated: 2023/10/31 15:39:52 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,15 @@ char	*deal_double_quote(char *arg, int *i, t_env *env_head, int *status)
 	while (arg[(*i)] && arg[(*i)] != '\"')
 		(*i)++;
 	tmp = ft_substr(arg, 0, *i);
+	(*i)++;
 	rest = ft_strchr(&arg[*i], '\"') + 1;
 	expanded = expand_env(arg, *i, env_head, status);
 	joined = ft_strjoin(tmp, expanded);
 	free(tmp);
 	tmp = ft_strjoin(joined, rest);
 	free(joined);
+	*i += ft_strlen(expanded) - 1;
 	free(expanded);
-	*i += ft_strlen(expanded);
 	free(arg);
 	return (tmp);
 }
