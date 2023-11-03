@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/03 18:33:52 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/03 18:53:01 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void	handle_redirection(t_commandset *commands, t_info *info)
 	tmp_node = commands->node;
 	while (tmp_node)
 	{
-		if (tmp_node->type == HERE_DOCUMENT)
-			do_redirect(tmp_node);
+		do_redirect(tmp_node);
 		tmp_node = tmp_node->next;
 	}
 }
