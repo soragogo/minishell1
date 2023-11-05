@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/31 12:48:01 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/05 23:35:48 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	write_to_pipe(int pipefd[2],
 	int	i;
 	int	flag;
 	int	d_len;
+	char *tmp;
 
 	i = 0;
 	flag = 0;
@@ -33,14 +34,19 @@ int	write_to_pipe(int pipefd[2],
 		i--;
 	}
 	if (flag == 0)
-		line = expand_quote(ft_strdup(line),
+	{
+		tmp = ft_strdup(line);
+		free(line);
+		line = expand_quote(tmp,
 				info->map_head, &(info->exit_status_log));
+	}
 	if (ft_strncmp(line, delimiter, d_len + 1) == 0)
 	{
 		free(line);
 		return (1);
 	}
 	write(pipefd[1], line, ft_strlen(line));
+	free(line);
 	return (0);
 }
 
@@ -95,7 +101,6 @@ int	heredoc(const char *delimiter, t_info *info)
 		if (write_to_pipe(pipefd, line, delimiter, info) == 1)
 			break ;
 		write(pipefd[1], "\n", 1);
-		free(line);
 	}
 	if (close(pipefd[1]) == -1)
 		fatal_error(strerror(errno));

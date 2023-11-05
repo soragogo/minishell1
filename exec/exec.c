@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/02 18:40:05 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/11/05 23:45:06 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,26 @@ void	update_pipe(t_commandset *commands, int new_pipe[2], int old_pipe[2])
 		old_pipe[1] = new_pipe[1];
 	}
 }
+void	handle_heredocument(t_commandset *commands, t_info *info)
+{
+	t_redirect	*tmp_node;
+
+	tmp_node = commands->node;
+	while (tmp_node)
+	{
+		if (tmp_node->type == HERE_DOCUMENT)
+			here_document(tmp_node, info);
+		tmp_node = tmp_node->next;
+	}
+	tmp_node = commands->node;
+	while (tmp_node)
+	{
+		if (tmp_node->type == HERE_DOCUMENT)
+			do_redirect(tmp_node);
+		tmp_node = tmp_node->next;
+	}
+}
+
 
 int	exec_command(t_commandset *commands, t_info *info)
 {
@@ -90,6 +110,7 @@ int	exec_command(t_commandset *commands, t_info *info)
 	pid_t		pid;
 
 	status = 0;
+	handle_heredocument(commands, info);
 	create_pipe(commands, new_pipe);
 	pid = fork();
 	if (pid < 0)
@@ -99,6 +120,7 @@ int	exec_command(t_commandset *commands, t_info *info)
 		handle_pipe(old_pipe, new_pipe, commands);
 		status = child_prosess(commands, info);
 	}
+	undo_redirect(commands->node);
 	update_pipe(commands, new_pipe, old_pipe);
 	commands->pid = pid;
 	return (status);

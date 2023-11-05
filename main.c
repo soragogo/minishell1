@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/02 18:59:17 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/11/05 23:37:20 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	main(void)
 	info.exit_status_log = 0;
 	while (1)
 	{
-		rl_event_hook = main_signal_check;
+		// rl_event_hook = main_signal_check;
 		g_sigstatus = 0;
 		if (loop_commandline(&info, command_buf, commands) == 0)
 			break ;

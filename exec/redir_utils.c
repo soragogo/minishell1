@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/05 22:51:17 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/05 23:54:55 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	redirect_in(t_redirect *node, t_info *info)
 		return ;
 	}
 }
+
 
 void	here_document(t_redirect *node, t_info *info)
 {

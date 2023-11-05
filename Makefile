@@ -79,6 +79,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "set echo-control-characters off" > ~/.inputrc
+	@echo "set enable-bracketed-paste off" >> ~/.inputrc
 	@mkdir -p $(OBJ_DIR)
 	@make -C $(LIBFTDIR)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_LINK) -lreadline -L$(RLDIR)/lib -Iincludes -I $(RLDIR)/include
