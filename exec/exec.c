@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/06 00:24:29 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 00:35:31 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	exec_command(t_commandset *commands, t_info *info)
 		status = child_prosess(commands, info);
 	}
 	update_pipe(commands, new_pipe, old_pipe);
-	undo_redirect(commands->node);
+	undo_redirect(commands->node, 0);
 	commands->pid = pid;
 	return (status);
 }

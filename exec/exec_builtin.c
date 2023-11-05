@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:27:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/02 16:33:13 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 00:35:08 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ int	exec_builtin(t_commandset *commands, t_info *info)
 		status = ft_exit(commands->command, info);
 	else
 		return (-1);
-	undo_redirect(commands->node);
+	undo_redirect(commands->node, 1);
 	return (status);
 }
