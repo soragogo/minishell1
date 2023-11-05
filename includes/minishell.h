@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/01 10:41:35 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 00:56:43 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void			redirect(t_commandset *commands, t_info *info);
 void			handle_redirection(t_commandset *commands, t_info *info);
 void			here_document(t_redirect *node, t_info *info);
 void			do_redirect(t_redirect *node);
-void			undo_redirect(t_redirect *node);
+void			undo_redirect(t_redirect *node, int builtin);
 void			redirect_out(t_redirect *node, t_info *info);
 void			redirect_in(t_redirect *node, t_info *info);
 int				heredoc(const char *delimiter, t_info *info);
