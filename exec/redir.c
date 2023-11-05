@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 20:20:50 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/11/05 22:51:44 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ void	handle_redirection(t_commandset *commands, t_info *info)
 			here_document(tmp_node, info);
 		tmp_node = tmp_node->next;
 	}
+	tmp_node = commands->node;
+	while (tmp_node)
+	{
+		do_redirect(tmp_node);
+		tmp_node = tmp_node->next;
+	}
+
 }
 
 void	do_redirect(t_redirect *node)

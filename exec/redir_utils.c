@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekamada <ekamada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/27 12:51:41 by ekamada          ###   ########.fr       */
+/*   Updated: 2023/11/05 22:51:17 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	append(t_redirect *node, t_info *info)
 		info->exit_status_log = 1;
 		return ;
 	}
-	do_redirect(node);
 }
 
 void	redirect_out(t_redirect *node, t_info *info)
@@ -37,7 +36,6 @@ void	redirect_out(t_redirect *node, t_info *info)
 		info->exit_status_log = 1;
 		return ;
 	}
-	do_redirect(node);
 }
 
 void	redirect_in(t_redirect *node, t_info *info)
@@ -50,7 +48,6 @@ void	redirect_in(t_redirect *node, t_info *info)
 		info->exit_status_log = 1;
 		return ;
 	}
-	do_redirect(node);
 }
 
 void	here_document(t_redirect *node, t_info *info)
@@ -64,5 +61,4 @@ void	here_document(t_redirect *node, t_info *info)
 		return ;
 	}
 	ft_signals();
-	do_redirect(node);
 }
