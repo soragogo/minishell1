@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/05 23:54:48 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 00:25:31 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,14 @@ void	undo_redirect(t_redirect *node)
 {
 	if (node == NULL)
 		return ;
-	if (dup2(node->stashfd, node->oldfd) == -1)
+	undo_redirect(node->next);
+	if (node->type == HERE_DOCUMENT)
+	{
+		if (dup2(node->stashfd, node->oldfd) == -1)
 		fatal_error(strerror(errno));
 	if (close(node->stashfd) == -1)
 		fatal_error(strerror(errno));
 	if (close(node->newfd) == -1)
 		fatal_error(strerror(errno));
+	}
 }
