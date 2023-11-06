@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/06 00:35:42 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 12:49:03 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	undo_redirect(t_redirect *node, int builtin)
 	if (node == NULL)
 		return ;
 	undo_redirect(node->next, builtin);
-	if (node->type == HERE_DOCUMENT || builtin)
+	if (node->type == HERE_DOCUMENT || builtin == 1)
 	{
 		if (dup2(node->stashfd, node->oldfd) == -1)
 		fatal_error(strerror(errno));
