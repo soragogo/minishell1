@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/06 12:48:48 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 19:36:22 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	update_pipe(t_commandset *commands, int new_pipe[2], int old_pipe[2])
 		old_pipe[1] = new_pipe[1];
 	}
 }
+
 void	handle_heredocument(t_commandset *commands, t_info *info)
 {
 	t_redirect	*tmp_node;

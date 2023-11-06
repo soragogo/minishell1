@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/06 12:49:03 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 19:35:55 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ void	handle_redirection(t_commandset *commands, t_info *info)
 			redirect_in(tmp_node, info);
 		else if (tmp_node->type == APPEND_OUT)
 			append(tmp_node, info);
-		// else if (tmp_node->type == HERE_DOCUMENT)
-		// 	here_document(tmp_node, info);
 		tmp_node = tmp_node->next;
 	}
 	tmp_node = commands->node;
