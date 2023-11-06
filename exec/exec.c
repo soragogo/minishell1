@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/06 19:36:22 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 20:00:00 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	child_prosess(t_commandset *commands, t_info *info)
 	}
 	else
 	{
-		handle_redirection(commands, info);
+		// handle_redirection(commands, info);
 		status = execve(*commands->command, commands->command, my_environ);
 		path = fetch_path(*commands->command, &(info->map_head));
 		status = execve(path, commands->command, my_environ);
@@ -102,7 +102,6 @@ void	handle_heredocument(t_commandset *commands, t_info *info)
 	}
 }
 
-
 int	exec_command(t_commandset *commands, t_info *info)
 {
 	int			status;
@@ -111,7 +110,7 @@ int	exec_command(t_commandset *commands, t_info *info)
 	pid_t		pid;
 
 	status = 0;
-	handle_heredocument(commands, info);
+	handle_redirection(commands, info);
 	create_pipe(commands, new_pipe);
 	pid = fork();
 	if (pid < 0)
