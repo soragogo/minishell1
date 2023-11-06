@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/05 23:35:48 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 20:18:13 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 int	write_to_pipe(int pipefd[2],
 	char *line, const char *delimiter, t_info *info)
 {
-	int	i;
-	int	flag;
-	int	d_len;
-	char *tmp;
+	int		i;
+	int		flag;
+	int		d_len;
+	char	*tmp;
 
 	i = 0;
 	flag = 0;

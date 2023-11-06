@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/06 20:10:21 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/06 20:15:32 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,6 @@ void	here_document(t_redirect *node, t_info *info)
 {
 	node->oldfd = STDIN_FILENO;
 	node->newfd = heredoc(node->filename, info);
-	// printf("here_document: %s\n", node->filename);
-	// printf("node->oldfd: %d\n", node->oldfd);
-	// printf("node->newfd: %d\n", node->newfd);
 	if (node->newfd == -1)
 	{
 		fatal_error(strerror(errno));
