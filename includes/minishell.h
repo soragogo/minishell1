@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 15:00:54 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:16:01 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_info
 {
 	t_env	*map_head;
 	int		exit_status_log;
+	int		file_err;
 }	t_info;
 
 int				ft_system(t_token *tokens, int *status);

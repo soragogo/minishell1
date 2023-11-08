@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 16:17:57 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:21:20 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,15 @@
 int	write_to_pipe(int pipefd[2],
 	char *line, const char *delimiter, t_info *info)
 {
-	int		i;
 	int		d_len;
 	char	*tmp;
 
-	i = 0;
 	d_len = ft_strlen(delimiter);
 	if (only_space(line) == TRUE)
+	{
+		free(line);
 		return (0);
-	i = skip_space(&line);
-	while (i-- > 0)
-		write(pipefd[1], " ", 1);
+	}
 	tmp = ft_strdup(line);
 	free(line);
 	line = expand_quote(tmp,

@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:25:47 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 14:56:17 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:20:47 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	change_left_pipe(t_commandset *command, int left_pipe[2])
 void	handle_pipe(int left_pipe[2], int right_pipe[2],
 			t_commandset *command, t_info *info)
 {
-	if (command->prev && info->exit_status_log == 0)
+	if (command->prev && info->file_err != 1)
 	{
 		if (change_left_pipe(command, left_pipe) == 1)
 			return ;
@@ -96,7 +96,7 @@ int	wait_command(t_commandset *commands)
 void	update_pipe(t_commandset *commands,
 			int new_pipe[2], int old_pipe[2], t_info *info)
 {
-	if (commands->prev && info->exit_status_log == 0)
+	if (commands->prev && info->file_err != 1)
 	{
 		if (close(old_pipe[0]) == -1)
 			error_message(NULL, ft_itoa(old_pipe[0]), strerror(errno));

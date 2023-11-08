@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 13:21:39 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:16:52 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	main(void)
 	commands = NULL;
 	envmap_init(&info.map_head);
 	info.exit_status_log = 0;
+	info.file_err = 0;
 	while (1)
 	{
 		g_sigstatus = 0;

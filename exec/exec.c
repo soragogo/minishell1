@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 16:15:20 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:17:25 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,6 @@ void	handle_command(t_commandset *commands, t_info *info)
 		}
 		else
 			info->exit_status_log = wait_command(tmp_head);
+		info->file_err = 0;
 	}
 }
