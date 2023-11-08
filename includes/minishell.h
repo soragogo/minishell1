@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 18:16:01 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:51:34 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int				redirect_out(t_redirect *node, t_info *info);
 int				redirect_in(t_redirect *node, t_info *info);
 int				heredoc(const char *delimiter, t_info *info);
 int				append(t_redirect *node, t_info *info);
+char			*deal_raw_env(char *arg, int *i, t_env *env_head);
 
 	/* exec */
 void			create_pipe(t_commandset *command, int new_pipe[2]);
@@ -130,5 +131,8 @@ void			split_into_tokens(t_token *tokens,
 					char *command, int num_of_tokens);
 char			*convert_relative_path(char *dir_path, char *input);
 void			missing_file_error(char *command);
+
+	/* signal */
+void			pipe_handler(int signum);
 
 #endif
