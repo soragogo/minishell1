@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:25:47 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/06 00:21:16 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/08 12:30:50 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,45 @@ void	create_pipe(t_commandset *command, int new_pipe[2])
 	}
 }
 
-void	handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command)
+void	handle_pipe(int left_pipe[2], int right_pipe[2], t_commandset *command, t_info *info)
 {
-	if (command->prev)
+	if (command->prev && info->exit_status_log == 0)
 	{
 		if (close(left_pipe[1]) == -1)
-			fatal_error(strerror(errno));
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(left_pipe[1]), strerror(errno));
+		if (command->node && (command->node->type == HERE_DOCUMENT || command->node->type == REDIRECT_IN))// || command->node->type == REDIRECT_IN
+		{
+			if (close(left_pipe[0]) == -1)
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(left_pipe[0]), strerror(errno));
+			return ;
+		}
 		if (dup2(left_pipe[0], STDIN_FILENO) == -1)
-			fatal_error(strerror(errno));
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(left_pipe[0]), strerror(errno));
 		if (close(left_pipe[0]) == -1)
-			fatal_error(strerror(errno));
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(left_pipe[0]), strerror(errno));
 	}
 	if (command->next)
 	{
 		if (close(right_pipe[0]) == -1)
-			fatal_error(strerror(errno));
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(right_pipe[0]), strerror(errno));
+		if (command->node && (command->node->type == REDIRECT_OUT || command->node->type == APPEND_OUT))
+		{
+			if (close(right_pipe[1]) == -1)
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(right_pipe[1]), strerror(errno));
+			return ;
+		}
 		if (dup2(right_pipe[1], STDOUT_FILENO) == -1)
-			fatal_error(strerror(errno));
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(right_pipe[1]), strerror(errno));
 		if (close(right_pipe[1]) == -1)
-			fatal_error(strerror(errno));
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(right_pipe[1]), strerror(errno));
 	}
 }
 
@@ -51,8 +71,14 @@ int	wait_command(t_commandset *commands)
 
 	while (commands)
 	{
+		if (commands->pid == -1)
+		{
+			commands = commands->next;
+			continue ;
+		}
 		if (waitpid(commands->pid, &status, 0) < 0)
-			fatal_error("waitpid error");
+			// fatal_error("waitpid error");
+			error_message(NULL, NULL, strerror(errno));
 		if (g_sigstatus == 1 || g_sigstatus == -1)
 			g_sigstatus = 1;
 		else if (WIFEXITED(status))
@@ -61,5 +87,7 @@ int	wait_command(t_commandset *commands)
 			g_sigstatus = WTERMSIG(status) + 128;
 		commands = commands->next;
 	}
+	if (status > 255)
+		status = status % 256 + 1;
 	return (status);
 }

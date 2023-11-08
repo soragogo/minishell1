@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:16:54 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/05 23:37:20 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/08 12:27:16 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	loop_commandline(t_info *info,
 		return (1);
 	}
 	handle_pipe_signals();
-	info->exit_status_log = handle_command(commands, info);
+	// info->exit_status_log = handle_command(commands, info);
+	handle_command(commands, info);
 	if (g_sigstatus == SIGINT || g_sigstatus == 130 || g_sigstatus == 131)
 		info->exit_status_log = g_sigstatus;
 	free_before_closing(commands, command_buf);

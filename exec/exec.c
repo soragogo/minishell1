@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/06 20:20:01 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/08 13:08:54 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,16 @@ int	child_prosess(t_commandset *commands, t_info *info)
 	return (status);
 }
 
-void	update_pipe(t_commandset *commands, int new_pipe[2], int old_pipe[2])
+void	update_pipe(t_commandset *commands, int new_pipe[2], int old_pipe[2], t_info *info)
 {
-	if (commands->prev)
+	if (commands->prev && info->exit_status_log == 0)
 	{
 		if (close(old_pipe[0]) == -1)
-			fatal_error(strerror(errno));
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(old_pipe[0]), strerror(errno));
 		if (close(old_pipe[1]) == -1)
-			fatal_error(strerror(errno));
+			// fatal_error(strerror(errno));
+			error_message(NULL, ft_itoa(old_pipe[1]), strerror(errno));
 	}
 	if (commands->next)
 	{
@@ -103,41 +105,60 @@ int	exec_command(t_commandset *commands, t_info *info)
 	pid_t		pid;
 
 	status = 0;
-	handle_redirection(commands, info);
+	if (handle_redirection(commands, info) == 1)
+	{
+		if (!commands->next)
+			info->exit_status_log = -1;
+		commands->pid = -1;
+		return (1);
+	}
+	// handle_redirection(commands, info);
 	create_pipe(commands, new_pipe);
 	pid = fork();
 	if (pid < 0)
 		return (-1);
 	else if (pid == 0)
 	{
-		handle_pipe(old_pipe, new_pipe, commands);
+		handle_pipe(old_pipe, new_pipe, commands, info);
 		status = child_prosess(commands, info);
 	}
-	update_pipe(commands, new_pipe, old_pipe);
+	update_pipe(commands, new_pipe, old_pipe, info);
 	undo_redirect(commands->node, 0);
 	commands->pid = pid;
 	return (status);
 }
 
-int	handle_command(t_commandset *commands, t_info *info)
+// int	handle_command(t_commandset *commands, t_info *info)
+void	handle_command(t_commandset *commands, t_info *info)
 {
 	t_commandset	*tmp_head;
-	int				status;
+	// int				status;
 
-	status = 0;
+	// status = 0;
 	tmp_head = commands;
 	if (!(commands->next) && is_builtin(commands) != -1)
-		status = exec_builtin(commands, info);
+		// status = exec_builtin(commands, info);
+		info->exit_status_log = exec_builtin(commands, info);
 	else
 	{
 		while (commands != NULL)
 		{
 			if (commands->command == NULL)
 				break ;
-			exec_command(commands, info);
+			if (exec_command(commands, info) == -1)
+				return ;
 			commands = commands->next;
 		}
-		status = wait_command(tmp_head);
+		// status = wait_command(tmp_head);
+		// printf("exit_status_log: %d\n", info->exit_status_log);
+		if (info->exit_status_log == -1)
+		{
+			wait_command(tmp_head);
+			info->exit_status_log = 1;
+		}
+		else
+			info->exit_status_log = wait_command(tmp_head);
+		// printf("exit_status_log: %d\n", info->exit_status_log);
 	}
-	return (status);
+	// return (status);
 }

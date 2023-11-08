@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/06 12:49:30 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/08 12:26:44 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,19 @@ int				chdir_home(char **commands,
 int				command_is_invalid(char *command);
 	/* redirection */
 void			redirect(t_commandset *commands, t_info *info);
-void			handle_redirection(t_commandset *commands, t_info *info);
-void			here_document(t_redirect *node, t_info *info);
-void			do_redirect(t_redirect *node);
-void			undo_redirect(t_redirect *node, int builtin);
-void			redirect_out(t_redirect *node, t_info *info);
-void			redirect_in(t_redirect *node, t_info *info);
+int				handle_redirection(t_commandset *commands, t_info *info);
+int				here_document(t_redirect *node, t_info *info);
+int				do_redirect(t_redirect *node);
+int				undo_redirect(t_redirect *node, int builtin);
+int				redirect_out(t_redirect *node, t_info *info);
+int				redirect_in(t_redirect *node, t_info *info);
 int				heredoc(const char *delimiter, t_info *info);
-void			append(t_redirect *node, t_info *info);
+int				append(t_redirect *node, t_info *info);
 
 	/* exec */
 void			create_pipe(t_commandset *command, int new_pipe[2]);
 void			handle_pipe(int left_pipe[2],
-					int right_pipe[2], t_commandset *command);
+					int right_pipe[2], t_commandset *command, t_info *info);
 int				wait_command(t_commandset *commands);
 
 	/* utils */
@@ -105,7 +105,7 @@ int				exec_builtin(t_commandset *commands, t_info *info);
 char			**join(char *s1, char *s2, char **environ);
 char			*env_join(char *name, char *value, char **environ);
 char			*fetch_path(char *file, t_env **map);
-int				handle_command(t_commandset *commands, t_info *info);
+void				handle_command(t_commandset *commands, t_info *info);
 char			*expand_env(char *arg, int i, t_env *env_head, int *status);
 int				ft_strcmp(char *s1, char *s2);
 char			*expand_quote(char *command, t_env *env_head, int *status);
@@ -117,7 +117,7 @@ void			free_environ(char **environ);
 void			handle_pipe_signals(void);
 
 	/* error */
-void			error_message(char *command, char *arg, char *msg);
+void			error_message(char *command, const char *arg, char *msg);
 void			fatal_error(char *msg);
 
 t_token			*ft_tokenizer(char *command);
