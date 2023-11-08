@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mayyamad <mayyamad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/26 20:20:50 by mayyamad         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:43:30 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,72 @@
 #include "../includes/token.h"
 #include "../includes/parser.h"
 
-void	handle_redirection(t_commandset *commands, t_info *info)
+int	handle_redirection(t_commandset *commands, t_info *info)
 {
+	int			err;
 	t_redirect	*tmp_node;
 
+	err = 0;
 	tmp_node = commands->node;
 	while (tmp_node)
 	{
 		if (tmp_node->filename == NULL)
-			return ;
+			return (0);
 		if (tmp_node->type == REDIRECT_OUT)
-			redirect_out(tmp_node, info);
+			err = redirect_out(tmp_node, info);
 		else if (tmp_node->type == REDIRECT_IN)
-			redirect_in(tmp_node, info);
+			err = redirect_in(tmp_node, info);
 		else if (tmp_node->type == APPEND_OUT)
-			append(tmp_node, info);
+			err = append(tmp_node, info);
 		else if (tmp_node->type == HERE_DOCUMENT)
-			here_document(tmp_node, info);
+			err = here_document(tmp_node, info);
+		if (err == 1)
+			return (1);
 		tmp_node = tmp_node->next;
 	}
+	if (do_redirect(commands->node) == 1)
+		return (1);
+	return (0);
 }
 
-void	do_redirect(t_redirect *node)
+int	do_redirect(t_redirect *node)
 {
 	if (node == NULL)
-		return ;
+		return (0);
 	node->stashfd = dup(node->oldfd);
 	if (node->stashfd == -1)
-		fatal_error(strerror(errno));
+	{
+		error_message(NULL, node->filename, strerror(errno));
+		return (1);
+	}
 	if (dup2(node->newfd, node->oldfd) == -1)
-		fatal_error(strerror(errno));
+	{
+		error_message(NULL, NULL, strerror(errno));
+		return (1);
+	}
+	do_redirect(node->next);
+	return (0);
 }
 
-void	undo_redirect(t_redirect *node)
+int	undo_redirect(t_redirect *node, int builtin)
 {
 	if (node == NULL)
-		return ;
-	undo_redirect(node->next);
+		return (0);
+	undo_redirect(node->next, builtin);
 	if (dup2(node->stashfd, node->oldfd) == -1)
-		fatal_error(strerror(errno));
+	{
+		error_message(NULL, NULL, strerror(errno));
+		return (1);
+	}
 	if (close(node->stashfd) == -1)
-		fatal_error(strerror(errno));
+	{
+		error_message(NULL, NULL, strerror(errno));
+		return (1);
+	}
 	if (close(node->newfd) == -1)
-		fatal_error(strerror(errno));
+	{
+		error_message(NULL, NULL, strerror(errno));
+		return (1);
+	}
+	return (0);
 }

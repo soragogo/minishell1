@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:27:00 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/02 16:33:13 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/08 10:42:59 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	exec_builtin(t_commandset *commands, t_info *info)
 	int	status;
 
 	status = 0;
-	handle_redirection(commands, info);
+	if (handle_redirection(commands, info) == 1)
+		return (1);
 	if (ft_strncmp(*commands[0].command, "echo", 4) == 0)
 		status = ft_echo(commands->command);
 	else if (ft_strncmp(*commands[0].command, "cd", 3) == 0)
@@ -52,6 +53,6 @@ int	exec_builtin(t_commandset *commands, t_info *info)
 		status = ft_exit(commands->command, info);
 	else
 		return (-1);
-	undo_redirect(commands->node);
+	undo_redirect(commands->node, 1);
 	return (status);
 }

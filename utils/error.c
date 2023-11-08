@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:04:08 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/28 19:13:58 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 15:00:36 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	fatal_error(char *msg)
 	exit(1);
 }
 
-void	error_message(char *command, char *arg, char *msg)
+void	error_message(char *command, const char *arg, char *msg)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (command)
@@ -39,4 +39,11 @@ void	missing_file_error(char *command)
 {
 	error_message(command, NULL, "No such file or directory");
 	exit(127);
+}
+
+void	set_err_status(t_commandset *commands, t_info *info)
+{
+	if (!commands->next)
+		info->exit_status_log = -1;
+	commands->pid = -1;
 }
