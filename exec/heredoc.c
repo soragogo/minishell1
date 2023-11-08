@@ -6,13 +6,34 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 19:06:11 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 19:07:09 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/token.h"
 #include "../includes/parser.h"
+
+char	*deal_line(char *arg, t_env *env_head, int *status)
+{
+	int		i;
+
+	i = 0;
+	while (arg[i])
+	{
+		while (arg[i] && arg[i] != '$')
+			i++;
+		if (ft_strncmp(&arg[i], "$?", 2)
+			* ft_strncmp(&arg[i], "${?}", 4) == 0)
+			arg = deal_status(arg, &i, *status, "arg");
+		else if (ft_strncmp(&arg[i], "$$", 2)
+			* ft_strncmp(&arg[i], "${$}", 4) == 0)
+			arg = deal_status(arg, &i, -1, "arg");
+		else if (arg[i] == '$')
+			arg = deal_raw_env(arg, &i, env_head);
+	}
+	return (arg);
+}
 
 int	write_to_pipe(int pipefd[2],
 	char *line, const char *delimiter, t_info *info)
@@ -28,7 +49,7 @@ int	write_to_pipe(int pipefd[2],
 	}
 	tmp = ft_strdup(line);
 	free(line);
-	line = expand_quote(tmp,
+	line = deal_line(tmp,
 			info->map_head, &(info->exit_status_log));
 	if (ft_strncmp(line, delimiter, d_len + 1) == 0)
 	{
@@ -38,24 +59,6 @@ int	write_to_pipe(int pipefd[2],
 	write(pipefd[1], line, ft_strlen(line));
 	free(line);
 	return (0);
-}
-
-void	pipe_handler(int signum)
-{
-	if (signum == SIGQUIT)
-	{
-		rl_redisplay();
-		exit(0);
-	}
-	if (signum == SIGINT)
-	{
-		g_sigstatus = SIGINT;
-	}
-}
-
-void	handle_pipe_signals(void)
-{
-	signal(SIGINT, pipe_handler);
 }
 
 int	signal_check(void)

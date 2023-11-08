@@ -6,7 +6,7 @@
 /*   By: emukamada <emukamada@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 17:32:16 by mayu              #+#    #+#             */
-/*   Updated: 2023/10/31 15:40:20 by emukamada        ###   ########.fr       */
+/*   Updated: 2023/11/08 18:34:34 by emukamada        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*expand_env(char *arg, int i, t_env *env_head, int *status)
 	char	*start;
 
 	joined = NULL;
-	while (arg[i] != '\"' && arg[i])
+	while (arg[i] && arg[i] != '\"')
 	{
 		if (arg[i] == '$')
 			expanded = handle_dollar(arg, &i, env_head, status);
