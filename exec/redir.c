@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 12:10:02 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 15:43:30 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,8 @@ int	handle_redirection(t_commandset *commands, t_info *info)
 			return (1);
 		tmp_node = tmp_node->next;
 	}
-	// tmp_node = commands->node;
-	// while (tmp_node)
-	// {
-	// 	do_redirect(tmp_node);
-	// 	tmp_node = tmp_node->next;
-	// }
 	if (do_redirect(commands->node) == 1)
-	{
-		info->exit_status_log = 1;
 		return (1);
-	}
 	return (0);
 }
 
@@ -58,13 +49,11 @@ int	do_redirect(t_redirect *node)
 	node->stashfd = dup(node->oldfd);
 	if (node->stashfd == -1)
 	{
-		// fatal_error(strerror(errno));
 		error_message(NULL, node->filename, strerror(errno));
-		return (1);	
+		return (1);
 	}
 	if (dup2(node->newfd, node->oldfd) == -1)
 	{
-		// fatal_error(strerror(errno));
 		error_message(NULL, NULL, strerror(errno));
 		return (1);
 	}
@@ -79,19 +68,16 @@ int	undo_redirect(t_redirect *node, int builtin)
 	undo_redirect(node->next, builtin);
 	if (dup2(node->stashfd, node->oldfd) == -1)
 	{
-		// fatal_error(strerror(errno));
 		error_message(NULL, NULL, strerror(errno));
 		return (1);
 	}
 	if (close(node->stashfd) == -1)
 	{
-		// fatal_error(strerror(errno));
 		error_message(NULL, NULL, strerror(errno));
 		return (1);
 	}
 	if (close(node->newfd) == -1)
 	{
-		// fatal_error(strerror(errno));
 		error_message(NULL, NULL, strerror(errno));
 		return (1);
 	}

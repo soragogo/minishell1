@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:33:32 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 12:08:58 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 15:43:03 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	heredoc(const char *delimiter, t_info *info)
 		write(pipefd[1], "\n", 1);
 	}
 	if (close(pipefd[1]) == -1)
-		// fatal_error(strerror(errno));
 		error_message(NULL, ft_itoa(pipefd[1]), strerror(errno));
 	return (pipefd[0]);
 }

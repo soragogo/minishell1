@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:04:08 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 10:01:30 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 15:00:36 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,11 @@ void	missing_file_error(char *command)
 {
 	error_message(command, NULL, "No such file or directory");
 	exit(127);
+}
+
+void	set_err_status(t_commandset *commands, t_info *info)
+{
+	if (!commands->next)
+		info->exit_status_log = -1;
+	commands->pid = -1;
 }

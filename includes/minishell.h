@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 17:00:37 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 12:26:44 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 15:00:54 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int				append(t_redirect *node, t_info *info);
 void			create_pipe(t_commandset *command, int new_pipe[2]);
 void			handle_pipe(int left_pipe[2],
 					int right_pipe[2], t_commandset *command, t_info *info);
+void			update_pipe(t_commandset *commands,
+					int new_pipe[2], int old_pipe[2], t_info *info);
 int				wait_command(t_commandset *commands);
 
 	/* utils */
@@ -105,7 +107,7 @@ int				exec_builtin(t_commandset *commands, t_info *info);
 char			**join(char *s1, char *s2, char **environ);
 char			*env_join(char *name, char *value, char **environ);
 char			*fetch_path(char *file, t_env **map);
-void				handle_command(t_commandset *commands, t_info *info);
+void			handle_command(t_commandset *commands, t_info *info);
 char			*expand_env(char *arg, int i, t_env *env_head, int *status);
 int				ft_strcmp(char *s1, char *s2);
 char			*expand_quote(char *command, t_env *env_head, int *status);
@@ -119,7 +121,7 @@ void			handle_pipe_signals(void);
 	/* error */
 void			error_message(char *command, const char *arg, char *msg);
 void			fatal_error(char *msg);
-
+void			set_err_status(t_commandset *commands, t_info *info);
 t_token			*ft_tokenizer(char *command);
 char			*skip_spaces(char *str);
 int				is_dilimeter(char c);

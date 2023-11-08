@@ -6,7 +6,7 @@
 /*   By: mayu <mayu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:29:04 by mayu              #+#    #+#             */
-/*   Updated: 2023/11/08 13:08:54 by mayu             ###   ########.fr       */
+/*   Updated: 2023/11/08 15:42:42 by mayu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,6 @@ int	child_prosess(t_commandset *commands, t_info *info)
 	return (status);
 }
 
-void	update_pipe(t_commandset *commands, int new_pipe[2], int old_pipe[2], t_info *info)
-{
-	if (commands->prev && info->exit_status_log == 0)
-	{
-		if (close(old_pipe[0]) == -1)
-			// fatal_error(strerror(errno));
-			error_message(NULL, ft_itoa(old_pipe[0]), strerror(errno));
-		if (close(old_pipe[1]) == -1)
-			// fatal_error(strerror(errno));
-			error_message(NULL, ft_itoa(old_pipe[1]), strerror(errno));
-	}
-	if (commands->next)
-	{
-		old_pipe[0] = new_pipe[0];
-		old_pipe[1] = new_pipe[1];
-	}
-}
-
 void	handle_heredocument(t_commandset *commands, t_info *info)
 {
 	t_redirect	*tmp_node;
@@ -107,12 +89,9 @@ int	exec_command(t_commandset *commands, t_info *info)
 	status = 0;
 	if (handle_redirection(commands, info) == 1)
 	{
-		if (!commands->next)
-			info->exit_status_log = -1;
-		commands->pid = -1;
+		set_err_status(commands, info);
 		return (1);
 	}
-	// handle_redirection(commands, info);
 	create_pipe(commands, new_pipe);
 	pid = fork();
 	if (pid < 0)
@@ -128,16 +107,12 @@ int	exec_command(t_commandset *commands, t_info *info)
 	return (status);
 }
 
-// int	handle_command(t_commandset *commands, t_info *info)
 void	handle_command(t_commandset *commands, t_info *info)
 {
 	t_commandset	*tmp_head;
-	// int				status;
 
-	// status = 0;
 	tmp_head = commands;
 	if (!(commands->next) && is_builtin(commands) != -1)
-		// status = exec_builtin(commands, info);
 		info->exit_status_log = exec_builtin(commands, info);
 	else
 	{
@@ -149,8 +124,6 @@ void	handle_command(t_commandset *commands, t_info *info)
 				return ;
 			commands = commands->next;
 		}
-		// status = wait_command(tmp_head);
-		// printf("exit_status_log: %d\n", info->exit_status_log);
 		if (info->exit_status_log == -1)
 		{
 			wait_command(tmp_head);
@@ -158,7 +131,5 @@ void	handle_command(t_commandset *commands, t_info *info)
 		}
 		else
 			info->exit_status_log = wait_command(tmp_head);
-		// printf("exit_status_log: %d\n", info->exit_status_log);
 	}
-	// return (status);
 }
